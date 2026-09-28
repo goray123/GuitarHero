@@ -1,0 +1,2009 @@
+fileFormatVersion: 2
+guid: 4b52a60ee7bea974a9e2536307e926c3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2199985447370596250
+    second: PC_Death_0
+  - first:
+      213: 775255054408315613
+    second: PC_Death_1
+  - first:
+      213: -2269180391766336311
+    second: PC_Death_2
+  - first:
+      213: 4532803832819991188
+    second: PC_Death_3
+  - first:
+      213: -4822244266485007843
+    second: PC_Death_4
+  - first:
+      213: -5248980509063773090
+    second: PC_Death_5
+  - first:
+      213: -2182637840837737266
+    second: PC_Death_6
+  - first:
+      213: -1883224141624391739
+    second: PC_Death_7
+  - first:
+      213: 4795838862445524368
+    second: PC_Death_8
+  - first:
+      213: -2239761956495436574
+    second: PC_Death_9
+  - first:
+      213: 7769159444047783247
+    second: PC_Death_10
+  - first:
+      213: -7191149508125054049
+    second: PC_Death_11
+  - first:
+      213: -5531901147690652193
+    second: PC_Death_12
+  - first:
+      213: 5586084936440951474
+    second: PC_Death_13
+  - first:
+      213: -1943905865117764742
+    second: PC_Death_14
+  - first:
+      213: 6327208754956414465
+    second: PC_Death_15
+  - first:
+      213: -519590383394638340
+    second: PC_Death_16
+  - first:
+      213: -2050721125665937020
+    second: PC_Death_17
+  - first:
+      213: -2954048104160984048
+    second: PC_Death_18
+  - first:
+      213: -8762263325152535288
+    second: PC_Death_19
+  - first:
+      213: 1434442748588285119
+    second: PC_Death_20
+  - first:
+      213: -2648757589950357950
+    second: PC_Death_21
+  - first:
+      213: 1281639017352403414
+    second: PC_Death_22
+  - first:
+      213: -6558833991762303216
+    second: PC_Death_23
+  - first:
+      213: 2429272951618818231
+    second: PC_Death_24
+  - first:
+      213: -5174272987021880085
+    second: PC_Death_25
+  - first:
+      213: -4215401969437579261
+    second: PC_Death_26
+  - first:
+      213: -7880700244924055878
+    second: PC_Death_27
+  - first:
+      213: 1159949292998758851
+    second: PC_Death_28
+  - first:
+      213: 3365937033062153559
+    second: PC_Death_29
+  - first:
+      213: 665190413998227961
+    second: PC_Death_30
+  - first:
+      213: -1751391477068238121
+    second: PC_Death_31
+  - first:
+      213: 8188833390338631703
+    second: PC_Death_32
+  - first:
+      213: 1230870070277043722
+    second: PC_Death_33
+  - first:
+      213: 7565314092799283425
+    second: PC_Death_34
+  - first:
+      213: 5381206686217692667
+    second: PC_Death_35
+  - first:
+      213: -7888693717667154454
+    second: PC_Death_36
+  - first:
+      213: 2347366691723151628
+    second: PC_Death_37
+  - first:
+      213: -7509450789203138605
+    second: PC_Death_38
+  - first:
+      213: 1871353499995811216
+    second: PC_Death_39
+  - first:
+      213: -1780660124747989406
+    second: PC_Death_40
+  - first:
+      213: -3563250429842606215
+    second: PC_Death_41
+  - first:
+      213: -7357839194595795419
+    second: PC_Death_42
+  - first:
+      213: -701628519733201088
+    second: PC_Death_43
+  - first:
+      213: -6417280857784447595
+    second: PC_Death_44
+  - first:
+      213: 6437858788790072698
+    second: PC_Death_45
+  - first:
+      213: -355053874393563159
+    second: PC_Death_46
+  - first:
+      213: 6599852873282788935
+    second: PC_Death_47
+  - first:
+      213: -3453685658940460160
+    second: PC_Death_48
+  - first:
+      213: 1384942803889705139
+    second: PC_Death_49
+  - first:
+      213: 6897584231149625138
+    second: PC_Death_50
+  - first:
+      213: -5521938740568084772
+    second: PC_Death_51
+  - first:
+      213: 5191890161073480732
+    second: PC_Death_52
+  - first:
+      213: -5713564405312836252
+    second: PC_Death_53
+  - first:
+      213: -5781533031731953422
+    second: PC_Death_54
+  - first:
+      213: -5162264005402453223
+    second: PC_Death_55
+  - first:
+      213: -5260371590052525796
+    second: PC_Death_56
+  - first:
+      213: 9012660945231109901
+    second: PC_Death_57
+  - first:
+      213: 279043921454715362
+    second: PC_Death_58
+  - first:
+      213: -314928566165166805
+    second: PC_Death_59
+  - first:
+      213: -3898862080974835928
+    second: PC_Death_60
+  - first:
+      213: 1182828832105402365
+    second: PC_Death_61
+  - first:
+      213: 7178080608573611104
+    second: PC_Death_62
+  - first:
+      213: 6698009314640201188
+    second: PC_Death_63
+  - first:
+      213: -5563903250794627542
+    second: PC_Death_64
+  - first:
+      213: 5214851971215381061
+    second: PC_Death_65
+  - first:
+      213: 2154708353228131396
+    second: PC_Death_66
+  - first:
+      213: 7866439649152645512
+    second: PC_Death_67
+  - first:
+      213: 2454397482416786718
+    second: PC_Death_68
+  - first:
+      213: -1181491538519581652
+    second: PC_Death_69
+  - first:
+      213: -4773453642934351072
+    second: PC_Death_70
+  - first:
+      213: 5657603046060999157
+    second: PC_Death_71
+  - first:
+      213: 4021826994377327469
+    second: PC_Death_72
+  - first:
+      213: -1711591981939279792
+    second: PC_Death_73
+  - first:
+      213: -5969592195403137883
+    second: PC_Death_74
+  - first:
+      213: -3422653609975960826
+    second: PC_Death_75
+  - first:
+      213: 478890328613253429
+    second: PC_Death_76
+  - first:
+      213: 8624111945682382135
+    second: PC_Death_77
+  - first:
+      213: 4459924940456833007
+    second: PC_Death_78
+  - first:
+      213: -1376508876275950894
+    second: PC_Death_79
+  - first:
+      213: -3491504631079051361
+    second: PC_Death_80
+  - first:
+      213: -907694345957649389
+    second: PC_Death_81
+  - first:
+      213: -6809771080327569936
+    second: PC_Death_82
+  - first:
+      213: 4565358116725928668
+    second: PC_Death_83
+  - first:
+      213: -3133444260217203428
+    second: PC_Death_84
+  - first:
+      213: 5684545097662767199
+    second: PC_Death_85
+  - first:
+      213: 2604889350439701973
+    second: PC_Death_86
+  - first:
+      213: -4618344805245016744
+    second: PC_Death_87
+  - first:
+      213: 2774181100684925122
+    second: PC_Death_88
+  - first:
+      213: -6657863025108626494
+    second: PC_Death_89
+  - first:
+      213: 2904482754850150027
+    second: PC_Death_90
+  - first:
+      213: -190541374259399662
+    second: PC_Death_91
+  - first:
+      213: 7502497457855170436
+    second: PC_Death_92
+  - first:
+      213: 75822672357981766
+    second: PC_Death_93
+  - first:
+      213: 456850302869350551
+    second: PC_Death_94
+  - first:
+      213: 181464454091957999
+    second: PC_Death_95
+  - first:
+      213: -2099136689138968573
+    second: PC_Death_96
+  - first:
+      213: -265418090926740183
+    second: PC_Death_97
+  - first:
+      213: 3056001314861098952
+    second: PC_Death_98
+  - first:
+      213: 3596216120567041307
+    second: PC_Death_99
+  - first:
+      213: -5398724517907957694
+    second: PC_Death_100
+  - first:
+      213: -717681547701883750
+    second: PC_Death_101
+  - first:
+      213: -286830589966933560
+    second: PC_Death_102
+  - first:
+      213: 3711740234501604982
+    second: PC_Death_103
+  - first:
+      213: -2425349194788518211
+    second: PC_Death_104
+  - first:
+      213: 8160961706081306902
+    second: PC_Death_105
+  - first:
+      213: 7433663542226040292
+    second: PC_Death_106
+  - first:
+      213: -5885406826529370824
+    second: PC_Death_107
+  - first:
+      213: 8164758072145640511
+    second: PC_Death_108
+  - first:
+      213: 1499209707150223191
+    second: PC_Death_109
+  - first:
+      213: -7550980726306518543
+    second: PC_Death_110
+  - first:
+      213: 7644587383777114605
+    second: PC_Death_111
+  - first:
+      213: 5763042054588876549
+    second: PC_Death_112
+  - first:
+      213: -7371186853202442430
+    second: PC_Death_113
+  - first:
+      213: -5750579627371514307
+    second: PC_Death_114
+  - first:
+      213: -8722563541197417151
+    second: PC_Death_115
+  - first:
+      213: 8208315763171135808
+    second: PC_Death_116
+  - first:
+      213: 6237074807953798853
+    second: PC_Death_117
+  - first:
+      213: -6457030479889821608
+    second: PC_Death_118
+  - first:
+      213: 7302693624726791573
+    second: PC_Death_119
+  - first:
+      213: 1243629507644477747
+    second: PC_Death_120
+  - first:
+      213: -6788064906418570785
+    second: PC_Death_121
+  - first:
+      213: -6211288731080023978
+    second: PC_Death_122
+  - first:
+      213: -1993019707063874365
+    second: PC_Death_123
+  - first:
+      213: 9025474253665637638
+    second: PC_Death_124
+  - first:
+      213: 2941454573627629540
+    second: PC_Death_125
+  - first:
+      213: 8388579738171737986
+    second: PC_Death_126
+  - first:
+      213: -5788561321044461454
+    second: PC_Death_127
+  - first:
+      213: -1366071065340306765
+    second: PC_Death_128
+  - first:
+      213: 4111211120321069952
+    second: PC_Death_129
+  - first:
+      213: 1019979714582820962
+    second: PC_Death_130
+  - first:
+      213: 6948017043284022627
+    second: PC_Death_131
+  - first:
+      213: 5058994267109813158
+    second: PC_Death_132
+  - first:
+      213: -701585453926607486
+    second: PC_Death_133
+  - first:
+      213: -1983970887460588602
+    second: PC_Death_134
+  - first:
+      213: 7217091885131919285
+    second: PC_Death_135
+  - first:
+      213: -6752980833356367399
+    second: PC_Death_136
+  - first:
+      213: -6973136070449946581
+    second: PC_Death_137
+  - first:
+      213: 7033553749218963534
+    second: PC_Death_138
+  - first:
+      213: 4756041017304626859
+    second: PC_Death_139
+  - first:
+      213: 7109197640686020797
+    second: PC_Death_140
+  - first:
+      213: 9118912868126999141
+    second: PC_Death_141
+  - first:
+      213: 6408446329490711283
+    second: PC_Death_142
+  - first:
+      213: -2780150405415533217
+    second: PC_Death_143
+  - first:
+      213: -6405712912330444636
+    second: PC_Death_144
+  - first:
+      213: 1904855188456773368
+    second: PC_Death_145
+  - first:
+      213: -5291861550083073702
+    second: PC_Death_146
+  - first:
+      213: 85211298370134112
+    second: PC_Death_147
+  - first:
+      213: 9071241332583622127
+    second: PC_Death_148
+  - first:
+      213: 6900004388080208906
+    second: PC_Death_149
+  - first:
+      213: 7412962407591295258
+    second: PC_Death_150
+  - first:
+      213: 3115468783004347961
+    second: PC_Death_151
+  - first:
+      213: 3059463846561257719
+    second: PC_Death_152
+  - first:
+      213: -4004720121369048393
+    second: PC_Death_153
+  - first:
+      213: -6501448558746806405
+    second: PC_Death_154
+  - first:
+      213: -4604005981430374577
+    second: PC_Death_155
+  - first:
+      213: 8689284550962896642
+    second: PC_Death_156
+  - first:
+      213: -2546196255213363448
+    second: PC_Death_157
+  - first:
+      213: 1887716496815882705
+    second: PC_Death_158
+  - first:
+      213: -7658023409139196903
+    second: PC_Death_159
+  - first:
+      213: 8537178554528997620
+    second: PC_Death_160
+  - first:
+      213: 2781509615151126127
+    second: PC_Death_161
+  - first:
+      213: -2938306884208481411
+    second: PC_Death_162
+  - first:
+      213: 3252308553834649946
+    second: PC_Death_163
+  - first:
+      213: -6555141126981892658
+    second: PC_Death_164
+  - first:
+      213: -1584603319377041959
+    second: PC_Death_165
+  - first:
+      213: -16117469037477967
+    second: PC_Death_166
+  - first:
+      213: -7984090579333889220
+    second: PC_Death_167
+  - first:
+      213: -2228735865472740025
+    second: PC_Death_168
+  - first:
+      213: -4531650749192139756
+    second: PC_Death_169
+  - first:
+      213: 4458487017005334783
+    second: PC_Death_170
+  - first:
+      213: -7551755008419604662
+    second: PC_Death_171
+  - first:
+      213: 7797400222779595186
+    second: PC_Death_172
+  - first:
+      213: 4154288273837204594
+    second: PC_Death_173
+  - first:
+      213: -1886634939711284695
+    second: PC_Death_174
+  - first:
+      213: -4436726600990739688
+    second: PC_Death_175
+  - first:
+      213: 7741014835091026835
+    second: PC_Death_176
+  - first:
+      213: -1125099325532741752
+    second: PC_Death_177
+  - first:
+      213: 4463037558102368254
+    second: PC_Death_178
+  - first:
+      213: 1550834539034355169
+    second: PC_Death_179
+  - first:
+      213: -2236438108768188518
+    second: PC_Death_180
+  - first:
+      213: 594601231963079857
+    second: PC_Death_181
+  - first:
+      213: 3226061159905599258
+    second: PC_Death_182
+  - first:
+      213: -4761856138907946118
+    second: PC_Death_183
+  - first:
+      213: -2598910752607932096
+    second: PC_Death_184
+  - first:
+      213: -6405046508981832905
+    second: PC_Death_185
+  - first:
+      213: -1055093843428489082
+    second: PC_Death_186
+  - first:
+      213: -7056626465599996197
+    second: PC_Death_187
+  - first:
+      213: 1478650292903796388
+    second: PC_Death_188
+  - first:
+      213: 7129640026001553677
+    second: PC_Death_189
+  - first:
+      213: 6043978129547719293
+    second: PC_Death_190
+  - first:
+      213: 8795688977391719165
+    second: PC_Death_191
+  - first:
+      213: 8231300127535362009
+    second: PC_Death_192
+  - first:
+      213: -5084532332143276007
+    second: PC_Death_193
+  - first:
+      213: 8805023089274102656
+    second: PC_Death_194
+  - first:
+      213: -2294771024356318566
+    second: PC_Death_195
+  - first:
+      213: 4141444880636488362
+    second: PC_Death_196
+  - first:
+      213: 1682388659523998418
+    second: PC_Death_197
+  - first:
+      213: -7179106543537161589
+    second: PC_Death_198
+  - first:
+      213: -7499866835021494781
+    second: PC_Death_199
+  - first:
+      213: 7901261296125363554
+    second: PC_Death_200
+  - first:
+      213: 922438688616253865
+    second: PC_Death_201
+  - first:
+      213: -4920266903284479638
+    second: PC_Death_202
+  - first:
+      213: 1505997014106705130
+    second: PC_Death_203
+  - first:
+      213: 1791482202931747998
+    second: PC_Death_204
+  - first:
+      213: 7710464054580369996
+    second: PC_Death_205
+  - first:
+      213: -9127215275387847731
+    second: PC_Death_206
+  - first:
+      213: 8776360014136252636
+    second: PC_Death_207
+  - first:
+      213: 5427769279349601454
+    second: PC_Death_208
+  - first:
+      213: 7722540524972432742
+    second: PC_Death_209
+  - first:
+      213: -7701417246509657521
+    second: PC_Death_210
+  - first:
+      213: -7805200118782755891
+    second: PC_Death_211
+  - first:
+      213: 8949134367720733387
+    second: PC_Death_212
+  - first:
+      213: 6535544097072573949
+    second: PC_Death_213
+  - first:
+      213: 5771727893526187661
+    second: PC_Death_214
+  - first:
+      213: -8804494489306489416
+    second: PC_Death_215
+  - first:
+      213: 803232291012491236
+    second: PC_Death_216
+  - first:
+      213: -1223156531640198773
+    second: PC_Death_217
+  - first:
+      213: -5347459019860311590
+    second: PC_Death_218
+  - first:
+      213: -5542188345530464127
+    second: PC_Death_219
+  - first:
+      213: -2092625511527829184
+    second: PC_Death_220
+  - first:
+      213: -7938401345643243185
+    second: PC_Death_221
+  - first:
+      213: 7836804613826367446
+    second: PC_Death_222
+  - first:
+      213: 1437788927474735480
+    second: PC_Death_223
+  - first:
+      213: 1041817937480048276
+    second: PC_Death_224
+  - first:
+      213: -5940456987415866759
+    second: PC_Death_225
+  - first:
+      213: 3381152841478939872
+    second: PC_Death_226
+  - first:
+      213: -2082975470101660000
+    second: PC_Death_227
+  - first:
+      213: 1213630953175182204
+    second: PC_Death_228
+  - first:
+      213: -7089734184350213764
+    second: PC_Death_229
+  - first:
+      213: -2913779891587958530
+    second: PC_Death_230
+  - first:
+      213: -5560203285922724936
+    second: PC_Death_231
+  - first:
+      213: 8714339914785558545
+    second: PC_Death_232
+  - first:
+      213: -5044932215365402588
+    second: PC_Death_233
+  - first:
+      213: -1722211605396947247
+    second: PC_Death_234
+  - first:
+      213: -5369850479145199631
+    second: PC_Death_235
+  - first:
+      213: 1425555603819435616
+    second: PC_Death_236
+  - first:
+      213: 7726952169704725722
+    second: PC_Death_237
+  - first:
+      213: -8091742423716369361
+    second: PC_Death_238
+  - first:
+      213: 600174872418639723
+    second: PC_Death_239
+  - first:
+      213: 6702025226853024419
+    second: PC_Death_240
+  - first:
+      213: 9032530495807421705
+    second: PC_Death_241
+  - first:
+      213: -1676642367812168692
+    second: PC_Death_242
+  - first:
+      213: -9005954040215839717
+    second: PC_Death_243
+  - first:
+      213: 1740221601725502285
+    second: PC_Death_244
+  - first:
+      213: 2165626815463906440
+    second: PC_Death_245
+  - first:
+      213: 8573228397198617942
+    second: PC_Death_246
+  - first:
+      213: -2492162584607502913
+    second: PC_Death_247
+  - first:
+      213: -1209135272517630545
+    second: PC_Death_248
+  - first:
+      213: 7089594017545609676
+    second: PC_Death_249
+  - first:
+      213: -9112703881978392358
+    second: PC_Death_250
+  - first:
+      213: -4062823730255734561
+    second: PC_Death_251
+  - first:
+      213: 227037959773783613
+    second: PC_Death_252
+  - first:
+      213: -3493975523564393456
+    second: PC_Death_253
+  - first:
+      213: 4944130710136778581
+    second: PC_Death_254
+  - first:
+      213: 4447861311039285637
+    second: PC_Death_255
+  - first:
+      213: -6469469140154847544
+    second: PC_Death_256
+  - first:
+      213: 5830513260173020808
+    second: PC_Death_257
+  - first:
+      213: 5105382664081553587
+    second: PC_Death_258
+  - first:
+      213: -149807920047342636
+    second: PC_Death_259
+  - first:
+      213: 3829399080350031418
+    second: PC_Death_260
+  - first:
+      213: -7945811462942519775
+    second: PC_Death_261
+  - first:
+      213: 5871205791743657588
+    second: PC_Death_262
+  - first:
+      213: 2064738966262644255
+    second: PC_Death_263
+  - first:
+      213: 3527371714647926949
+    second: PC_Death_264
+  - first:
+      213: 7336115725105815397
+    second: PC_Death_265
+  - first:
+      213: 5292832252037533872
+    second: PC_Death_266
+  - first:
+      213: -7597945072024765889
+    second: PC_Death_267
+  - first:
+      213: -6105929630440151043
+    second: PC_Death_268
+  - first:
+      213: 2363114947743551742
+    second: PC_Death_269
+  - first:
+      213: 2045474709195119974
+    second: PC_Death_270
+  - first:
+      213: 1715716662164430591
+    second: PC_Death_271
+  - first:
+      213: 5343583236026298596
+    second: PC_Death_272
+  - first:
+      213: 836430577634143545
+    second: PC_Death_273
+  - first:
+      213: -996288338185994441
+    second: PC_Death_274
+  - first:
+      213: -7005660117547404984
+    second: PC_Death_275
+  - first:
+      213: 2947214772023408783
+    second: PC_Death_276
+  - first:
+      213: 3543506547736102252
+    second: PC_Death_277
+  - first:
+      213: -8732181370218407747
+    second: PC_Death_278
+  - first:
+      213: -6952945084392823091
+    second: PC_Death_279
+  - first:
+      213: 7051886516231215946
+    second: PC_Death_280
+  - first:
+      213: -2990689157792357285
+    second: PC_Death_281
+  - first:
+      213: -6270161709669530454
+    second: PC_Death_282
+  - first:
+      213: 8526612687163583992
+    second: PC_Death_283
+  - first:
+      213: 2709066211498392685
+    second: PC_Death_284
+  - first:
+      213: -2503434447895120556
+    second: PC_Death_285
+  - first:
+      213: -3090534436828510000
+    second: PC_Death_286
+  - first:
+      213: -5343146589887564962
+    second: PC_Death_287
+  - first:
+      213: -537903578191576324
+    second: PC_Death_288
+  - first:
+      213: 955042633330517493
+    second: PC_Death_289
+  - first:
+      213: 1925098086422064792
+    second: PC_Death_290
+  - first:
+      213: 3521365588179054631
+    second: PC_Death_291
+  - first:
+      213: -4026499832491277080
+    second: PC_Death_292
+  - first:
+      213: -5594647573103656133
+    second: PC_Death_293
+  - first:
+      213: 3999668622506247299
+    second: PC_Death_294
+  - first:
+      213: 6866067903439427418
+    second: PC_Death_295
+  - first:
+      213: 1440923353326324007
+    second: PC_Death_296
+  - first:
+      213: -8971962852028819471
+    second: PC_Death_297
+  - first:
+      213: -3237640087559836708
+    second: PC_Death_298
+  - first:
+      213: 1927914344081339755
+    second: PC_Death_299
+  - first:
+      213: -1852388672877738429
+    second: PC_Death_300
+  - first:
+      213: 3573828840171878451
+    second: PC_Death_301
+  - first:
+      213: -4958625528217157437
+    second: PC_Death_302
+  - first:
+      213: 164608012060213375
+    second: PC_Death_303
+  - first:
+      213: 8212731029973750711
+    second: PC_Death_304
+  - first:
+      213: -8180705854767493691
+    second: PC_Death_305
+  - first:
+      213: 2639034693551650146
+    second: PC_Death_306
+  - first:
+      213: 8910883007075264151
+    second: PC_Death_307
+  - first:
+      213: 3451362315733731805
+    second: PC_Death_308
+  - first:
+      213: 4850283888917183077
+    second: PC_Death_309
+  - first:
+      213: -3462324516199028763
+    second: PC_Death_310
+  - first:
+      213: -7237264166528816029
+    second: PC_Death_311
+  - first:
+      213: -3809510342950506649
+    second: PC_Death_312
+  - first:
+      213: 3017047356601517767
+    second: PC_Death_313
+  - first:
+      213: -8501339221601408171
+    second: PC_Death_314
+  - first:
+      213: -2874485676304483194
+    second: PC_Death_315
+  - first:
+      213: 8420731562312346344
+    second: PC_Death_316
+  - first:
+      213: -9034741051836734088
+    second: PC_Death_317
+  - first:
+      213: 8516276307970504086
+    second: PC_Death_318
+  - first:
+      213: 6779875660715554844
+    second: PC_Death_319
+  - first:
+      213: 4442434349171501806
+    second: PC_Death_320
+  - first:
+      213: -8054055223554803221
+    second: PC_Death_321
+  - first:
+      213: 8503991507510667032
+    second: PC_Death_322
+  - first:
+      213: 7956621033500269364
+    second: PC_Death_323
+  - first:
+      213: 4340402617791580365
+    second: PC_Death_324
+  - first:
+      213: -7256453101812236333
+    second: PC_Death_325
+  - first:
+      213: 6137799686157962144
+    second: PC_Death_326
+  - first:
+      213: -1970861725125178191
+    second: PC_Death_327
+  - first:
+      213: -8526643877873133053
+    second: PC_Death_328
+  - first:
+      213: -2098577477365012894
+    second: PC_Death_329
+  - first:
+      213: -8785026826663760666
+    second: PC_Death_330
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PC_Death_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9f9d8dbb1be78e10800000000000000
+      internalID: 2199985447370596250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd275505d5242ca00800000000000000
+      internalID: 775255054408315613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cc5c71d4704280e0800000000000000
+      internalID: -2269180391766336311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 492c3c3f111c7ee30800000000000000
+      internalID: 4532803832819991188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1a3ff39362f31db0800000000000000
+      internalID: -4822244266485007843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_5
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e540e4c8900e727b0800000000000000
+      internalID: -5248980509063773090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_6
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec48a87a276b5b1e0800000000000000
+      internalID: -2182637840837737266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_7
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c7c906fe917dd5e0800000000000000
+      internalID: -1883224141624391739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_8
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0953414390e3e8240800000000000000
+      internalID: 4795838862445524368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_9
+      rect:
+        serializedVersion: 2
+        x: 2304
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e4d7a90e54cae0e0800000000000000
+      internalID: -2239761956495436574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_10
+      rect:
+        serializedVersion: 2
+        x: 2560
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f45e6d10a5991db60800000000000000
+      internalID: 7769159444047783247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_11
+      rect:
+        serializedVersion: 2
+        x: 2816
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9b2b796f97e33c90800000000000000
+      internalID: -7191149508125054049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_12
+      rect:
+        serializedVersion: 2
+        x: 3072
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdda257273dba33b0800000000000000
+      internalID: -5531901147690652193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_13
+      rect:
+        serializedVersion: 2
+        x: 3328
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b239b147a2c58d40800000000000000
+      internalID: 5586084936440951474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_14
+      rect:
+        serializedVersion: 2
+        x: 3584
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a737bd83aebd505e0800000000000000
+      internalID: -1943905865117764742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_15
+      rect:
+        serializedVersion: 2
+        x: 3840
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10e2be2f6d2cec750800000000000000
+      internalID: 6327208754956414465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_16
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf5bd099c4b0ac8f0800000000000000
+      internalID: -519590383394638340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_17
+      rect:
+        serializedVersion: 2
+        x: 4352
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 489ea4b50006a83e0800000000000000
+      internalID: -2050721125665937020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_18
+      rect:
+        serializedVersion: 2
+        x: 4608
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 014811686ec1107d0800000000000000
+      internalID: -2954048104160984048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_19
+      rect:
+        serializedVersion: 2
+        x: 4864
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80d99d32eef266680800000000000000
+      internalID: -8762263325152535288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_20
+      rect:
+        serializedVersion: 2
+        x: 5120
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbc5d30741a28e310800000000000000
+      internalID: 1434442748588285119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_21
+      rect:
+        serializedVersion: 2
+        x: 5376
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24e93e27109bd3bd0800000000000000
+      internalID: -2648757589950357950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_22
+      rect:
+        serializedVersion: 2
+        x: 5632
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d9129755eb49c110800000000000000
+      internalID: 1281639017352403414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_23
+      rect:
+        serializedVersion: 2
+        x: 5888
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01720441c375af4a0800000000000000
+      internalID: -6558833991762303216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_24
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b054bfe0e286b120800000000000000
+      internalID: 2429272951618818231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_25
+      rect:
+        serializedVersion: 2
+        x: 6400
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be459adf12a4138b0800000000000000
+      internalID: -5174272987021880085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_26
+      rect:
+        serializedVersion: 2
+        x: 6656
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 308e0323e32ef75c0800000000000000
+      internalID: -4215401969437579261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_27
+      rect:
+        serializedVersion: 2
+        x: 6912
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abeb7f781e022a290800000000000000
+      internalID: -7880700244924055878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_28
+      rect:
+        serializedVersion: 2
+        x: 7168
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c118ae7cb7f81010800000000000000
+      internalID: 1159949292998758851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_29
+      rect:
+        serializedVersion: 2
+        x: 7424
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75d7008e5e536be20800000000000000
+      internalID: 3365937033062153559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_30
+      rect:
+        serializedVersion: 2
+        x: 7680
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f10c5e382b3b3900800000000000000
+      internalID: 665190413998227961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_31
+      rect:
+        serializedVersion: 2
+        x: 7936
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d273ba1bbec1b7e0800000000000000
+      internalID: -1751391477068238121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_32
+      rect:
+        serializedVersion: 2
+        x: 8192
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 718edfb059494a170800000000000000
+      internalID: 8188833390338631703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_33
+      rect:
+        serializedVersion: 2
+        x: 8448
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a06f587becde41110800000000000000
+      internalID: 1230870070277043722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_34
+      rect:
+        serializedVersion: 2
+        x: 8704
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e0de8ba5156df860800000000000000
+      internalID: 7565314092799283425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_35
+      rect:
+        serializedVersion: 2
+        x: 8960
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf566f268f2edaa40800000000000000
+      internalID: 5381206686217692667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_36
+      rect:
+        serializedVersion: 2
+        x: 9216
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae5f7902cdab58290800000000000000
+      internalID: -7888693717667154454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_37
+      rect:
+        serializedVersion: 2
+        x: 9472
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c090eb9b195839020800000000000000
+      internalID: 2347366691723151628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC_Death_38
+      rect:
+        serializedVersion: 2
+        x: 9728
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d725434b4219c790800000000000000
+      internalID: -7509450789203138605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: ebdc546599343d44dadfee37be3d6109
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      PC_Death_0: 2199985447370596250
+      PC_Death_1: 775255054408315613
+      PC_Death_10: 7769159444047783247
+      PC_Death_11: -7191149508125054049
+      PC_Death_12: -5531901147690652193
+      PC_Death_13: 5586084936440951474
+      PC_Death_14: -1943905865117764742
+      PC_Death_15: 6327208754956414465
+      PC_Death_16: -519590383394638340
+      PC_Death_17: -2050721125665937020
+      PC_Death_18: -2954048104160984048
+      PC_Death_19: -8762263325152535288
+      PC_Death_2: -2269180391766336311
+      PC_Death_20: 1434442748588285119
+      PC_Death_21: -2648757589950357950
+      PC_Death_22: 1281639017352403414
+      PC_Death_23: -6558833991762303216
+      PC_Death_24: 2429272951618818231
+      PC_Death_25: -5174272987021880085
+      PC_Death_26: -4215401969437579261
+      PC_Death_27: -7880700244924055878
+      PC_Death_28: 1159949292998758851
+      PC_Death_29: 3365937033062153559
+      PC_Death_3: 4532803832819991188
+      PC_Death_30: 665190413998227961
+      PC_Death_31: -1751391477068238121
+      PC_Death_32: 8188833390338631703
+      PC_Death_33: 1230870070277043722
+      PC_Death_34: 7565314092799283425
+      PC_Death_35: 5381206686217692667
+      PC_Death_36: -7888693717667154454
+      PC_Death_37: 2347366691723151628
+      PC_Death_38: -7509450789203138605
+      PC_Death_4: -4822244266485007843
+      PC_Death_5: -5248980509063773090
+      PC_Death_6: -2182637840837737266
+      PC_Death_7: -1883224141624391739
+      PC_Death_8: 4795838862445524368
+      PC_Death_9: -2239761956495436574
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
