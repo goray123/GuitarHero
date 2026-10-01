@@ -26,6 +26,10 @@ public class PlayerMovement : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction slideAction;
+    private PlayerAttack attack;
+
+    public bool IsSliding => isSliding;
+    private bool IsAttacking => attack != null && attack.IsAttacking;
 
     private Vector2 originalSize;
     private Vector2 originalOffset;
@@ -41,11 +45,13 @@ public class PlayerMovement : MonoBehaviour
     private float slideEndTime;
     private float nextSlideTime;
 
+
     private readonly List<ContactPoint2D> groundContacts = 
         new List<ContactPoint2D>(16);
 
     private void Awake()
     {
+        attack = GetComponent<PlayerAttack>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -117,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnSlide(InputAction.CallbackContext context)
     {
         // 공중에서 누른 입력은 키를 떼어도 착지까지 보관
-        if (!isSliding)
+        if (!isSliding && !IsAttacking)
             slideRequested = true;
     }
 
@@ -129,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
         // Input Action으로 좌우 이동 입력 확인
         moveInput = moveAction.ReadValue<Vector2>().x;
 
-        // 슬라이드 중에는 시작 방향 유지
+        // 공격 중에도 이동 방향 전환 허용
         if (!isSliding && moveInput != 0f)
             spriteRenderer.flipX = moveInput < 0f;
     }
@@ -185,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isSliding && !slideEnded && canUseGroundAction)
         {
-            // W와 S를 동시에 누르면 점프를 우선
+            // 위와 아래 방향키를 동시에 누르면 점프를 우선
             if (jumpRequested)
             {
                 velocity.y = jumpSpeed;
@@ -195,7 +201,7 @@ public class PlayerMovement : MonoBehaviour
                 lastGroundedTime = float.NegativeInfinity;
                 slideRequested = false;
             }
-            else if (slideRequested && currentTime >= nextSlideTime)
+            else if (!IsAttacking && slideRequested && currentTime >= nextSlideTime)
             {
                 StartSlide(currentTime);
             }
@@ -208,6 +214,13 @@ public class PlayerMovement : MonoBehaviour
             velocity.x = 0f;
         else
             velocity.x = moveInput * moveSpeed;
+
+        // 공중 3타의 낙하 속도를 이동 입력보다 우선 적용
+        if (attack != null && attack.TryGetFallVelocity(isGrounded, currentTime, out Vector2 fallVelocity))
+        {
+            velocity = fallVelocity;
+            lastGroundedTime = float.NegativeInfinity;
+        }
 
         rb.linearVelocity = velocity;
 
@@ -222,13 +235,19 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("IsSliding", isSliding);
     }
 
+    // 공격 시작 시 대기 중인 슬라이드 입력 소모
+    public void ClearSlideRequest()
+    {
+        slideRequested = false;
+    }
+
     private void StartSlide(float currentTime)
     {
         isSliding = true;
         slideRequested = false;
         lastGroundedTime = float.NegativeInfinity;
 
-        // S만 눌러도 바라보는 방향으로 슬라이드
+        // 아래 방향키만 눌러도 바라보는 방향으로 슬라이드
         slideDirection = spriteRenderer.flipX ? -1f : 1f;
         slideEndTime = currentTime + slideDuration;
 

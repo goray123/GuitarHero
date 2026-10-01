@@ -1,6 +1,0 @@
-{
-    "name": "PlayerMovementTests",
-    "references": ["Unity.InputSystem", "Unity.InputSystem.TestFramework"],
-    "includePlatforms": ["Editor"],
-    "optionalUnityReferences": ["TestAssemblies"]
-}
