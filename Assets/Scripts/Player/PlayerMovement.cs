@@ -80,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
 
         jumpAction.performed += OnJump;
         slideAction.performed += OnSlide;
+        slideAction.canceled += OnSlideReleased;
 
         moveAction.Enable();
         jumpAction.Enable();
@@ -92,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpAction.performed -= OnJump;
             slideAction.performed -= OnSlide;
+            slideAction.canceled -= OnSlideReleased;
             playerActions.Disable();
         }
 
@@ -116,15 +118,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (!isSliding)
+        if (!isSliding && !IsAttacking)
             jumpRequested = true;
     }
 
     private void OnSlide(InputAction.CallbackContext context)
     {
-        // 공중에서 누른 입력은 키를 떼어도 착지까지 보관
+        // 공중에서 누른 입력은 키를 누르고 있는 동안만 보관
         if (!isSliding && !IsAttacking)
             slideRequested = true;
+    }
+
+    private void OnSlideReleased(InputAction.CallbackContext context)
+    {
+        // 착지 전에 키를 떼면 예약 취소, 이미 시작한 슬라이드는 유지
+        slideRequested = false;
     }
 
     private void Update()
@@ -135,8 +143,8 @@ public class PlayerMovement : MonoBehaviour
         // Input Action으로 좌우 이동 입력 확인
         moveInput = moveAction.ReadValue<Vector2>().x;
 
-        // 공격 중에도 이동 방향 전환 허용
-        if (!isSliding && moveInput != 0f)
+        // 공격 중에는 바라보는 방향 고정
+        if (!isSliding && !IsAttacking && moveInput != 0f)
             spriteRenderer.flipX = moveInput < 0f;
     }
 
@@ -189,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
             nextSlideTime = currentTime + slideCooldown;
         }
 
-        if (!isSliding && !slideEnded && canUseGroundAction)
+        if (!IsAttacking && !isSliding && !slideEnded && canUseGroundAction)
         {
             // 위와 아래 방향키를 동시에 누르면 점프를 우선
             if (jumpRequested)
@@ -209,8 +217,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (isSliding)
             velocity.x = slideDirection * slideSpeed;
-        else if (slideEnded)
-            // 종료 순간에는 이동키를 누르고 있어도 가로 속도 초기화
+        else if (slideEnded || IsAttacking)
+            // 공격 중과 슬라이드 종료 순간에는 가로 이동 정지
             velocity.x = 0f;
         else
             velocity.x = moveInput * moveSpeed;

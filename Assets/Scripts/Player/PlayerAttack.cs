@@ -23,8 +23,16 @@ public class PlayerAttack : MonoBehaviour
     [Tooltip("공중 3타 중 수직으로 내려가는 속도. 클수록 빠르게 낙하")]
     [SerializeField, Min(0.01f)] private float thirdAttackFallSpeed = 20f;
 
+    [Header("Attack Hitboxes")]
+    [Tooltip("바라보는 방향에 맞춰 좌우 반전할 히트박스 부모")]
+    [SerializeField] private Transform hitboxRoot;
+    [SerializeField] private BoxCollider2D attack1Hitbox;
+    [SerializeField] private BoxCollider2D attack2Hitbox;
+    [SerializeField] private BoxCollider2D attack3Hitbox;
+
     private PlayerMovement movement;
     private Animator animator;
+    private SpriteRenderer spriteRenderer;
     private InputActionMap playerActions;
     private InputAction attackAction;
     private readonly float[] clipDurations = { 0.375f, 0.625f, 0.25f };
@@ -43,6 +51,8 @@ public class PlayerAttack : MonoBehaviour
     {
         movement = GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        UpdateHitboxes();
 
         if (inputActions == null || animator == null)
         {
@@ -90,6 +100,7 @@ public class PlayerAttack : MonoBehaviour
         attackQueued = false;
         isAttacking = false;
         comboStep = 0;
+        UpdateHitboxes();
         if (animator != null)
             animator.SetBool("IsAttacking", false);
     }
@@ -143,6 +154,41 @@ public class PlayerAttack : MonoBehaviour
 
         attackRequested = false;
         animator.SetBool("IsAttacking", isAttacking);
+        UpdateHitboxes();
+    }
+
+    private void LateUpdate()
+    {
+        UpdateHitboxDirection();
+    }
+
+    // 현재 타격의 판정만 켜고 종료 시 모두 끔
+    private void UpdateHitboxes()
+    {
+        SetHitbox(attack1Hitbox, isAttacking && comboStep == 1);
+        SetHitbox(attack2Hitbox, isAttacking && comboStep == 2);
+        SetHitbox(attack3Hitbox, isAttacking && comboStep == 3);
+        UpdateHitboxDirection();
+    }
+
+    private static void SetHitbox(BoxCollider2D hitbox, bool active)
+    {
+        if (hitbox == null)
+            return;
+
+        // 바닥이나 적을 밀지 않는 공격 판정용 트리거
+        hitbox.isTrigger = true;
+        hitbox.enabled = active;
+    }
+
+    private void UpdateHitboxDirection()
+    {
+        if (hitboxRoot == null || spriteRenderer == null)
+            return;
+
+        Vector3 scale = hitboxRoot.localScale;
+        scale.x = Mathf.Abs(scale.x) * (spriteRenderer.flipX ? -1f : 1f);
+        hitboxRoot.localScale = scale;
     }
 
     // 휘두르는 모션이 나온 뒤 공중 3타의 수직 낙하 시작
@@ -174,5 +220,6 @@ public class PlayerAttack : MonoBehaviour
         animator.SetFloat("AttackSpeed", clipDurations[comboStep - 1] / duration);
         animator.SetBool("IsAttacking", true);
         animator.Play("Base Layer.PlayerAttack" + comboStep, 0, 0f);
+        UpdateHitboxes();
     }
 }
