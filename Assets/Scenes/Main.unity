@@ -950,8 +950,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08d5d8a8a6b5f2f478511fc015fd68ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   moveSpeed: 8
   jumpSpeed: 12
+  coyoteTime: 0.1
 --- !u!50 &1440309606
 Rigidbody2D:
   serializedVersion: 5
