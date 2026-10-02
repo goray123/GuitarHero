@@ -9,8 +9,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpSpeed = 10f;
     [SerializeField] private float coyoteTime = 0.1f;
 
-    [SerializeField] private float slideSpeed = 12f;
-    [SerializeField] private float slideDuration = 0.5f;
+    [Tooltip("슬라이드 한 번에 이동할 거리. 벽에 막히면 실제 이동 거리는 줄어듦")]
+    [SerializeField, Min(0f)] private float slideDistance = 6f;
+    [Tooltip("슬라이드 지속 시간. 거리와 시간에 맞춰 속도 자동 계산")]
+    [SerializeField, Min(0.01f)] private float slideDuration = 0.5f;
     [SerializeField] private float slideCooldown = 2f;
     [SerializeField] private float slideColliderHeight = 0.6f;
     [SerializeField] private bool showSlideCooldown = true;
@@ -42,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isSliding;
     private float slideDirection;
+    private float currentSlideSpeed;
     private float slideEndTime;
     private float nextSlideTime;
 
@@ -105,6 +108,7 @@ public class PlayerMovement : MonoBehaviour
         if (isSliding)
         {
             isSliding = false;
+            attack?.ResumeComboAfterSlide(Time.time);
             RestoreCollider();
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
         }
@@ -125,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnSlide(InputAction.CallbackContext context)
     {
         // 공중에서 누른 입력은 키를 누르고 있는 동안만 보관
-        if (!isSliding && !IsAttacking)
+        if (!isSliding)
             slideRequested = true;
     }
 
@@ -191,16 +195,17 @@ public class PlayerMovement : MonoBehaviour
         if (slideEnded)
         {
             isSliding = false;
+            attack?.ResumeComboAfterSlide(currentTime);
             RestoreCollider();
 
             // 슬라이딩 쿨타임 동안 사용불가
             nextSlideTime = currentTime + slideCooldown;
         }
 
-        if (!IsAttacking && !isSliding && !slideEnded && canUseGroundAction)
+        if (!isSliding && !slideEnded && canUseGroundAction)
         {
             // 위와 아래 방향키를 동시에 누르면 점프를 우선
-            if (jumpRequested)
+            if (!IsAttacking && jumpRequested)
             {
                 velocity.y = jumpSpeed;
                 isGrounded = false;
@@ -209,33 +214,42 @@ public class PlayerMovement : MonoBehaviour
                 lastGroundedTime = float.NegativeInfinity;
                 slideRequested = false;
             }
-            else if (!IsAttacking && slideRequested && currentTime >= nextSlideTime)
+            else if (slideRequested && currentTime >= nextSlideTime &&
+                (!IsAttacking || attack.CanCancelWithSlide(currentTime)))
             {
+                if (IsAttacking)
+                    attack.CancelForSlide();
                 StartSlide(currentTime);
             }
         }
 
         if (isSliding)
-            velocity.x = slideDirection * slideSpeed;
+            // 마지막 물리 프레임에서는 남은 시간만큼만 이동
+            velocity.x = slideDirection * currentSlideSpeed *
+                Mathf.Clamp01((slideEndTime - currentTime) / Time.fixedDeltaTime);
         else if (slideEnded || IsAttacking)
             // 공격 중과 슬라이드 종료 순간에는 가로 이동 정지
             velocity.x = 0f;
         else
             velocity.x = moveInput * moveSpeed;
 
-        // 공중 3타의 낙하 속도를 이동 입력보다 우선 적용
-        if (attack != null && attack.TryGetFallVelocity(isGrounded, currentTime, out Vector2 fallVelocity))
+        // 공격의 전진과 포물선 이동을 일반 조작보다 우선 적용
+        if (IsAttacking)
         {
-            velocity = fallVelocity;
-            lastGroundedTime = float.NegativeInfinity;
+            velocity = attack.GetAttackVelocity(velocity, isGrounded, currentTime, Time.fixedDeltaTime, rb.gravityScale);
+            if (velocity.y > 0.1f)
+            {
+                isGrounded = false;
+                lastGroundedTime = float.NegativeInfinity;
+            }
         }
 
         rb.linearVelocity = velocity;
 
         jumpRequested = false;
 
-        // 착지 시 한 번 처리하고 쿨타임 중 입력은 지움
-        if (isGrounded || isSliding)
+        // 공격 준비 중 누르고 있는 슬라이드는 후딜레이까지 대기
+        if (isSliding || (isGrounded && (!IsAttacking || attack.CanCancelWithSlide(currentTime))))
             slideRequested = false;
 
         animator.SetBool("IsMoving", Mathf.Abs(velocity.x) > 0.01f);
@@ -257,7 +271,10 @@ public class PlayerMovement : MonoBehaviour
 
         // 아래 방향키만 눌러도 바라보는 방향으로 슬라이드
         slideDirection = spriteRenderer.flipX ? -1f : 1f;
-        slideEndTime = currentTime + slideDuration;
+        float duration = Mathf.Max(0.01f, slideDuration);
+        // 시작 시 거리와 시간을 기준으로 이번 슬라이드 속도 확정
+        currentSlideSpeed = Mathf.Max(0f, slideDistance) / duration;
+        slideEndTime = currentTime + duration;
 
         // 발바닥 위치를 유지하며 콜라이더 높이 변경
         float height = Mathf.Clamp(slideColliderHeight, 0.01f, originalSize.y);
