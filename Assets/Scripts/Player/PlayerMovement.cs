@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerAttack attack;
 
     public bool IsSliding => isSliding;
+    public bool IsOnGround => rb != null && IsGrounded() && rb.linearVelocity.y <= 0.1f;
     private bool IsAttacking => attack != null && attack.IsAttacking;
 
     private Vector2 originalSize;
