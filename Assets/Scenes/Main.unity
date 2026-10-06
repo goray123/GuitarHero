@@ -1163,7 +1163,7 @@ Transform:
   - {fileID: 1800100011}
   - {fileID: 1800100021}
   - {fileID: 1800100031}
-  m_Father: {fileID: 1440309608}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1800100010
 GameObject:
@@ -1550,7 +1550,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7965959627824337527, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.09
+      value: -2.57
       objectReference: {fileID: 0}
     - target: {fileID: 7965959627824337527, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1601,3 +1601,4 @@ SceneRoots:
   - {fileID: 7664402024551679723}
   - {fileID: 1648968918}
   - {fileID: 1255270080}
+  - {fileID: 1800100001}
