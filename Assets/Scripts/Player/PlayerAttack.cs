@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,8 @@ public class PlayerAttack : MonoBehaviour
     [Header("Attack 3 Timing (Seconds)")]
     [SerializeField, Min(0.01f)] private float thirdWindupTime = 0.375f;
     [SerializeField, Min(0.01f)] private float thirdActiveTime = 0.125f;
+    [Tooltip("공중 낙하 공격이 착지한 뒤 히트박스를 유지할 시간")]
+    [SerializeField, Min(0f)] private float thirdLandingActiveTime = 0.125f;
     [Tooltip("3타 후딜레이. 이 구간부터 슬라이드로 취소 가능")]
     [SerializeField, Min(0f)] private float thirdRecoveryTime = 0.125f;
 
@@ -42,6 +45,16 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private BoxCollider2D attack2Hitbox;
     [SerializeField] private BoxCollider2D attack3Hitbox;
 
+    [Header("Attack Damage")]
+    [Tooltip("1타 데미지")]
+    [SerializeField, Min(0f)] private float attack1Damage = 8f;
+    [Tooltip("2타 데미지")]
+    [SerializeField, Min(0f)] private float attack2Damage = 8f;
+    [Tooltip("3타 데미지")]
+    [SerializeField, Min(0f)] private float attack3Damage = 25f;
+
+    private readonly HashSet<Damageable> hitTargets = new HashSet<Damageable>();
+
     private PlayerMovement movement;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -63,6 +76,9 @@ public class PlayerAttack : MonoBehaviour
     private float advanceDistance;
     private float hopHeight;
     private bool isDamageActive;
+    private bool thirdActiveStarted;
+    private bool waitingForLanding;
+    private bool isDiveAttack;
 
     // 원본 스프라이트의 준비 / 휘두르기 / 마무리 구간 경계
     private static readonly float[] SwingStarts = { 11f / 21f, 8f / 15f, 14f / 24f };
@@ -147,6 +163,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void UpdateAttack(float currentTime)
     {
+        UpdateDiveTiming(currentTime);
         if (isAttacking && currentTime >= attackEndTime)
         {
             isAttacking = false;
@@ -171,6 +188,32 @@ public class PlayerAttack : MonoBehaviour
         animator.SetBool("IsAttacking", isAttacking);
         UpdateHitboxes();
         UpdateAnimation(currentTime);
+    }
+
+    // 공중 3타는 착지까지 유지한 뒤 착지 판정 시간부터 계산
+    private void UpdateDiveTiming(float currentTime)
+    {
+        if (!isAttacking || comboStep != 3 || currentTime < windupEndTime)
+            return;
+
+        if (!thirdActiveStarted)
+        {
+            thirdActiveStarted = true;
+            waitingForLanding = movement != null && !movement.IsOnGround;
+            isDiveAttack = waitingForLanding;
+            if (waitingForLanding)
+            {
+                activeEndTime = float.PositiveInfinity;
+                attackEndTime = float.PositiveInfinity;
+            }
+        }
+
+        if (waitingForLanding && movement.IsOnGround)
+        {
+            waitingForLanding = false;
+            activeEndTime = currentTime + Mathf.Max(0f, thirdLandingActiveTime);
+            attackEndTime = activeEndTime + Mathf.Max(0f, thirdRecoveryTime);
+        }
     }
 
     public bool CanCancelWithSlide(float currentTime)
@@ -199,6 +242,9 @@ public class PlayerAttack : MonoBehaviour
     {
         isAttacking = false;
         isDamageActive = false;
+        waitingForLanding = false;
+        thirdActiveStarted = false;
+        isDiveAttack = false;
         attackRequested = false;
         UpdateHitboxes();
         if (animator != null)
@@ -236,6 +282,10 @@ public class PlayerAttack : MonoBehaviour
 
     private void StartAttack(float currentTime, float direction)
     {
+        hitTargets.Clear();
+        waitingForLanding = false;
+        thirdActiveStarted = false;
+        isDiveAttack = false;
         comboStep = comboStep >= 3 ? 1 : comboStep + 1;
         comboTimerPaused = false;
         isAttacking = true;
@@ -271,6 +321,10 @@ public class PlayerAttack : MonoBehaviour
         float progress;
         if (currentTime < windupEndTime)
             progress = Mathf.Lerp(0f, swingStart, Mathf.InverseLerp(attackStartTime, windupEndTime, currentTime));
+        else if (isDiveAttack && currentTime < activeEndTime)
+            // 휘두르기를 재생한 뒤 착지 판정이 끝날 때까지 마지막 자세 유지
+            progress = Mathf.Lerp(swingStart, swingEnd,
+                Mathf.InverseLerp(windupEndTime, windupEndTime + Mathf.Max(0.01f, thirdActiveTime), currentTime));
         else if (currentTime < activeEndTime)
             progress = Mathf.Lerp(swingStart, swingEnd, Mathf.InverseLerp(windupEndTime, activeEndTime, currentTime));
         else
@@ -285,6 +339,24 @@ public class PlayerAttack : MonoBehaviour
         SetHitbox(attack2Hitbox, isDamageActive && comboStep == 2);
         SetHitbox(attack3Hitbox, isDamageActive && comboStep == 3);
         UpdateHitboxDirection();
+    }
+
+    // 활성 히트박스에 닿은 대상은 타격당 한 번만 피해 적용
+    public void TryHit(Collider2D hitbox, Collider2D other)
+    {
+        if (!isActiveAndEnabled || !isDamageActive || !isAttacking)
+            return;
+        Collider2D activeHitbox = comboStep == 1 ? attack1Hitbox :
+            comboStep == 2 ? attack2Hitbox : attack3Hitbox;
+        if (hitbox == null || hitbox != activeHitbox || !hitbox.enabled || other == null)
+            return;
+        Damageable target = other.GetComponentInParent<Damageable>();
+        if (target == null || !target.isActiveAndEnabled ||
+            target.transform.root == transform.root || hitTargets.Contains(target))
+            return;
+        float damage = comboStep == 1 ? attack1Damage : comboStep == 2 ? attack2Damage : attack3Damage;
+        if (target.TryTakeDamage(Mathf.Max(0f, damage)))
+            hitTargets.Add(target);
     }
 
     private static void SetHitbox(BoxCollider2D hitbox, bool active)
