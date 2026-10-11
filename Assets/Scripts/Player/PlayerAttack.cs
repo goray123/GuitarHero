@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 [DefaultExecutionOrder(-10)]
 public class PlayerAttack : MonoBehaviour
 {
+    // 실제 피해가 적용된 순간에만 타격 연출 전달
+    public event System.Action<Vector2, Vector2, int> HitConfirmed;
+
     [SerializeField] private InputActionAsset inputActions;
 
     [Header("Attack 1 and 2 Timing (Seconds)")]
@@ -355,8 +358,14 @@ public class PlayerAttack : MonoBehaviour
             target.transform.root == transform.root || hitTargets.Contains(target))
             return;
         float damage = comboStep == 1 ? attack1Damage : comboStep == 2 ? attack2Damage : attack3Damage;
+        Vector2 point = other.ClosestPoint(hitbox.bounds.center);
         if (target.TryTakeDamage(Mathf.Max(0f, damage)))
+        {
             hitTargets.Add(target);
+            Vector2 direction = isDiveAttack ? Vector2.down :
+                (spriteRenderer != null && spriteRenderer.flipX ? Vector2.left : Vector2.right);
+            HitConfirmed?.Invoke(point, direction, comboStep);
+        }
     }
 
     private static void SetHitbox(BoxCollider2D hitbox, bool active)

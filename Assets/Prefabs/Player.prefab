@@ -15,6 +15,9 @@ GameObject:
   - component: {fileID: 9003747129043297896}
   - component: {fileID: 6184502539409766043}
   - component: {fileID: 1114076653635513264}
+  - component: {fileID: 900100035}
+  - component: {fileID: 900100036}
+  - component: {fileID: 7680151787406903415}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -245,6 +248,22 @@ MonoBehaviour:
   attack1Damage: 8
   attack2Damage: 8
   attack3Damage: 25
+--- !u!114 &7680151787406903415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f415d7453743a794fdaaf168db3443, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHitEffects
+  hitEffectPrefab: {fileID: 8982713638201100070, guid: f90ea5733602bb54eb63e768b924339d, type: 3}
+  basicScale: 1
+  thirdScale: 1.5
+  sortingOrderOffset: 8
 --- !u!1 &1421525041279666300
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,3 +571,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8c2339d6704310af92b65072d89505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackHitbox
+--- !u!114 &900100035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c8bbae0b5d4c75a2affd416ccc17ce, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHitStop
+  basicDuration: 0.04
+  thirdDuration: 0.07
+--- !u!114 &900100036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f678127a17874a7d91db11f5af61ae2a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHitAudio
+  basicHitClip: {fileID: 8300000, guid: 6a91518a69a74f2ea7256ebf2488aa83, type: 3}
+  basicVolume: 1
+  thirdHitClip: {fileID: 8300000, guid: a30d1c1134b6483195f18a6374aac4eb, type: 3}
+  thirdVolume: 1
+
