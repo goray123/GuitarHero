@@ -1,0 +1,10 @@
+BasicHit.mp3: Unmodified Impact Thud by Universfield
+https://pixabay.com/sound-effects/film-special-effects-impact-thud-291047/
+
+ThirdHitHeavy.wav: Edited Hard Punch SFX by DRAGON-STUDIO,
+layered with filtered Impact Thud by Universfield and a synthesized bass transient.
+https://pixabay.com/sound-effects/film-special-effects-hard-punch-sfx-515251/
+Pitch lowered 4 semitones; low-frequency reinforcement; soft saturation.
+
+Source license: Pixabay Content License
+https://pixabay.com/service/license-summary/

@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8857330208481788854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1916948730843702119}
+  - component: {fileID: 8982713638201100070}
+  m_Layer: 0
+  m_Name: BluntHitEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1916948730843702119
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8857330208481788854}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8982713638201100070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8857330208481788854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6638953ef4d48ce9b1e2faff08a8a4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BluntHitBurst
+  frames:
+  - {fileID: 21300000, guid: d783d073eb8f46d38cfdeb4a9ace44a9, type: 3}
+  - {fileID: 21300000, guid: 525946085c9f4352814370c89d24845b, type: 3}
+  - {fileID: 21300000, guid: b26d89249fff47d8b79f93a97229daa2, type: 3}
+  - {fileID: 21300000, guid: 8c80e2985f424708be0fdccd99c9903f, type: 3}
+  - {fileID: 21300000, guid: 99e31db629de4a859777774c7f98488c, type: 3}
+  - {fileID: 21300000, guid: 4a1d510963264c0b83e12f01c5a309af, type: 3}
+  - {fileID: 21300000, guid: 77da1024711e41ddab360d76a8eccb3a, type: 3}
+  - {fileID: 21300000, guid: acee089a08264acf8b68ad451aadfc79, type: 3}
+  effectMaterial: {fileID: 2100000, guid: 79b2395e942268043b3f84483c49c138, type: 2}
+  duration: 0.28
+  size: 1
