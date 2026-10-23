@@ -1,4 +1,6 @@
 # Run in a disposable project so the user's open editor and scenes stay intact.
+param([switch]$PrepareOnly)
+
 $ErrorActionPreference = 'Stop'
 $projectFolder = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $validationFolder = Join-Path $projectFolder 'Temp/CombatFeelValidation'
@@ -35,6 +37,10 @@ $versionLine = Get-Content -LiteralPath (Join-Path $projectFolder 'ProjectSettin
 $version = $versionLine.Split(' ')[1]
 $unityExe = "C:/Program Files/Unity/Hub/Editor/$version/Editor/Unity.exe"
 $logFile = Join-Path $validationFolder 'validation.log'
+if ($PrepareOnly) {
+    Write-Output "Prepared validation project: $validationFolder"
+    return
+}
 $launchArguments = @('-batchmode', '-nographics', '-projectPath', ('"' + $validationFolder + '"'), '-executeMethod', 'CombatFeelValidation.Run', '-logFile', ('"' + $logFile + '"'))
 $validationProcess = Start-Process -FilePath $unityExe -ArgumentList $launchArguments -WindowStyle Hidden -PassThru
 Write-Output "Unity validation PID: $($validationProcess.Id)"
