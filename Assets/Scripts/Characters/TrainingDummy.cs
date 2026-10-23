@@ -11,8 +11,7 @@ public class TrainingDummy : Damageable
 
     [Header("Health Bar")]
     [SerializeField] private GameObject healthBar;
-    [Tooltip("빨간 배경 위에서 남은 체력만큼 표시할 초록 바")]
-    [SerializeField] private Transform healthFill;
+    [SerializeField] private HealthBarUI healthBarUI;
 
     [Header("Animation")]
     [SerializeField] private AnimationClip hitAnimation;
@@ -31,7 +30,6 @@ public class TrainingDummy : Damageable
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D hurtbox;
-    private Vector3 fullBarScale;
     private Vector3 spawnPosition;
     private float hitEndsAt;
     private float deathEndsAt;
@@ -55,7 +53,6 @@ public class TrainingDummy : Damageable
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = animator.GetComponent<SpriteRenderer>();
         hurtbox = GetComponent<BoxCollider2D>();
-        fullBarScale = healthFill != null ? healthFill.localScale : Vector3.one;
         spawnPosition = transform.position;
         if (reactionPivot != null)
         {
@@ -151,7 +148,9 @@ public class TrainingDummy : Damageable
             else if (currentTime >= deathEndsAt)
             {
                 spriteRenderer.enabled = false;
-                if (healthBar != null) healthBar.SetActive(false);
+                // 치명타의 주황색 피해 바가 다 줄어든 뒤 숨김.
+                if (healthBar != null && (healthBarUI == null || healthBarUI.IsSettled))
+                    healthBar.SetActive(false);
             }
         }
         else if (playingHit && currentTime >= hitEndsAt)
@@ -172,15 +171,12 @@ public class TrainingDummy : Damageable
         spriteRenderer.enabled = true;
         hurtbox.enabled = true;
         if (healthBar != null) healthBar.SetActive(true);
-        UpdateHealthBar();
+        UpdateHealthBar(true);
         animator.Play("Idle", 0, 0f);
     }
 
-    private void UpdateHealthBar()
+    private void UpdateHealthBar(bool immediate = false)
     {
-        if (healthFill == null) return;
-        Vector3 scale = fullBarScale;
-        scale.x *= Mathf.Clamp01(CurrentHealth / MaxHealth);
-        healthFill.localScale = scale;
+        if (healthBarUI != null) healthBarUI.SetHealth(CurrentHealth, MaxHealth, immediate);
     }
 }

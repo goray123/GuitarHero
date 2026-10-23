@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 [InitializeOnLoad]
@@ -121,6 +122,72 @@ public static class CombatFeelValidation
                 "Dummy visual animator is on a child, with an assigned foot pivot");
             Check(!healthBar.IsChildOf(pivot) && !target.GetComponent<BoxCollider2D>().transform.IsChildOf(pivot),
                 "Health bar and hurtbox are outside the recoil hierarchy");
+            HealthBarUI healthUI = Get<HealthBarUI>(dummy, "healthBarUI");
+            Canvas healthCanvas = healthBar.GetComponent<Canvas>();
+            Image currentFill = Get<Image>(healthUI, "currentFill");
+            Image damageFill = Get<Image>(healthUI, "damageFill");
+            Check(healthCanvas != null && healthCanvas.renderMode == RenderMode.WorldSpace,
+                "Health bar uses a World Space Canvas");
+            Check(healthBar.GetComponentsInChildren<SpriteRenderer>().Length == 0,
+                "Health bar contains no SpriteRenderers");
+            Check(Mathf.Abs(healthBar.localPosition.y - 1.12f) < 0.001f,
+                "Canvas retains its position above the dummy");
+            Check(currentFill.type == Image.Type.Filled && damageFill.type == Image.Type.Filled &&
+                currentFill.fillMethod == Image.FillMethod.Horizontal && damageFill.fillMethod == Image.FillMethod.Horizontal &&
+                currentFill.fillOrigin == 0 && damageFill.fillOrigin == 0,
+                "Both UI fills drain horizontally from the right edge");
+            Check(currentFill.sprite != null && damageFill.sprite != null &&
+                currentFill.transform.GetSiblingIndex() > damageFill.transform.GetSiblingIndex() &&
+                currentFill.color.g > currentFill.color.r && damageFill.color.r > damageFill.color.g,
+                "Green actual health renders in front of orange damage trail");
+            foreach (Image image in healthBar.GetComponentsInChildren<Image>())
+                Check(!image.raycastTarget, "Health UI does not intercept input: " + image.name);
+            Canvas.ForceUpdateCanvases();
+            Check(currentFill.rectTransform.rect.width > 0f && currentFill.rectTransform.rect.height > 0f,
+                "Canvas fill rectangles have positive visible dimensions");
+            Check(currentFill.fillAmount == 1f && damageFill.fillAmount == 1f,
+                "Spawn initializes both bars to full health");
+            dummy.TryTakeDamage(10f);
+            Check(Mathf.Approximately(currentFill.fillAmount, 0.8f) && damageFill.fillAmount == 1f,
+                "Damage immediately reduces green while orange retains previous health");
+            Call(healthUI, "Advance", 0.2f);
+            Check(damageFill.fillAmount == 1f, "Damage trail holds for its initial delay");
+            Call(healthUI, "Advance", 0.15f);
+            float intermediateTrail = damageFill.fillAmount;
+            Check(intermediateTrail > currentFill.fillAmount && intermediateTrail < 1f,
+                "Orange smoothly catches up after the delay");
+            dummy.TryTakeDamage(5f);
+            Check(Mathf.Approximately(currentFill.fillAmount, 0.7f) && damageFill.fillAmount == intermediateTrail,
+                "Repeated damage keeps the orange bar continuous without jumping up");
+            Call(healthUI, "Advance", 0.2f);
+            Check(damageFill.fillAmount == intermediateTrail, "Repeated damage restarts the hold delay");
+            Time.timeScale = 0f;
+            Call(healthUI, "Update");
+            Check(damageFill.fillAmount == intermediateTrail, "Health trail freezes during hitstop or pause");
+            Time.timeScale = 1f;
+            Call(healthUI, "Advance", 0.5f);
+            Check(Mathf.Approximately(damageFill.fillAmount, 0.7f) && healthUI.IsSettled,
+                "Orange settles exactly at actual health");
+            healthUI.SetHealth(45f, 50f);
+            Check(Mathf.Approximately(currentFill.fillAmount, 0.9f) && currentFill.fillAmount == damageFill.fillAmount,
+                "Healing resets both bars without a false damage trail");
+            Call(dummy, "Respawn");
+            Check(currentFill.fillAmount == 1f && damageFill.fillAmount == 1f,
+                "Respawn clears the previous damage animation");
+            dummy.TryTakeDamage(50f);
+            Check(dummy.IsDead && currentFill.fillAmount == 0f && damageFill.fillAmount == 1f,
+                "Lethal damage leaves the orange trail to finish");
+            Set(dummy, "deathEndsAt", Time.time - 0.01f);
+            Call(dummy, "UpdateState", Time.time);
+            Check(healthBar.gameObject.activeSelf, "Death keeps the canvas visible while orange is draining");
+            Call(healthUI, "Advance", 1f);
+            Call(dummy, "UpdateState", Time.time);
+            Check(!healthBar.gameObject.activeSelf && damageFill.fillAmount == 0f,
+                "Finished death trail hides the canvas at zero health");
+            Call(dummy, "Respawn");
+            Check(healthBar.gameObject.activeSelf && currentFill.fillAmount == 1f && damageFill.fillAmount == 1f,
+                "Dead dummy respawns with a visible full canvas");
+            target.transform.position = new Vector3(1f, 1f, 0f);
             Check(Get<float>(hitStop, "basicDuration") == 0.035f && Get<float>(hitStop, "thirdDuration") == 0.085f,
                 "Basic/heavy hitstop uses the tuned 35/85 ms profile");
             Check(Get<float>(attack, "attack1Damage") == 8f && Get<float>(attack, "attack2Damage") == 8f && Get<float>(attack, "attack3Damage") == 25f,
