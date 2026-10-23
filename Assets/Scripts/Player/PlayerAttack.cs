@@ -8,6 +8,8 @@ public class PlayerAttack : MonoBehaviour
 {
     // 실제 피해가 적용된 순간에만 타격 연출 전달
     public event System.Action<Vector2, Vector2, int> HitConfirmed;
+    public event System.Action<Vector2> SlamLanded;
+    public event System.Action<int> SwingStarted;
 
     [SerializeField] private InputActionAsset inputActions;
 
@@ -18,8 +20,10 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField, Min(0.01f)] private float basicActiveTime = 0.125f;
     [Tooltip("1, 2타 공통 후딜레이. 이 구간부터 슬라이드로 취소 가능")]
     [SerializeField, Min(0f)] private float basicRecoveryTime = 0.125f;
-    [Tooltip("방향키를 누르며 1, 2타를 시작할 때 선딜레이 동안 이동할 거리")]
-    [SerializeField, Min(0f)] private float basicAdvanceDistance = 0.6f;
+    [Tooltip("방향키와 함께 시작한 1, 2타의 준비 후반~휘두르기 초반 전진 거리")]
+    [SerializeField, Min(0f)] private float basicAdvanceDistance = 0.8f;
+    [Tooltip("휘두르기 시작 후 실제 접촉 판정까지의 시간")]
+    [SerializeField, Min(0f)] private float basicContactDelay = 0.025f;
 
     [Header("Attack 3 Timing (Seconds)")]
     [SerializeField, Min(0.01f)] private float thirdWindupTime = 0.375f;
@@ -28,6 +32,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField, Min(0f)] private float thirdLandingActiveTime = 0.125f;
     [Tooltip("3타 후딜레이. 이 구간부터 슬라이드로 취소 가능")]
     [SerializeField, Min(0f)] private float thirdRecoveryTime = 0.125f;
+    [SerializeField, Min(0f)] private float thirdContactDelay = 0.02f;
 
     [Header("Attack 3 Movement")]
     [Tooltip("방향키와 함께 3타를 시작할 때 정점까지 이동할 가로 거리")]
@@ -40,6 +45,8 @@ public class PlayerAttack : MonoBehaviour
     [Header("Combo")]
     [Tooltip("1, 2타 후딜레이 종료 후 다음 타격을 이어갈 수 있는 시간")]
     [SerializeField, Min(0f)] private float comboResetTime = 1f;
+    [Tooltip("후딜레이 마지막 구간에 다음 공격 한 번을 예약. 명중 히트스탑 중에도 예약 가능")]
+    [SerializeField, Range(0f, 0.2f)] private float attackBufferTime = 0.1f;
 
     [Header("Attack Hitboxes")]
     [Tooltip("바라보는 방향에 맞춰 좌우 반전할 히트박스 부모")]
@@ -61,6 +68,8 @@ public class PlayerAttack : MonoBehaviour
     private PlayerMovement movement;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private PlayerHitStop hitStop;
+    private Collider2D bodyCollider;
     private InputActionMap playerActions;
     private InputAction attackAction;
     private InputAction moveAction;
@@ -76,12 +85,15 @@ public class PlayerAttack : MonoBehaviour
     private float comboResetAt;
     private bool comboTimerPaused;
     private float windupDuration;
+    private float activeDuration;
     private float advanceDistance;
     private float hopHeight;
     private bool isDamageActive;
     private bool thirdActiveStarted;
     private bool waitingForLanding;
     private bool isDiveAttack;
+    private bool swingStarted;
+    private bool slamPresented;
 
     // 원본 스프라이트의 준비 / 휘두르기 / 마무리 구간 경계
     private static readonly float[] SwingStarts = { 11f / 21f, 8f / 15f, 14f / 24f };
@@ -95,6 +107,8 @@ public class PlayerAttack : MonoBehaviour
         movement = GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        hitStop = GetComponent<PlayerHitStop>();
+        bodyCollider = GetComponent<BoxCollider2D>();
         UpdateHitboxes();
         if (inputActions == null || animator == null)
         {
@@ -139,8 +153,14 @@ public class PlayerAttack : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        // 공격 중 누른 입력은 예약하지 않고 무시
-        if (IsSliding || isAttacking || attackRequested)
+        if (IsSliding || attackRequested)
+            return;
+        bool inHitStop = hitStop != null && hitStop.IsStopped;
+        // 메뉴 일시정지와 명중 히트스탑을 구분. 예약은 한 번만 보관.
+        if (Time.timeScale <= 0f && !inHitStop)
+            return;
+        if (isAttacking && !inHitStop &&
+            (attackEndTime - Time.time > attackBufferTime || Time.time < activeEndTime))
             return;
 
         // 입력 순간의 방향을 저장해 시전 중 방향 변경 방지
@@ -167,8 +187,10 @@ public class PlayerAttack : MonoBehaviour
     private void UpdateAttack(float currentTime)
     {
         UpdateDiveTiming(currentTime);
+        bool attackEnded = false;
         if (isAttacking && currentTime >= attackEndTime)
         {
+            attackEnded = true;
             isAttacking = false;
             if (comboStep < 3)
             {
@@ -181,13 +203,21 @@ public class PlayerAttack : MonoBehaviour
             }
         }
 
-        if (!isAttacking && !comboTimerPaused && currentTime >= comboResetAt)
+        if (!isAttacking && !attackEnded && !comboTimerPaused && currentTime >= comboResetAt)
             comboStep = 0;
         if (attackRequested && !isAttacking && !IsSliding)
+        {
+            attackRequested = false;
             StartAttack(currentTime, requestedDirection);
+        }
 
-        attackRequested = false;
-        isDamageActive = isAttacking && currentTime >= windupEndTime && currentTime < activeEndTime;
+        if (isAttacking && !swingStarted && currentTime >= windupEndTime)
+        {
+            swingStarted = true;
+            SwingStarted?.Invoke(comboStep);
+        }
+        float contactDelay = Mathf.Min(comboStep == 3 ? thirdContactDelay : basicContactDelay, activeDuration * 0.5f);
+        isDamageActive = isAttacking && currentTime >= windupEndTime + contactDelay && currentTime < activeEndTime;
         animator.SetBool("IsAttacking", isAttacking);
         UpdateHitboxes();
         UpdateAnimation(currentTime);
@@ -209,6 +239,8 @@ public class PlayerAttack : MonoBehaviour
                 activeEndTime = float.PositiveInfinity;
                 attackEndTime = float.PositiveInfinity;
             }
+            else
+                PresentSlam();
         }
 
         if (waitingForLanding && movement.IsOnGround)
@@ -216,7 +248,18 @@ public class PlayerAttack : MonoBehaviour
             waitingForLanding = false;
             activeEndTime = currentTime + Mathf.Max(0f, thirdLandingActiveTime);
             attackEndTime = activeEndTime + Mathf.Max(0f, thirdRecoveryTime);
+            PresentSlam();
         }
+    }
+
+    private void PresentSlam()
+    {
+        if (slamPresented) return;
+        slamPresented = true;
+        Vector2 point = bodyCollider != null ?
+            new Vector2(bodyCollider.bounds.center.x, bodyCollider.bounds.min.y) : (Vector2)transform.position;
+        // 착지 연출은 피해와 분리. 이미 맞은 대상에게 추가 피해를 주지 않음.
+        SlamLanded?.Invoke(point);
     }
 
     public bool CanCancelWithSlide(float currentTime)
@@ -254,7 +297,7 @@ public class PlayerAttack : MonoBehaviour
             animator.SetBool("IsAttacking", false);
     }
 
-    // 선딜레이에서만 지정 거리만큼 전진. 벽 충돌은 물리 엔진이 처리
+    // 위치 곡선의 차분으로 전진량 보존. 벽 충돌은 물리 엔진이 처리.
     public Vector2 GetAttackVelocity(Vector2 velocity, bool isGrounded, float currentTime,
         float fixedDeltaTime, float gravityScale)
     {
@@ -262,19 +305,24 @@ public class PlayerAttack : MonoBehaviour
             return velocity;
 
         velocity.x = 0f;
-        if (currentTime < windupEndTime && attackDirection != 0f)
+        float dt = Mathf.Max(0.0001f, fixedDeltaTime);
+        float advanceStart = comboStep == 3 ? attackStartTime : attackStartTime + windupDuration * 0.25f;
+        float advanceEnd = comboStep == 3 ? windupEndTime : windupEndTime + activeDuration * 0.45f;
+        if (attackDirection != 0f && currentTime + dt > advanceStart && currentTime < advanceEnd)
         {
-            float dt = Mathf.Max(0.0001f, fixedDeltaTime);
+            float t0 = Mathf.InverseLerp(advanceStart, advanceEnd, currentTime);
+            float t1 = Mathf.InverseLerp(advanceStart, advanceEnd, currentTime + dt);
+            velocity.x = attackDirection * advanceDistance *
+                (Mathf.SmoothStep(0f, 1f, t1) - Mathf.SmoothStep(0f, 1f, t0)) / dt;
+        }
+        // 제자리 3타도 같은 높이로 상승. 방향 입력은 가로 전진만 결정.
+        if (comboStep == 3 && currentTime < windupEndTime)
+        {
             float t0 = Mathf.Clamp01((currentTime - attackStartTime) / windupDuration);
             float t1 = Mathf.Clamp01((currentTime + dt - attackStartTime) / windupDuration);
-            velocity.x = attackDirection * advanceDistance * (t1 - t0) / dt;
-            if (comboStep == 3)
-            {
-                // 선딜레이 끝에서 정점에 도달하는 포물선의 상승 구간
-                float y0 = hopHeight * (2f * t0 - t0 * t0);
-                float y1 = hopHeight * (2f * t1 - t1 * t1);
-                velocity.y = (y1 - y0) / dt - Physics2D.gravity.y * gravityScale * dt;
-            }
+            float y0 = hopHeight * (2f * t0 - t0 * t0);
+            float y1 = hopHeight * (2f * t1 - t1 * t1);
+            velocity.y = (y1 - y0) / dt - Physics2D.gravity.y * gravityScale * dt;
         }
         else if (comboStep == 3 && currentTime >= windupEndTime && currentTime < activeEndTime && !isGrounded)
         {
@@ -289,6 +337,8 @@ public class PlayerAttack : MonoBehaviour
         waitingForLanding = false;
         thirdActiveStarted = false;
         isDiveAttack = false;
+        swingStarted = false;
+        slamPresented = false;
         comboStep = comboStep >= 3 ? 1 : comboStep + 1;
         comboTimerPaused = false;
         isAttacking = true;
@@ -301,6 +351,7 @@ public class PlayerAttack : MonoBehaviour
         bool third = comboStep == 3;
         windupDuration = Mathf.Max(0.01f, third ? thirdWindupTime : basicWindupTime);
         float active = Mathf.Max(0.01f, third ? thirdActiveTime : basicActiveTime);
+        activeDuration = active;
         float recovery = Mathf.Max(0f, third ? thirdRecoveryTime : basicRecoveryTime);
         advanceDistance = Mathf.Max(0f, third ? thirdAdvanceDistance : basicAdvanceDistance);
         hopHeight = Mathf.Max(0f, thirdHopHeight);
@@ -358,12 +409,20 @@ public class PlayerAttack : MonoBehaviour
             target.transform.root == transform.root || hitTargets.Contains(target))
             return;
         float damage = comboStep == 1 ? attack1Damage : comboStep == 2 ? attack2Damage : attack3Damage;
-        Vector2 point = other.ClosestPoint(hitbox.bounds.center);
-        if (target.TryTakeDamage(Mathf.Max(0f, damage)))
+        Vector2 direction = isDiveAttack ? Vector2.down :
+            (spriteRenderer != null && spriteRenderer.flipX ? Vector2.left : Vector2.right);
+        // 판정 중심이 적 내부에 들어가도 표면에 접촉 이펙트를 표시.
+        Vector2 probe = isDiveAttack ?
+            new Vector2(hitbox.bounds.center.x, other.bounds.max.y + 1f) :
+            new Vector2(direction.x > 0f ? other.bounds.min.x - 1f : other.bounds.max.x + 1f,
+                Mathf.Clamp(hitbox.bounds.center.y, other.bounds.min.y, other.bounds.max.y));
+        Vector2 point = other.ClosestPoint(probe);
+        if (target.TryTakeDamage(new AttackHit(Mathf.Max(0f, damage), point, direction, comboStep)))
         {
             hitTargets.Add(target);
-            Vector2 direction = isDiveAttack ? Vector2.down :
-                (spriteRenderer != null && spriteRenderer.flipX ? Vector2.left : Vector2.right);
+            // 정지에 들어가기 전에 접촉 순간의 스프라이트를 확정.
+            UpdateAnimation(Time.time);
+            animator.Update(0f);
             HitConfirmed?.Invoke(point, direction, comboStep);
         }
     }

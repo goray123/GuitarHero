@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 900100035}
   - component: {fileID: 900100036}
   - component: {fileID: 7680151787406903415}
+  - component: {fileID: 900100037}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -232,15 +233,18 @@ MonoBehaviour:
   basicWindupTime: 0.125
   basicActiveTime: 0.125
   basicRecoveryTime: 0.125
-  basicAdvanceDistance: 1.2
+  basicAdvanceDistance: 0.8
+  basicContactDelay: 0.025
   thirdWindupTime: 0.375
   thirdActiveTime: 0.125
   thirdLandingActiveTime: 0.125
   thirdRecoveryTime: 0.125
+  thirdContactDelay: 0.02
   thirdAdvanceDistance: 1.2
   thirdHopHeight: 0.6
   thirdAttackFallSpeed: 20
   comboResetTime: 1
+  attackBufferTime: 0.1
   hitboxRoot: {fileID: 8390205329172563933}
   attack1Hitbox: {fileID: 1370696927154162243}
   attack2Hitbox: {fileID: 189524406163042593}
@@ -264,6 +268,7 @@ MonoBehaviour:
   basicScale: 1
   thirdScale: 1.5
   sortingOrderOffset: 8
+  landingScale: 0.65
 --- !u!1 &1421525041279666300
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,8 +588,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c8bbae0b5d4c75a2affd416ccc17ce, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHitStop
-  basicDuration: 0.04
-  thirdDuration: 0.07
+  basicDuration: 0.035
+  thirdDuration: 0.085
 --- !u!114 &900100036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,4 +606,26 @@ MonoBehaviour:
   basicVolume: 1
   thirdHitClip: {fileID: 8300000, guid: a30d1c1134b6483195f18a6374aac4eb, type: 3}
   thirdVolume: 1
+  swingClip: {fileID: 8300000, guid: 34e04664cde7468bbd1ba381af045cca, type: 3}
+  swingVolume: 0.12
+  resonanceClip: {fileID: 8300000, guid: d94a52d7b50b4c5aa22969154d4a970c, type: 3}
+  resonanceVolume: 0.18
+  landingClip: {fileID: 8300000, guid: 96364e166b814bd9bf601b5faee104c2, type: 3}
+  landingVolume: 0.3
+--- !u!114 &900100037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4341f80f50749e487cc830fd3fa4b2e, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHitCameraShake
+  basicAmplitude: 0.025
+  thirdAmplitude: 0.055
+  landingAmplitude: 0.065
+  duration: 0.14
 

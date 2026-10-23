@@ -5,14 +5,16 @@ using UnityEngine;
 public class PlayerHitStop : MonoBehaviour
 {
     [Tooltip("1, 2타 명중 시 정지 시간. 0이면 사용 안 함")]
-    [SerializeField, Min(0f)] private float basicDuration = 0.04f;
+    [SerializeField, Min(0f)] private float basicDuration = 0.035f;
     [Tooltip("3타 명중 시 정지 시간. 0이면 사용 안 함")]
-    [SerializeField, Min(0f)] private float thirdDuration = 0.07f;
+    [SerializeField, Min(0f)] private float thirdDuration = 0.085f;
 
     private PlayerAttack attack;
     private bool isStopped;
     private float previousTimeScale;
     private double resumeAt;
+
+    public bool IsStopped => isStopped;
 
     private void Awake() => attack = GetComponent<PlayerAttack>();
     private void OnEnable() => attack.HitConfirmed += OnHit;

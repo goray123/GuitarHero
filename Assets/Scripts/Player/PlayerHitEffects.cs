@@ -10,6 +10,7 @@ public class PlayerHitEffects : MonoBehaviour
     [SerializeField, Min(0.01f)] private float thirdScale = 1.5f;
     [Tooltip("플레이어보다 앞에 표시할 순서 차이")]
     [SerializeField] private int sortingOrderOffset = 8;
+    [SerializeField, Min(0.01f)] private float landingScale = 0.65f;
 
     private PlayerAttack attack;
     private SpriteRenderer playerSprite;
@@ -20,8 +21,33 @@ public class PlayerHitEffects : MonoBehaviour
         playerSprite = GetComponent<SpriteRenderer>();
     }
 
-    private void OnEnable() => attack.HitConfirmed += OnHit;
-    private void OnDisable() => attack.HitConfirmed -= OnHit;
+    private void OnEnable()
+    {
+        attack.HitConfirmed += OnHit;
+        attack.SlamLanded += OnSlamLanded;
+    }
+
+    private void OnDisable()
+    {
+        attack.HitConfirmed -= OnHit;
+        attack.SlamLanded -= OnSlamLanded;
+    }
+
+    private void OnSlamLanded(Vector2 point)
+    {
+        if (hitEffectPrefab == null) return;
+        // 지면 양옆으로 퍼지는 먼지. 명중 여부와 관계없이 착지를 표현.
+        SpawnGroundShock(point + Vector2.left * 0.25f, Vector2.left);
+        SpawnGroundShock(point + Vector2.right * 0.25f, Vector2.right);
+    }
+
+    private void SpawnGroundShock(Vector2 point, Vector2 direction)
+    {
+        BluntHitBurst effect = Instantiate(hitEffectPrefab, point, Quaternion.identity);
+        effect.Play(direction, landingScale,
+            playerSprite != null ? playerSprite.sortingLayerID : 0,
+            (playerSprite != null ? playerSprite.sortingOrder : 0) + sortingOrderOffset, true);
+    }
 
     // 적마다 명중한 위치에 생성하고, 무기나 적의 이동과 분리
     private void OnHit(Vector2 point, Vector2 direction, int comboStep)
