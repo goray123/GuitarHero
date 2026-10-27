@@ -1039,7 +1039,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 901300012, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
       propertyPath: damagePopupRise
-      value: 28
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 901300019, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1067,11 +1067,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 901300020, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 16
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 901300020, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_Color.b
+      value: 0.09518514
+      objectReference: {fileID: 0}
+    - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_Color.g
+      value: 0.09518514
+      objectReference: {fileID: 0}
+    - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8773585
       objectReference: {fileID: 0}
     - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
       propertyPath: m_FontData.m_Font
@@ -1079,11 +1091,11 @@ PrefabInstance:
       objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
       propertyPath: m_FontData.m_MaxSize
-      value: 54
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 54
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
       propertyPath: m_FontData.m_Alignment

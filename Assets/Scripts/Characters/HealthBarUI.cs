@@ -121,7 +121,7 @@ public class HealthBarUI : MonoBehaviour
 
     private void AdvanceDamagePopups(float deltaTime)
     {
-        float duration = Mathf.Max(0.01f, damagePopupDuration);
+        float duration = Mathf.Max(1f, damagePopupDuration);
         for (int i = damagePopups.Count - 1; i >= 0; i--)
         {
             DamagePopup popup = damagePopups[i];
@@ -157,7 +157,7 @@ public class HealthBarUI : MonoBehaviour
         if (deltaTime <= 0f) return;
 
         tweenElapsed += deltaTime;
-        float t = Mathf.Clamp01(tweenElapsed / Mathf.Max(0.01f, damageDuration));
+        float t = Mathf.Clamp01(tweenElapsed / Mathf.Max(1f, damageDuration));
         damageRatio = Mathf.Lerp(tweenStart, currentRatio, Mathf.SmoothStep(0f, 1f, t));
         ApplyFills();
     }
