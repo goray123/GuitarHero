@@ -66,6 +66,7 @@ public class PlayerAttack : MonoBehaviour
     private readonly HashSet<Damageable> hitTargets = new HashSet<Damageable>();
 
     private PlayerMovement movement;
+    private PlayerChordStrike chordStrike;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private PlayerHitStop hitStop;
@@ -101,10 +102,12 @@ public class PlayerAttack : MonoBehaviour
 
     public bool IsAttacking => isAttacking;
     private bool IsSliding => movement != null && movement.IsSliding;
+    private bool IsUsingSkill => chordStrike != null && chordStrike.BlocksActions;
 
     private void Awake()
     {
         movement = GetComponent<PlayerMovement>();
+        chordStrike = GetComponent<PlayerChordStrike>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         hitStop = GetComponent<PlayerHitStop>();
@@ -153,7 +156,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        if (IsSliding || attackRequested)
+        if (IsSliding || IsUsingSkill || attackRequested)
             return;
         bool inHitStop = hitStop != null && hitStop.IsStopped;
         // 메뉴 일시정지와 명중 히트스탑을 구분. 예약은 한 번만 보관.
@@ -186,6 +189,8 @@ public class PlayerAttack : MonoBehaviour
 
     private void UpdateAttack(float currentTime)
     {
+        // 같은 프레임에 들어온 공격도 스킬 시작 시 예약 취소
+        if (IsUsingSkill) attackRequested = false;
         UpdateDiveTiming(currentTime);
         bool attackEnded = false;
         if (isAttacking && currentTime >= attackEndTime)

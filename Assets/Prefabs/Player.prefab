@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 900100036}
   - component: {fileID: 7680151787406903415}
   - component: {fileID: 900100037}
+  - component: {fileID: 900100038}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -629,3 +630,30 @@ MonoBehaviour:
   landingAmplitude: 0.065
   duration: 0.14
 
+
+--- !u!114 &900100038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f99ac456d8df40e5a8f04ce5c046a177, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerChordStrike
+  inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  notePrefab: {fileID: 400, guid: 78b61161d1bd4517b5049c9f56f465eb, type: 3}
+  recoilDistance: 2
+  recoilHeight: 0.65
+  recoilDuration: 0.4
+  noteDamage: 5
+  noteRange: 3
+  noteSpeed: 10
+  spreadAngle: 36
+  curveAmount: 0.3
+  muzzleOffset: {x: 0.35, y: 0.15}
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295

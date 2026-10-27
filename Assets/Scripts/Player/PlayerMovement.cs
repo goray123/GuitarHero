@@ -29,10 +29,12 @@ public class PlayerMovement : MonoBehaviour
     private InputAction jumpAction;
     private InputAction slideAction;
     private PlayerAttack attack;
+    private PlayerChordStrike chordStrike;
 
     public bool IsSliding => isSliding;
     public bool IsOnGround => rb != null && IsGrounded() && rb.linearVelocity.y <= 0.1f;
     private bool IsAttacking => attack != null && attack.IsAttacking;
+    private bool IsUsingSkill => chordStrike != null && chordStrike.BlocksActions;
 
     private Vector2 originalSize;
     private Vector2 originalOffset;
@@ -56,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         attack = GetComponent<PlayerAttack>();
+        chordStrike = GetComponent<PlayerChordStrike>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -123,14 +126,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (!isSliding && !IsAttacking)
+        if (!isSliding && !IsAttacking && !IsUsingSkill)
             jumpRequested = true;
     }
 
     private void OnSlide(InputAction.CallbackContext context)
     {
         // 공중에서 누른 입력은 키를 누르고 있는 동안만 보관
-        if (!isSliding)
+        if (!isSliding && !IsUsingSkill)
             slideRequested = true;
     }
 
@@ -149,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
         moveInput = moveAction.ReadValue<Vector2>().x;
 
         // 공격 중에는 바라보는 방향 고정
-        if (!isSliding && !IsAttacking && moveInput != 0f)
+        if (!isSliding && !IsAttacking && !IsUsingSkill && moveInput != 0f)
             spriteRenderer.flipX = moveInput < 0f;
     }
 
@@ -181,6 +184,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateMovement(float currentTime)
     {
+        // 코드 스트라이크 중에는 입력 대신 반동 포물선만 적용
+        if (IsUsingSkill)
+        {
+            ClearActionRequests();
+            lastGroundedTime = float.NegativeInfinity;
+            rb.linearVelocity = chordStrike.GetRecoilVelocity(currentTime, Time.fixedDeltaTime);
+            animator.SetBool("IsMoving", false);
+            animator.SetBool("IsGrounded", IsOnGround);
+            animator.SetBool("IsSliding", false);
+            return;
+        }
         Vector2 velocity = rb.linearVelocity;
         bool isGrounded = IsGrounded() && velocity.y <= 0.1f;
 
@@ -261,6 +275,13 @@ public class PlayerMovement : MonoBehaviour
     // 공격 시작 시 대기 중인 슬라이드 입력 소모
     public void ClearSlideRequest()
     {
+        slideRequested = false;
+    }
+
+    // 스킬 중 점프와 슬라이드 입력이 종료 뒤에 발동하지 않도록 소모
+    public void ClearActionRequests()
+    {
+        jumpRequested = false;
         slideRequested = false;
     }
 

@@ -20,6 +20,8 @@ public class TrainingDummy : Damageable
     [Header("Anchored Hit Reaction")]
     [Tooltip("발밑 피벗. 판정과 체력바는 이 피벗 밖에 유지")]
     [SerializeField] private Transform reactionPivot;
+    [Tooltip("사망 모션에도 피격 기울임을 적용")]
+    [SerializeField] private bool playDeathReaction = true;
     [SerializeField, Min(0f)] private float basicRecoilDistance = 0.08f;
     [SerializeField, Min(0f)] private float thirdRecoilDistance = 0.2f;
     [SerializeField, Range(0f, 30f)] private float basicBendAngle = 5f;
@@ -30,6 +32,7 @@ public class TrainingDummy : Damageable
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D hurtbox;
+    private Rigidbody2D physicsBody;
     private Vector3 spawnPosition;
     private float hitEndsAt;
     private float deathEndsAt;
@@ -47,6 +50,7 @@ public class TrainingDummy : Damageable
     public float CurrentHealth { get; private set; }
     public float MaxHealth => Mathf.Max(1f, maxHealth);
     public bool IsDead { get; private set; }
+    public bool IsPlayingHit => playingHit;
 
     private void Awake()
     {
@@ -55,6 +59,7 @@ public class TrainingDummy : Damageable
         hurtbox = GetComponent<BoxCollider2D>();
         if (healthBarUI == null && healthBar != null)
             healthBarUI = healthBar.GetComponent<HealthBarUI>();
+        physicsBody = GetComponent<Rigidbody2D>();
         spawnPosition = transform.position;
         if (reactionPivot != null)
         {
@@ -79,6 +84,7 @@ public class TrainingDummy : Damageable
             IsDead = true;
             playingHit = false;
             hurtbox.enabled = false;
+            if (!playDeathReaction) ResetReaction();
             deathEndsAt = Time.time + (deathAnimation != null ? deathAnimation.length : 0f);
             respawnAt = Time.time + Mathf.Max(0f, respawnDelay);
             animator.Play("Death", 0, 0f);
@@ -98,6 +104,12 @@ public class TrainingDummy : Damageable
         if (!TryTakeDamage(hit.Damage)) return false;
         if (healthBarUI != null)
             healthBarUI.ShowDamage(Mathf.Min(hit.Damage, healthBeforeHit), hit.DisplayPoint);
+        // 좀비 사망 모션은 별도 기울임 없이 지면에 맞춰 재생
+        if (IsDead && !playDeathReaction)
+        {
+            animator.Update(0f);
+            return true;
+        }
         bool heavy = hit.ComboStep == 3;
         reactionDirection = hit.Direction;
         recoilDistance = heavy ? thirdRecoilDistance : basicRecoilDistance;
@@ -169,6 +181,13 @@ public class TrainingDummy : Damageable
     private void Respawn()
     {
         transform.position = spawnPosition;
+        // 이동하는 적도 재생성 위치와 속도를 함께 초기화
+        if (physicsBody != null)
+        {
+            physicsBody.position = spawnPosition;
+            physicsBody.linearVelocity = Vector2.zero;
+            physicsBody.angularVelocity = 0f;
+        }
         ResetReaction();
         CurrentHealth = MaxHealth;
         IsDead = false;
