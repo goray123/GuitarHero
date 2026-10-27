@@ -1,0 +1,397 @@
+fileFormatVersion: 2
+guid: 3b63b82f5d81e6f4a817f140ce2d88f0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -9010474175080792047
+    second: CityProps_0
+  - first:
+      213: 8446729930630339649
+    second: CityProps_1
+  - first:
+      213: -208721746973040977
+    second: CityProps_2
+  - first:
+      213: 3464953152415265927
+    second: CityProps_3
+  - first:
+      213: -7444752223137340553
+    second: CityProps_4
+  - first:
+      213: -8723772218060424247
+    second: CityProps_5
+  - first:
+      213: -8408316761884665592
+    second: CityProps_6
+  - first:
+      213: -783951774356404359
+    second: CityProps_7
+  - first:
+      213: 6447790259127792315
+    second: CityProps_8
+  - first:
+      213: 7933665267216330086
+    second: CityProps_9
+  - first:
+      213: -8567240008608269914
+    second: CityProps_10
+  - first:
+      213: 8703569388981674424
+    second: CityProps_11
+  - first:
+      213: -4988954852554098733
+    second: CityProps_12
+  - first:
+      213: -673951458366008543
+    second: CityProps_13
+  - first:
+      213: 6406828798546088041
+    second: CityProps_14
+  - first:
+      213: 6553980247314335677
+    second: CityProps_15
+  - first:
+      213: -6720960037312214764
+    second: CityProps_16
+  - first:
+      213: -8548794622250661594
+    second: CityProps_17
+  - first:
+      213: 8594443660029284248
+    second: CityProps_18
+  - first:
+      213: 4808392945134264082
+    second: CityProps_19
+  - first:
+      213: 6798587028852883292
+    second: CityProps_20
+  - first:
+      213: 8331084707302062100
+    second: CityProps_21
+  - first:
+      213: -3439258662568188255
+    second: CityProps_22
+  - first:
+      213: 1826701120299803247
+    second: CityProps_23
+  - first:
+      213: -7501981889786831271
+    second: CityProps_24
+  - first:
+      213: -1546892283542846552
+    second: CityProps_25
+  - first:
+      213: 5840383943189414451
+    second: CityProps_26
+  - first:
+      213: 6526673229572835093
+    second: CityProps_27
+  - first:
+      213: -2289089355461934965
+    second: CityProps_28
+  - first:
+      213: -971575217269931725
+    second: CityProps_29
+  - first:
+      213: -7624408684055218722
+    second: CityProps_30
+  - first:
+      213: 5456856528976280382
+    second: CityProps_31
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 128
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Car
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 372
+        width: 501
+        height: 207
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 708bef4fe94245941b0781e79fc0ebd1
+      internalID: 1824323356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Barricade
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 379
+        width: 351
+        height: 152
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07cea1d8db2bce44780f96a40a1d3268
+      internalID: -1575574164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lamp
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 375
+        width: 255
+        height: 480
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddbacc58e30a5ba44a9a406af69a642d
+      internalID: 1119359755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rubble
+      rect:
+        serializedVersion: 2
+        x: 1304
+        y: 376
+        width: 456
+        height: 227
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43a6cc0dd04dc1049b7a15a228b9f996
+      internalID: 814439127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoveredBody
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 33
+        width: 413
+        height: 107
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2de7c542366b014dbb59c464c553616
+      internalID: -1119428445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HumanBody
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 52
+        width: 346
+        height: 105
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9db1fa703dbb564c9f692f1bf23c386
+      internalID: 1647875234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ZombieBody
+      rect:
+        serializedVersion: 2
+        x: 887
+        y: 40
+        width: 406
+        height: 91
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d0da1e7b0a98f247bb918b52f598f9d
+      internalID: -240200636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BusShelter
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 41
+        width: 443
+        height: 282
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb4bdfd697445ff4b925772a68f9ef7a
+      internalID: 219166584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Barricade: -1575574164
+      BusShelter: 219166584
+      Car: 1824323356
+      CoveredBody: -1119428445
+      HumanBody: 1647875234
+      Lamp: 1119359755
+      Rubble: 814439127
+      ZombieBody: -240200636
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
