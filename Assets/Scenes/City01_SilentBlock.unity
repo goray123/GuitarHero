@@ -769,6 +769,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4990558926577876699, guid: e1c3d90eed61a2146ace3bd8a936a836, type: 3}
+      propertyPath: healthText
+      value: 
+      objectReference: {fileID: 373263547}
+    - target: {fileID: 4990558926577876699, guid: e1c3d90eed61a2146ace3bd8a936a836, type: 3}
+      propertyPath: damagePopupTemplate
+      value: 
+      objectReference: {fileID: 430498565}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -873,6 +881,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 901300012, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: damagePopupRise
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 901300020, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901300020, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_Color.b
+      value: 0.11485406
+      objectReference: {fileID: 0}
+    - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_Color.g
+      value: 0.21807651
+      objectReference: {fileID: 0}
+    - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8396226
+      objectReference: {fileID: 0}
+    - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 72
+      objectReference: {fileID: 0}
+    - target: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 72
+      objectReference: {fileID: 0}
     - target: {fileID: 1081914811692766710, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.5
@@ -972,6 +1016,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CityParallax
   cameraRig: {fileID: 60917220}
   followRatio: 0.72
+--- !u!114 &373263547 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 901300018, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+  m_PrefabInstance: {fileID: 365408874}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
+--- !u!114 &430498565 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 901300022, guid: 1cd035338f359f142b6a4fa497831bec, type: 3}
+  m_PrefabInstance: {fileID: 365408874}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
 --- !u!1 &677568369
 GameObject:
   m_ObjectHideFlags: 0
