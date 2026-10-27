@@ -57,6 +57,8 @@ public class TrainingDummy : Damageable
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = animator.GetComponent<SpriteRenderer>();
         hurtbox = GetComponent<BoxCollider2D>();
+        if (healthBarUI == null && healthBar != null)
+            healthBarUI = healthBar.GetComponent<HealthBarUI>();
         physicsBody = GetComponent<Rigidbody2D>();
         spawnPosition = transform.position;
         if (reactionPivot != null)
@@ -98,7 +100,10 @@ public class TrainingDummy : Damageable
 
     public override bool TryTakeDamage(AttackHit hit)
     {
+        float healthBeforeHit = CurrentHealth;
         if (!TryTakeDamage(hit.Damage)) return false;
+        if (healthBarUI != null)
+            healthBarUI.ShowDamage(Mathf.Min(hit.Damage, healthBeforeHit), hit.DisplayPoint);
         // 좀비 사망 모션은 별도 기울임 없이 지면에 맞춰 재생
         if (IsDead && !playDeathReaction)
         {

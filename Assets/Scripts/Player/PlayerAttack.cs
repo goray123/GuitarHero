@@ -422,7 +422,12 @@ public class PlayerAttack : MonoBehaviour
             new Vector2(direction.x > 0f ? other.bounds.min.x - 1f : other.bounds.max.x + 1f,
                 Mathf.Clamp(hitbox.bounds.center.y, other.bounds.min.y, other.bounds.max.y));
         Vector2 point = other.ClosestPoint(probe);
-        if (target.TryTakeDamage(new AttackHit(Mathf.Max(0f, damage), point, direction, comboStep)))
+        Vector2 displayPoint = hitbox.bounds.center;
+        if (isDiveAttack)
+            displayPoint.y += direction.y * (hitbox.bounds.extents.y + 0.05f);
+        else
+            displayPoint.x += direction.x * (hitbox.bounds.extents.x + 0.05f);
+        if (target.TryTakeDamage(new AttackHit(Mathf.Max(0f, damage), point, displayPoint, direction, comboStep)))
         {
             hitTargets.Add(target);
             // 정지에 들어가기 전에 접촉 순간의 스프라이트를 확정.
