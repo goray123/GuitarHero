@@ -126,6 +126,8 @@ public static class CombatFeelValidation
             Canvas healthCanvas = healthBar.GetComponent<Canvas>();
             Image currentFill = Get<Image>(healthUI, "currentFill");
             Image damageFill = Get<Image>(healthUI, "damageFill");
+            Text healthText = Get<Text>(healthUI, "healthText");
+            Text damagePopupTemplate = Get<Text>(healthUI, "damagePopupTemplate");
             Check(healthCanvas != null && healthCanvas.renderMode == RenderMode.WorldSpace,
                 "Health bar uses a World Space Canvas");
             Check(healthBar.GetComponentsInChildren<SpriteRenderer>().Length == 0,
@@ -147,9 +149,33 @@ public static class CombatFeelValidation
                 "Canvas fill rectangles have positive visible dimensions");
             Check(currentFill.fillAmount == 1f && damageFill.fillAmount == 1f,
                 "Spawn initializes both bars to full health");
-            dummy.TryTakeDamage(10f);
+            Check(healthText != null && healthText.text == "50 / 50",
+                "Spawn displays exact current and maximum health");
+            Check(damagePopupTemplate != null && !damagePopupTemplate.gameObject.activeSelf,
+                "Damage number template is hidden until a hit");
+            Vector2 hitPoint = new Vector2(0.25f, 0.85f);
+            dummy.TryTakeDamage(new AttackHit(10f, hitPoint, Vector2.right, 1));
             Check(Mathf.Approximately(currentFill.fillAmount, 0.8f) && damageFill.fillAmount == 1f,
                 "Damage immediately reduces green while orange retains previous health");
+            Check(healthText.text == "40 / 50", "Damage updates the numeric health readout immediately");
+            Text[] damagePopups = healthBar.GetComponentsInChildren<Text>(true);
+            Text firstDamagePopup = System.Array.Find(damagePopups,
+                text => text.name.StartsWith("DamagePopup") && text.gameObject.activeSelf);
+            Vector3 expectedScaledHitPoint = new Vector3(hitPoint.x * 0.01f, hitPoint.y * 0.01f, 0f);
+            Check(firstDamagePopup != null && firstDamagePopup.text == "-10",
+                "Accepted hit displays its damage as a floating number");
+            Check(firstDamagePopup != null &&
+                Mathf.Abs(firstDamagePopup.rectTransform.localPosition.x - expectedScaledHitPoint.x) < 0.001f &&
+                Mathf.Abs(firstDamagePopup.rectTransform.localPosition.y - expectedScaledHitPoint.y) < 0.001f &&
+                Mathf.Abs(firstDamagePopup.rectTransform.localPosition.z - expectedScaledHitPoint.z) < 0.001f,
+                "Floating damage number local X/Y/Z are each scaled to 1/100");
+            Set(healthUI, "damagePopupTemplate", null);
+            healthUI.ShowDamage(3f, dummy.transform.position);
+            damagePopups = healthBar.GetComponentsInChildren<Text>(true);
+            bool fallbackDamagePopupFound = System.Array.Exists(damagePopups,
+                text => text.name.StartsWith("DamagePopup") && text.gameObject.activeSelf && text.text == "-3");
+            Set(healthUI, "damagePopupTemplate", damagePopupTemplate);
+            Check(fallbackDamagePopupFound, "Damage number is generated when its prefab template is unassigned");
             Call(healthUI, "Advance", 0.2f);
             Check(damageFill.fillAmount == 1f, "Damage trail holds for its initial delay");
             Call(healthUI, "Advance", 0.15f);
@@ -174,9 +200,14 @@ public static class CombatFeelValidation
             Call(dummy, "Respawn");
             Check(currentFill.fillAmount == 1f && damageFill.fillAmount == 1f,
                 "Respawn clears the previous damage animation");
-            dummy.TryTakeDamage(50f);
+            dummy.TryTakeDamage(new AttackHit(60f, Vector2.zero, Vector2.right, 3));
             Check(dummy.IsDead && currentFill.fillAmount == 0f && damageFill.fillAmount == 1f,
                 "Lethal damage leaves the orange trail to finish");
+            damagePopups = healthBar.GetComponentsInChildren<Text>(true);
+            bool lethalDamagePopupFound = System.Array.Exists(damagePopups,
+                text => text.name.StartsWith("DamagePopup") && text.gameObject.activeSelf && text.text == "-50");
+            Check(lethalDamagePopupFound,
+                "Lethal overkill displays only the health actually removed");
             Set(dummy, "deathEndsAt", Time.time - 0.01f);
             Call(dummy, "UpdateState", Time.time);
             Check(healthBar.gameObject.activeSelf, "Death keeps the canvas visible while orange is draining");
@@ -187,6 +218,7 @@ public static class CombatFeelValidation
             Call(dummy, "Respawn");
             Check(healthBar.gameObject.activeSelf && currentFill.fillAmount == 1f && damageFill.fillAmount == 1f,
                 "Dead dummy respawns with a visible full canvas");
+            Check(healthText.text == "50 / 50", "Respawn restores the numeric health readout");
             target.transform.position = new Vector3(1f, 1f, 0f);
             Check(Get<float>(hitStop, "basicDuration") == 0.035f && Get<float>(hitStop, "thirdDuration") == 0.085f,
                 "Basic/heavy hitstop uses the tuned 35/85 ms profile");
@@ -234,12 +266,22 @@ public static class CombatFeelValidation
             Vector3 rootBefore = target.transform.position;
             Vector3 barBefore = healthBar.position;
             Vector3 pivotRest = pivot.localPosition;
+            BoxCollider2D activeAttackHitbox = Get<BoxCollider2D>(attack, "attack1Hitbox");
             BoxCollider2D hurtbox = target.GetComponent<BoxCollider2D>();
             Physics2D.SyncTransforms();
+            float facing = player.GetComponent<SpriteRenderer>().flipX ? -1f : 1f;
+            Vector2 expectedSwordDisplayPoint = activeAttackHitbox.bounds.center +
+                Vector3.right * (facing * (activeAttackHitbox.bounds.extents.x + 0.05f));
+            expectedSwordDisplayPoint *= 0.01f;
             Vector3 boundsBefore = hurtbox.bounds.center;
-            attack.TryHit(Get<BoxCollider2D>(attack, "attack1Hitbox"), hurtbox);
-            attack.TryHit(Get<BoxCollider2D>(attack, "attack1Hitbox"), hurtbox);
+            attack.TryHit(activeAttackHitbox, hurtbox);
+            attack.TryHit(activeAttackHitbox, hurtbox);
             Check(dummy.CurrentHealth == health - 8f && confirmed == 1, "A swing damages a target exactly once");
+            Text swordDamagePopup = System.Array.Find(healthBar.GetComponentsInChildren<Text>(true),
+                text => text.name.StartsWith("DamagePopup") && text.gameObject.activeSelf && text.text == "-8");
+            Check(swordDamagePopup != null &&
+                Vector2.Distance(swordDamagePopup.rectTransform.localPosition, expectedSwordDisplayPoint) < 0.001f,
+                "Real attack scales the sword-front popup local position to exactly 1/100");
             Check(Mathf.Abs(contact.x - hurtbox.bounds.min.x) < Physics2D.defaultContactOffset + 0.002f,
                 "Impact point lies on the target-facing surface: point=" + contact + ", bounds=" + hurtbox.bounds +
                 ", flipX=" + player.GetComponent<SpriteRenderer>().flipX);

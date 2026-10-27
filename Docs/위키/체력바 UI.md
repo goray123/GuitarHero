@@ -8,6 +8,8 @@ TrainingDummy
 │  ├─ Background    어두운 배경
 │  ├─ DamageTrail   주황색 피해 잔상
 │  └─ CurrentHealth 초록색 실제 체력
+│  └─ HealthPoints  현재 / 최대 체력 숫자
+│  └─ DamagePopup   타격마다 표시되는 피해량
 └─ HitReactionPivot
    └─ Visual
 ```
@@ -17,6 +19,8 @@ TrainingDummy
 ## 동작
 
 - 피해를 받으면 초록색 바는 즉시 감소합니다.
+- 바 중앙에 현재 체력과 최대 체력을 `현재 / 최대` 형식으로 표시합니다.
+- 타격을 받을 때 실제로 깎인 체력을 숫자로 띄워 올립니다. 연속 타격은 숫자를 각각 표시하고, 사망을 넘긴 피해는 남은 체력만 표시합니다.
 - 주황색 바는 0.25초 대기 후 0.4초 동안 부드럽게 따라 감소합니다.
 - 연속 피격은 주황색 바의 현재 길이를 유지하며 대기 시간을 다시 시작합니다. 이미 감소한 주황색 바가 위로 튀지 않습니다.
 - 히트스탑과 메뉴 일시정지 중에는 주황색 감소를 멈춥니다.
@@ -35,6 +39,8 @@ TrainingDummy
 | HealthBar Transform | 배율 | 0.01 |
 | HealthBar Transform | 더미 기준 높이 | 1.12 |
 | CurrentHealth / DamageTrail Image | 색상 | 초록 / 주황 |
+| HealthPoints Text | 내용 | 현재 / 최대 체력 |
+| HealthBarUI | Damage Popup Duration / Rise | 0.65초 / 28 |
 
 월드에 표시되는 최종 크기는 가로 1.44, 세로 0.16유닛입니다. Canvas 정렬 순서는 12이며 모든 Image의 Raycast Target은 꺼두었습니다. 입력용 EventSystem이나 GraphicRaycaster는 필요하지 않습니다.
 
