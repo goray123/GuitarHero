@@ -9528,7 +9528,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1114076653635513264, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: basicContactDelay
-      value: 0.2
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1114076653635513264, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: basicRecoveryTime
@@ -9536,7 +9536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1114076653635513264, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: thirdContactDelay
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 1114076653635513264, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: thirdRecoveryTime
