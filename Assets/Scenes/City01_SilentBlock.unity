@@ -9506,6 +9506,14 @@ PrefabInstance:
       propertyPath: thirdDuration
       value: 0.15
       objectReference: {fileID: 0}
+    - target: {fileID: 900100038, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
+      propertyPath: recoilHeight
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 900100038, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
+      propertyPath: recoilDistance
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 189524406163042593, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: m_Size.x
       value: 1.9
