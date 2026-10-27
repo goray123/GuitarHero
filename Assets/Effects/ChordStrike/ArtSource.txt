@@ -1,0 +1,5 @@
+ChordNote.png is a temporary sprite generated with the built-in image_gen tool.
+The original transparent image is preserved; Unity imports it with point filtering.
+
+Prompt:
+Create ONE simple eighth musical note sprite for a pixel-art 2D action game projectile, centered with a little transparent padding. Solid bold silhouette, short flag at top right, tilted oval note head bottom left. Palette: pale warm white interior, magenta edge and deep purple one-pixel-style outline. Strict crisp chunky pixel-art style, readable when displayed at 32 pixels tall. Single symbol only, no text, no staff lines, no particles, no trails, no glow cloud, no ground, true transparent background. Square canvas.
