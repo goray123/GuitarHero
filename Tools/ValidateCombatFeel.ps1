@@ -1,9 +1,13 @@
 # Run in a disposable project so the user's open editor and scenes stay intact.
-param([switch]$PrepareOnly)
+param(
+    [switch]$PrepareOnly,
+    [ValidateSet('CombatFeel', 'RhythmGauge')][string]$Suite = 'CombatFeel'
+)
 
 $ErrorActionPreference = 'Stop'
 $projectFolder = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$validationFolder = Join-Path $projectFolder 'Temp/CombatFeelValidation'
+$validationClass = $Suite + 'Validation'
+$validationFolder = Join-Path $projectFolder ('Temp/' + $validationClass)
 if (Test-Path -LiteralPath (Join-Path $validationFolder 'Temp/UnityLockfile')) {
     throw 'The isolated validation project is already open. Wait for its Unity process to exit before running again.'
 }
@@ -16,7 +20,7 @@ foreach ($folderName in @('Assets', 'ProjectSettings')) {
 }
 $editorFolder = Join-Path $validationFolder 'Assets/Editor'
 New-Item -ItemType Directory -Path $editorFolder -Force | Out-Null
-Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'CombatFeelValidation.cs') -Destination $editorFolder -Force
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot ($validationClass + '.cs')) -Destination $editorFolder -Force
 $packageFolder = Join-Path $validationFolder 'Packages'
 New-Item -ItemType Directory -Path $packageFolder -Force | Out-Null
 # Pin installed packages to the local cache, avoiding registry downloads.
@@ -41,8 +45,13 @@ if ($PrepareOnly) {
     Write-Output "Prepared validation project: $validationFolder"
     return
 }
-$launchArguments = @('-batchmode', '-nographics', '-projectPath', ('"' + $validationFolder + '"'), '-executeMethod', 'CombatFeelValidation.Run', '-logFile', ('"' + $logFile + '"'))
+$launchArguments = @('-batchmode', '-nographics', '-projectPath', ('"' + $validationFolder + '"'), '-executeMethod', ($validationClass + '.Run'), '-logFile', ('"' + $logFile + '"'))
 $validationProcess = Start-Process -FilePath $unityExe -ArgumentList $launchArguments -WindowStyle Hidden -PassThru
 Write-Output "Unity validation PID: $($validationProcess.Id)"
 Write-Output "Log: $logFile"
-Write-Output "Results: $(Join-Path $validationFolder 'combat-feel-results.txt')"
+$resultName = if ($Suite -eq 'RhythmGauge') { 'rhythm-gauge-results.txt' } else { 'combat-feel-results.txt' }
+Write-Output "Results: $(Join-Path $validationFolder $resultName)"
+$validationProcess.WaitForExit()
+if ($validationProcess.ExitCode -ne 0) {
+    throw "Unity validation failed with exit code $($validationProcess.ExitCode). See $logFile."
+}

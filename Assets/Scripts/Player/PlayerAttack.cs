@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 // 같은 물리 프레임에서 공격 여부를 먼저 결정
 [DefaultExecutionOrder(-10)]
+[RequireComponent(typeof(PlayerRhythmGauge))]
 public class PlayerAttack : MonoBehaviour
 {
     // 실제 피해가 적용된 순간에만 타격 연출 전달
@@ -70,6 +71,7 @@ public class PlayerAttack : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private PlayerHitStop hitStop;
+    private PlayerRhythmGauge rhythm;
     private Collider2D bodyCollider;
     private InputActionMap playerActions;
     private InputAction attackAction;
@@ -87,6 +89,11 @@ public class PlayerAttack : MonoBehaviour
     private bool comboTimerPaused;
     private float windupDuration;
     private float activeDuration;
+    private float recoveryDuration;
+    private float landingActiveDuration;
+    private float contactDelayDuration;
+    private float attackSpeedMultiplier = 1f;
+    private float attackDamageMultiplier = 1f;
     private float advanceDistance;
     private float hopHeight;
     private bool isDamageActive;
@@ -101,6 +108,8 @@ public class PlayerAttack : MonoBehaviour
     private static readonly float[] SwingEnds = { 15f / 21f, 11f / 15f, 20f / 24f };
 
     public bool IsAttacking => isAttacking;
+    public float CurrentAttackSpeedMultiplier => attackSpeedMultiplier;
+    public float CurrentAttackDamageMultiplier => attackDamageMultiplier;
     private bool IsSliding => movement != null && movement.IsSliding;
     private bool IsUsingSkill => chordStrike != null && chordStrike.BlocksActions;
 
@@ -111,6 +120,7 @@ public class PlayerAttack : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         hitStop = GetComponent<PlayerHitStop>();
+        rhythm = GetComponent<PlayerRhythmGauge>();
         bodyCollider = GetComponent<BoxCollider2D>();
         UpdateHitboxes();
         if (inputActions == null || animator == null)
@@ -221,7 +231,7 @@ public class PlayerAttack : MonoBehaviour
             swingStarted = true;
             SwingStarted?.Invoke(comboStep);
         }
-        float contactDelay = Mathf.Min(comboStep == 3 ? thirdContactDelay : basicContactDelay, activeDuration * 0.5f);
+        float contactDelay = Mathf.Min(contactDelayDuration, activeDuration * 0.5f);
         isDamageActive = isAttacking && currentTime >= windupEndTime + contactDelay && currentTime < activeEndTime;
         animator.SetBool("IsAttacking", isAttacking);
         UpdateHitboxes();
@@ -251,8 +261,8 @@ public class PlayerAttack : MonoBehaviour
         if (waitingForLanding && movement.IsOnGround)
         {
             waitingForLanding = false;
-            activeEndTime = currentTime + Mathf.Max(0f, thirdLandingActiveTime);
-            attackEndTime = activeEndTime + Mathf.Max(0f, thirdRecoveryTime);
+            activeEndTime = currentTime + landingActiveDuration;
+            attackEndTime = activeEndTime + recoveryDuration;
             PresentSlam();
         }
     }
@@ -354,16 +364,21 @@ public class PlayerAttack : MonoBehaviour
             spriteRenderer.flipX = direction < 0f;
 
         bool third = comboStep == 3;
-        windupDuration = Mathf.Max(0.01f, third ? thirdWindupTime : basicWindupTime);
-        float active = Mathf.Max(0.01f, third ? thirdActiveTime : basicActiveTime);
+        // 이 공격의 모든 구간과 피해는 시작 시점의 리듬 배율로 고정.
+        attackSpeedMultiplier = rhythm != null && rhythm.isActiveAndEnabled ? rhythm.AttackSpeedMultiplier : 1f;
+        attackDamageMultiplier = rhythm != null && rhythm.isActiveAndEnabled ? rhythm.AttackDamageMultiplier : 1f;
+        windupDuration = Mathf.Max(0.01f, third ? thirdWindupTime : basicWindupTime) / attackSpeedMultiplier;
+        float active = Mathf.Max(0.01f, third ? thirdActiveTime : basicActiveTime) / attackSpeedMultiplier;
         activeDuration = active;
-        float recovery = Mathf.Max(0f, third ? thirdRecoveryTime : basicRecoveryTime);
+        recoveryDuration = Mathf.Max(0f, third ? thirdRecoveryTime : basicRecoveryTime) / attackSpeedMultiplier;
+        landingActiveDuration = Mathf.Max(0f, thirdLandingActiveTime) / attackSpeedMultiplier;
+        contactDelayDuration = Mathf.Max(0f, third ? thirdContactDelay : basicContactDelay) / attackSpeedMultiplier;
         advanceDistance = Mathf.Max(0f, third ? thirdAdvanceDistance : basicAdvanceDistance);
         hopHeight = Mathf.Max(0f, thirdHopHeight);
         attackStartTime = currentTime;
         windupEndTime = currentTime + windupDuration;
         activeEndTime = windupEndTime + active;
-        attackEndTime = activeEndTime + recovery;
+        attackEndTime = activeEndTime + recoveryDuration;
 
         animator.SetBool("IsAttacking", true);
         animator.SetFloat("AttackProgress", 0f);
@@ -383,7 +398,7 @@ public class PlayerAttack : MonoBehaviour
         else if (isDiveAttack && currentTime < activeEndTime)
             // 휘두르기를 재생한 뒤 착지 판정이 끝날 때까지 마지막 자세 유지
             progress = Mathf.Lerp(swingStart, swingEnd,
-                Mathf.InverseLerp(windupEndTime, windupEndTime + Mathf.Max(0.01f, thirdActiveTime), currentTime));
+                Mathf.InverseLerp(windupEndTime, windupEndTime + activeDuration, currentTime));
         else if (currentTime < activeEndTime)
             progress = Mathf.Lerp(swingStart, swingEnd, Mathf.InverseLerp(windupEndTime, activeEndTime, currentTime));
         else
@@ -414,6 +429,7 @@ public class PlayerAttack : MonoBehaviour
             target.transform.root == transform.root || hitTargets.Contains(target))
             return;
         float damage = comboStep == 1 ? attack1Damage : comboStep == 2 ? attack2Damage : attack3Damage;
+        damage *= attackDamageMultiplier;
         Vector2 direction = isDiveAttack ? Vector2.down :
             (spriteRenderer != null && spriteRenderer.flipX ? Vector2.left : Vector2.right);
         // 판정 중심이 적 내부에 들어가도 표면에 접촉 이펙트를 표시.
@@ -430,6 +446,7 @@ public class PlayerAttack : MonoBehaviour
         if (target.TryTakeDamage(new AttackHit(Mathf.Max(0f, damage), point, displayPoint, direction, comboStep)))
         {
             hitTargets.Add(target);
+            rhythm?.RecordConfirmedDamage(RhythmHitKind.Basic, damage);
             // 정지에 들어가기 전에 접촉 순간의 스프라이트를 확정.
             UpdateAnimation(Time.time);
             animator.Update(0f);

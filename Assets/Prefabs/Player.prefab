@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: 7680151787406903415}
   - component: {fileID: 900100037}
   - component: {fileID: 900100038}
+  - component: {fileID: 900100039}
+  - component: {fileID: 900100040}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -657,3 +659,37 @@ MonoBehaviour:
   collisionLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &900100039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdbf4e3a6a8b47ed9fdeaf6c3d9146e2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRhythmGauge
+  low: {attackSpeed: 1, attackDamage: 1, decayPerSecond: 12.5}
+  normal: {attackSpeed: 1.25, attackDamage: 1, decayPerSecond: 25}
+  high: {attackSpeed: 1.5, attackDamage: 1.25, decayPerSecond: 50}
+  fever: {attackSpeed: 2, attackDamage: 1.5, decayPerSecond: 100}
+  basicHitGain: 30
+  enhancedHitMultiplier: 2
+  noteHitMultiplier: 0.5
+  bossHitLoss: 100
+--- !u!114 &900100040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6535e924f8e43c4860c2fc345ede6d3, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRhythmGaugeUI
+  screenOffset: {x: 24, y: 24}
+  panelSize: {x: 420, y: 102}

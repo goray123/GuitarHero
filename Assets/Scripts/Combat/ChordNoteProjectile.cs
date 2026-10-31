@@ -13,6 +13,8 @@ public class ChordNoteProjectile : MonoBehaviour
     private readonly List<RaycastHit2D> hits = new List<RaycastHit2D>(16);
     private readonly List<Collider2D> overlaps = new List<Collider2D>(16);
     private Transform owner;
+    private PlayerRhythmGauge rhythm;
+    private uint ownerLifeVersion;
     private ContactFilter2D filter;
     private SpriteRenderer noteSprite;
     private Vector2 origin;
@@ -29,6 +31,8 @@ public class ChordNoteProjectile : MonoBehaviour
         float maxRange, float travelSpeed, float hitDamage, LayerMask layers, int sortingLayer, int sortingOrder)
     {
         owner = shooter;
+        rhythm = shooter != null ? shooter.GetComponentInParent<PlayerRhythmGauge>() : null;
+        ownerLifeVersion = rhythm != null ? rhythm.LifeVersion : 0;
         facing = direction < 0f ? -1f : 1f;
         origin = transform.position;
         speed = Mathf.Max(0.1f, travelSpeed);
@@ -102,13 +106,16 @@ public class ChordNoteProjectile : MonoBehaviour
 
     private bool TryContact(Collider2D other, Vector2 point, Vector2 direction)
     {
+        if (spent) return true;
         if (other == null || other.transform.IsChildOf(owner)) return false;
         Damageable target = other.GetComponentInParent<Damageable>();
         if (target != null)
         {
             if (!target.isActiveAndEnabled) return false;
             // 음표 하나는 첫 대상에게 한 번만 피해. 다섯 개 전부 맞으면 25
-            target.TryTakeDamage(new AttackHit(damage, point, direction, 0));
+            if (target.TryTakeDamage(new AttackHit(damage, point, direction, 0)) &&
+                rhythm != null && rhythm.LifeVersion == ownerLifeVersion)
+                rhythm.RecordConfirmedDamage(RhythmHitKind.Note, damage);
             Consume();
             return true;
         }

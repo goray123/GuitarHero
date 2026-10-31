@@ -1,0 +1,3950 @@
+{
+  "sourceDocument": "https://docs.google.com/document/d/1tj7w9QywV0V6_dDQxrGJIo9g6Vg4bA6ol6bAeSSuZLc/edit",
+  "assumptions": {
+    "timeBase": "Decay uses scaled gameplay time; hit stop pauses decay",
+    "speedApplication": "Snapshot speed at attack start; divide attack sections and contact delays by speed",
+    "targets": "One target, successful damage once per attack; no incoming damage, skill or enhanced attacks",
+    "uptime": "Fraction of gameplay time spent attacking; downtime is inserted after each full combo",
+    "landing": "Standing third attack adds height / fall speed; quantized is a separate 20 ms rounding approximation",
+    "notMeasured": "Not a Unity Play-mode measurement; terrain, collision and display-frame delays can change results"
+  },
+  "fixedStep": 0.02,
+  "lastActiveScene": "Assets/Scenes/Main.unity",
+  "rules": [
+    {
+      "name": "Low",
+      "min": 0,
+      "speed": 1,
+      "damage": 1,
+      "decay": 12.5
+    },
+    {
+      "name": "Normal",
+      "min": 250,
+      "speed": 1.25,
+      "damage": 1,
+      "decay": 25
+    },
+    {
+      "name": "High",
+      "min": 500,
+      "speed": 1.5,
+      "damage": 1.25,
+      "decay": 50
+    },
+    {
+      "name": "FEVER",
+      "min": 750,
+      "speed": 2,
+      "damage": 1.5,
+      "decay": 100
+    }
+  ],
+  "parameters": {
+    "baseGain": 30,
+    "enhancedGainMultiplier": 2,
+    "noteGainMultiplier": 0.5,
+    "maximum": 1000
+  },
+  "profiles": [
+    {
+      "scene": "Assets/Scenes/Main.unity",
+      "attack": {
+        "basicWindupTime": 0.125,
+        "basicActiveTime": 0.125,
+        "basicRecoveryTime": 0.125,
+        "basicContactDelay": 0.025,
+        "thirdWindupTime": 0.375,
+        "thirdActiveTime": 0.125,
+        "thirdLandingActiveTime": 0.125,
+        "thirdRecoveryTime": 0.125,
+        "thirdContactDelay": 0.02,
+        "thirdHopHeight": 0.6,
+        "thirdAttackFallSpeed": 20
+      },
+      "hitStop": {
+        "basicDuration": 0.035,
+        "thirdDuration": 0.085
+      },
+      "continuousRates": [
+        {
+          "stage": "Low",
+          "speed": 1,
+          "comboGameSeconds": 1.405,
+          "comboRealSeconds": 1.56,
+          "hitsPerRealSecond": 1.923076923076923,
+          "grossGainPerRealSecond": 57.69230769230769,
+          "decayPerRealSecond": 11.25801282051282,
+          "netGainPerRealSecond": 46.43429487179487,
+          "netWithUnscaledDecay": 45.19230769230769,
+          "minimumAttackUptime": 0.1951388888888889
+        },
+        {
+          "stage": "Normal",
+          "speed": 1.25,
+          "comboGameSeconds": 1.13,
+          "comboRealSeconds": 1.285,
+          "hitsPerRealSecond": 2.3346303501945527,
+          "grossGainPerRealSecond": 70.03891050583658,
+          "decayPerRealSecond": 21.98443579766537,
+          "netGainPerRealSecond": 48.054474708171206,
+          "netWithUnscaledDecay": 45.03891050583658,
+          "minimumAttackUptime": 0.31388888888888883
+        },
+        {
+          "stage": "High",
+          "speed": 1.5,
+          "comboGameSeconds": 0.9466666666666667,
+          "comboRealSeconds": 1.1016666666666666,
+          "hitsPerRealSecond": 2.7231467473524966,
+          "grossGainPerRealSecond": 81.69440242057489,
+          "decayPerRealSecond": 42.96520423600606,
+          "netGainPerRealSecond": 38.72919818456884,
+          "netWithUnscaledDecay": 31.69440242057489,
+          "minimumAttackUptime": 0.5259259259259259
+        },
+        {
+          "stage": "FEVER",
+          "speed": 2,
+          "comboGameSeconds": 0.7175,
+          "comboRealSeconds": 0.8725,
+          "hitsPerRealSecond": 3.438395415472779,
+          "grossGainPerRealSecond": 103.15186246418338,
+          "decayPerRealSecond": 82.23495702005731,
+          "netGainPerRealSecond": 20.916905444126073,
+          "netWithUnscaledDecay": 3.151862464183381,
+          "minimumAttackUptime": 0.7972222222222223
+        }
+      ],
+      "quantizedRates": [
+        {
+          "stage": "Low",
+          "speed": 1,
+          "comboGameSeconds": 1.44,
+          "comboRealSeconds": 1.595,
+          "hitsPerRealSecond": 1.8808777429467085,
+          "grossGainPerRealSecond": 56.426332288401255,
+          "decayPerRealSecond": 11.285266457680251,
+          "netGainPerRealSecond": 45.141065830721004,
+          "netWithUnscaledDecay": 43.926332288401255,
+          "minimumAttackUptime": 0.2
+        },
+        {
+          "stage": "Normal",
+          "speed": 1.25,
+          "comboGameSeconds": 1.1400000000000001,
+          "comboRealSeconds": 1.2950000000000002,
+          "hitsPerRealSecond": 2.3166023166023164,
+          "grossGainPerRealSecond": 69.49806949806948,
+          "decayPerRealSecond": 22.00772200772201,
+          "netGainPerRealSecond": 47.49034749034748,
+          "netWithUnscaledDecay": 44.49806949806948,
+          "minimumAttackUptime": 0.3166666666666667
+        },
+        {
+          "stage": "High",
+          "speed": 1.5,
+          "comboGameSeconds": 1,
+          "comboRealSeconds": 1.155,
+          "hitsPerRealSecond": 2.5974025974025974,
+          "grossGainPerRealSecond": 77.92207792207792,
+          "decayPerRealSecond": 43.290043290043286,
+          "netGainPerRealSecond": 34.63203463203463,
+          "netWithUnscaledDecay": 27.922077922077918,
+          "minimumAttackUptime": 0.5555555555555556
+        },
+        {
+          "stage": "FEVER",
+          "speed": 2,
+          "comboGameSeconds": 0.78,
+          "comboRealSeconds": 0.935,
+          "hitsPerRealSecond": 3.2085561497326203,
+          "grossGainPerRealSecond": 96.2566844919786,
+          "decayPerRealSecond": 83.42245989304813,
+          "netGainPerRealSecond": 12.834224598930481,
+          "netWithUnscaledDecay": -3.7433155080213965,
+          "minimumAttackUptime": 0.8666666666666667
+        }
+      ],
+      "uptimeRates": [
+        {
+          "attackUptime": 0.5,
+          "rates": [
+            {
+              "stage": "Low",
+              "speed": 1,
+              "comboGameSeconds": 1.405,
+              "comboRealSeconds": 1.56,
+              "hitsPerRealSecond": 1.0118043844856661,
+              "grossGainPerRealSecond": 30.354131534569984,
+              "decayPerRealSecond": 11.84654300168634,
+              "netGainPerRealSecond": 18.507588532883645,
+              "netWithUnscaledDecay": 17.854131534569984,
+              "minimumAttackUptime": 0.1951388888888889
+            },
+            {
+              "stage": "Normal",
+              "speed": 1.25,
+              "comboGameSeconds": 1.13,
+              "comboRealSeconds": 1.285,
+              "hitsPerRealSecond": 1.2422360248447204,
+              "grossGainPerRealSecond": 37.267080745341616,
+              "decayPerRealSecond": 23.395445134575567,
+              "netGainPerRealSecond": 13.871635610766049,
+              "netWithUnscaledDecay": 12.267080745341616,
+              "minimumAttackUptime": 0.31388888888888883
+            },
+            {
+              "stage": "High",
+              "speed": 1.5,
+              "comboGameSeconds": 0.9466666666666667,
+              "comboRealSeconds": 1.1016666666666666,
+              "hitsPerRealSecond": 1.4646053702196908,
+              "grossGainPerRealSecond": 43.93816110659073,
+              "decayPerRealSecond": 46.216436126932464,
+              "netGainPerRealSecond": -2.2782750203417437,
+              "netWithUnscaledDecay": -6.0618388934092735,
+              "minimumAttackUptime": 0.5259259259259259
+            },
+            {
+              "stage": "FEVER",
+              "speed": 2,
+              "comboGameSeconds": 0.7175,
+              "comboRealSeconds": 0.8725,
+              "hitsPerRealSecond": 1.8867924528301885,
+              "grossGainPerRealSecond": 56.60377358490566,
+              "decayPerRealSecond": 90.25157232704402,
+              "netGainPerRealSecond": -33.64779874213836,
+              "netWithUnscaledDecay": -43.39622641509434,
+              "minimumAttackUptime": 0.7972222222222223
+            }
+          ]
+        },
+        {
+          "attackUptime": 0.75,
+          "rates": [
+            {
+              "stage": "Low",
+              "speed": 1,
+              "comboGameSeconds": 1.405,
+              "comboRealSeconds": 1.56,
+              "hitsPerRealSecond": 1.4790468364831553,
+              "grossGainPerRealSecond": 44.37140509449466,
+              "decayPerRealSecond": 11.544782251437963,
+              "netGainPerRealSecond": 32.8266228430567,
+              "netWithUnscaledDecay": 31.871405094494662,
+              "minimumAttackUptime": 0.1951388888888889
+            },
+            {
+              "stage": "Normal",
+              "speed": 1.25,
+              "comboGameSeconds": 1.13,
+              "comboRealSeconds": 1.285,
+              "hitsPerRealSecond": 1.8054162487462388,
+              "grossGainPerRealSecond": 54.16248746238716,
+              "decayPerRealSecond": 22.668004012036107,
+              "netGainPerRealSecond": 31.494483450351055,
+              "netWithUnscaledDecay": 29.162487462387162,
+              "minimumAttackUptime": 0.31388888888888883
+            },
+            {
+              "stage": "High",
+              "speed": 1.5,
+              "comboGameSeconds": 0.9466666666666667,
+              "comboRealSeconds": 1.1016666666666666,
+              "hitsPerRealSecond": 2.1168169345354766,
+              "grossGainPerRealSecond": 63.504508036064294,
+              "decayPerRealSecond": 44.53155625245002,
+              "netGainPerRealSecond": 18.972951783614274,
+              "netWithUnscaledDecay": 13.504508036064294,
+              "minimumAttackUptime": 0.5259259259259259
+            },
+            {
+              "stage": "FEVER",
+              "speed": 2,
+              "comboGameSeconds": 0.7175,
+              "comboRealSeconds": 0.8725,
+              "hitsPerRealSecond": 2.698650674662668,
+              "grossGainPerRealSecond": 80.95952023988005,
+              "decayPerRealSecond": 86.05697151424287,
+              "netGainPerRealSecond": -5.097451274362823,
+              "netWithUnscaledDecay": -19.04047976011995,
+              "minimumAttackUptime": 0.7972222222222223
+            }
+          ]
+        },
+        {
+          "attackUptime": 1,
+          "rates": [
+            {
+              "stage": "Low",
+              "speed": 1,
+              "comboGameSeconds": 1.405,
+              "comboRealSeconds": 1.56,
+              "hitsPerRealSecond": 1.923076923076923,
+              "grossGainPerRealSecond": 57.69230769230769,
+              "decayPerRealSecond": 11.25801282051282,
+              "netGainPerRealSecond": 46.43429487179487,
+              "netWithUnscaledDecay": 45.19230769230769,
+              "minimumAttackUptime": 0.1951388888888889
+            },
+            {
+              "stage": "Normal",
+              "speed": 1.25,
+              "comboGameSeconds": 1.13,
+              "comboRealSeconds": 1.285,
+              "hitsPerRealSecond": 2.3346303501945527,
+              "grossGainPerRealSecond": 70.03891050583658,
+              "decayPerRealSecond": 21.98443579766537,
+              "netGainPerRealSecond": 48.054474708171206,
+              "netWithUnscaledDecay": 45.03891050583658,
+              "minimumAttackUptime": 0.31388888888888883
+            },
+            {
+              "stage": "High",
+              "speed": 1.5,
+              "comboGameSeconds": 0.9466666666666667,
+              "comboRealSeconds": 1.1016666666666666,
+              "hitsPerRealSecond": 2.7231467473524966,
+              "grossGainPerRealSecond": 81.69440242057489,
+              "decayPerRealSecond": 42.96520423600606,
+              "netGainPerRealSecond": 38.72919818456884,
+              "netWithUnscaledDecay": 31.69440242057489,
+              "minimumAttackUptime": 0.5259259259259259
+            },
+            {
+              "stage": "FEVER",
+              "speed": 2,
+              "comboGameSeconds": 0.7175,
+              "comboRealSeconds": 0.8725,
+              "hitsPerRealSecond": 3.438395415472779,
+              "grossGainPerRealSecond": 103.15186246418338,
+              "decayPerRealSecond": 82.23495702005731,
+              "netGainPerRealSecond": 20.916905444126073,
+              "netWithUnscaledDecay": 3.151862464183381,
+              "minimumAttackUptime": 0.7972222222222223
+            }
+          ]
+        }
+      ],
+      "simulations": [
+        {
+          "model": "continuous",
+          "attackUptime": 1,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 5.240000000000001,
+            "High": 10.424999999999999,
+            "FEVER": 16.78
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 11,
+            "High": 23,
+            "FEVER": 40
+          },
+          "firstFeverExitRealSeconds": 16.8925,
+          "firstFeverDurationRealSeconds": 0.11249999999999716,
+          "finalGauge": 988.75,
+          "simulatedRealSeconds": 120.2049999999991,
+          "hits": 395,
+          "occupancy": {
+            "Low": 5.240000000000001,
+            "Normal": 5.275000000000002,
+            "High": 6.591250000000005,
+            "FEVER": 103.09874999999933
+          },
+          "attackStartCounts": {
+            "Low": 11,
+            "Normal": 12,
+            "High": 18,
+            "FEVER": 354
+          },
+          "firstFeverAttackRealSeconds": 17.25,
+          "firstFeverEvent": {
+            "hit": 40,
+            "realSeconds": 16.78,
+            "gameSeconds": 14.764999999999988,
+            "before": 727.7499999999998,
+            "after": 757.7499999999998,
+            "attackSpeed": 1.5
+          },
+          "eventsNearFirstFever": [
+            {
+              "hit": 38,
+              "realSeconds": 15.963333333333331,
+              "gameSeconds": 14.068333333333323,
+              "before": 702.5833333333331,
+              "after": 732.5833333333331,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 39,
+              "realSeconds": 16.42833333333333,
+              "gameSeconds": 14.498333333333322,
+              "before": 711.0833333333331,
+              "after": 741.0833333333331,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 40,
+              "realSeconds": 16.78,
+              "gameSeconds": 14.764999999999988,
+              "before": 727.7499999999998,
+              "after": 757.7499999999998,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 41,
+              "realSeconds": 17.065,
+              "gameSeconds": 15.014999999999986,
+              "before": 741.3749999999999,
+              "after": 771.3749999999999,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 42,
+              "realSeconds": 17.4675,
+              "gameSeconds": 15.382499999999986,
+              "before": 742.3125,
+              "after": 772.3125,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 43,
+              "realSeconds": 17.7525,
+              "gameSeconds": 15.582499999999985,
+              "before": 752.3125,
+              "after": 782.3125,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 44,
+              "realSeconds": 17.975,
+              "gameSeconds": 15.769999999999985,
+              "before": 763.5625,
+              "after": 793.5625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 45,
+              "realSeconds": 18.340000000000003,
+              "gameSeconds": 16.099999999999987,
+              "before": 760.5625,
+              "after": 790.5625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 46,
+              "realSeconds": 18.625000000000004,
+              "gameSeconds": 16.299999999999986,
+              "before": 770.5625,
+              "after": 800.5625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 47,
+              "realSeconds": 18.847500000000004,
+              "gameSeconds": 16.487499999999986,
+              "before": 781.8125,
+              "after": 811.8125,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 48,
+              "realSeconds": 19.212500000000006,
+              "gameSeconds": 16.81749999999999,
+              "before": 778.8125,
+              "after": 808.8125,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 49,
+              "realSeconds": 19.497500000000006,
+              "gameSeconds": 17.017499999999988,
+              "before": 788.8125,
+              "after": 818.8125,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 50,
+              "realSeconds": 19.720000000000006,
+              "gameSeconds": 17.204999999999988,
+              "before": 800.0625,
+              "after": 830.0625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 51,
+              "realSeconds": 20.085000000000008,
+              "gameSeconds": 17.53499999999999,
+              "before": 797.0625,
+              "after": 827.0625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 52,
+              "realSeconds": 20.370000000000008,
+              "gameSeconds": 17.73499999999999,
+              "before": 807.0625,
+              "after": 837.0625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 53,
+              "realSeconds": 20.59250000000001,
+              "gameSeconds": 17.92249999999999,
+              "before": 818.3125,
+              "after": 848.3125,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 54,
+              "realSeconds": 20.95750000000001,
+              "gameSeconds": 18.25249999999999,
+              "before": 815.3125,
+              "after": 845.3125,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 55,
+              "realSeconds": 21.24250000000001,
+              "gameSeconds": 18.45249999999999,
+              "before": 825.3125,
+              "after": 855.3125,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 56,
+              "realSeconds": 21.46500000000001,
+              "gameSeconds": 18.63999999999999,
+              "before": 836.5625,
+              "after": 866.5625,
+              "attackSpeed": 2
+            }
+          ],
+          "comboSamples": [
+            {
+              "realSeconds": 1.56,
+              "gameSeconds": 1.405,
+              "gauge": 74.3125
+            },
+            {
+              "realSeconds": 8.685000000000002,
+              "gameSeconds": 7.755,
+              "gauge": 407.25
+            },
+            {
+              "realSeconds": 14.476666666666665,
+              "gameSeconds": 12.771666666666658,
+              "gauge": 647.4166666666665
+            },
+            {
+              "realSeconds": 19.422500000000007,
+              "gameSeconds": 16.94249999999999,
+              "gauge": 796.3125
+            },
+            {
+              "realSeconds": 23.785000000000018,
+              "gameSeconds": 20.529999999999994,
+              "gauge": 887.5625
+            },
+            {
+              "realSeconds": 28.14750000000003,
+              "gameSeconds": 24.1175,
+              "gauge": 978.8125
+            },
+            {
+              "realSeconds": 32.51000000000004,
+              "gameSeconds": 27.705000000000005,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 36.87250000000002,
+              "gameSeconds": 31.29250000000001,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 41.23499999999999,
+              "gameSeconds": 34.88000000000002,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 45.59749999999997,
+              "gameSeconds": 38.46750000000002,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 49.959999999999944,
+              "gameSeconds": 42.05500000000003,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 54.32249999999992,
+              "gameSeconds": 45.642500000000034,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 58.684999999999896,
+              "gameSeconds": 49.23000000000004,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 63.04749999999987,
+              "gameSeconds": 52.817500000000045,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 67.40999999999983,
+              "gameSeconds": 56.40500000000005,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 71.77249999999977,
+              "gameSeconds": 59.99250000000006,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 76.1349999999997,
+              "gameSeconds": 63.58000000000006,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 80.49749999999965,
+              "gameSeconds": 67.16750000000006,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 84.85999999999959,
+              "gameSeconds": 70.75500000000007,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 89.22249999999953,
+              "gameSeconds": 74.34250000000007,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 93.58499999999947,
+              "gameSeconds": 77.93000000000008,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 97.94749999999941,
+              "gameSeconds": 81.51750000000008,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 102.30999999999935,
+              "gameSeconds": 85.10500000000009,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 106.67249999999929,
+              "gameSeconds": 88.6925000000001,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 111.03499999999923,
+              "gameSeconds": 92.2800000000001,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 115.39749999999917,
+              "gameSeconds": 95.8675000000001,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 119.75999999999911,
+              "gameSeconds": 99.45500000000011,
+              "gauge": 984.5
+            }
+          ]
+        },
+        {
+          "model": "continuous",
+          "attackUptime": 0.75,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 6.6450000000000005,
+            "High": 15.214999999999993,
+            "FEVER": 28.033333333333353
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 11,
+            "High": 26,
+            "FEVER": 53
+          },
+          "firstFeverExitRealSeconds": 28.171883680555567,
+          "firstFeverDurationRealSeconds": 0.13855034722221404,
+          "finalGauge": 754.6428571428571,
+          "simulatedRealSeconds": 120.2538888888885,
+          "hits": 283,
+          "occupancy": {
+            "Low": 7.072500000000001,
+            "Normal": 8.382118055555557,
+            "High": 35.03558283730173,
+            "FEVER": 69.76368799603142
+          },
+          "attackStartCounts": {
+            "Low": 12,
+            "Normal": 14,
+            "High": 106,
+            "FEVER": 151
+          },
+          "firstFeverAttackRealSeconds": 29.635555555555577,
+          "firstFeverEvent": {
+            "hit": 53,
+            "realSeconds": 28.033333333333353,
+            "gameSeconds": 25.363333333333333,
+            "before": 730.3550347222215,
+            "after": 760.3550347222215,
+            "attackSpeed": 1.5
+          },
+          "eventsNearFirstFever": [
+            {
+              "hit": 51,
+              "realSeconds": 27.081111111111127,
+              "gameSeconds": 24.53111111111111,
+              "before": 711.9661458333327,
+              "after": 741.9661458333327,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 52,
+              "realSeconds": 27.748333333333353,
+              "gameSeconds": 25.113333333333333,
+              "before": 712.8550347222215,
+              "after": 742.8550347222215,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 53,
+              "realSeconds": 28.033333333333353,
+              "gameSeconds": 25.363333333333333,
+              "before": 730.3550347222215,
+              "after": 760.3550347222215,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 54,
+              "realSeconds": 28.498333333333353,
+              "gameSeconds": 25.793333333333333,
+              "before": 733.6775173611107,
+              "after": 763.6775173611107,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 55,
+              "realSeconds": 29.165555555555574,
+              "gameSeconds": 26.375555555555554,
+              "before": 727.7276475694442,
+              "after": 757.7276475694442,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 56,
+              "realSeconds": 29.450555555555578,
+              "gameSeconds": 26.625555555555557,
+              "before": 741.3638237847221,
+              "after": 771.3638237847221,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 57,
+              "realSeconds": 29.853055555555578,
+              "gameSeconds": 26.993055555555557,
+              "before": 742.3069118923611,
+              "after": 772.3069118923611,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 58,
+              "realSeconds": 30.443888888888914,
+              "gameSeconds": 27.498888888888892,
+              "before": 735.8617892795139,
+              "after": 765.8617892795139,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 59,
+              "realSeconds": 30.703888888888912,
+              "gameSeconds": 27.72388888888889,
+              "before": 746.680894639757,
+              "after": 776.680894639757,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 60,
+              "realSeconds": 31.068888888888914,
+              "gameSeconds": 28.053888888888892,
+              "before": 746.8404473198784,
+              "after": 776.8404473198784,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 61,
+              "realSeconds": 31.638888888888918,
+              "gameSeconds": 28.538888888888895,
+              "before": 739.1702236599392,
+              "after": 769.1702236599392,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 62,
+              "realSeconds": 31.898888888888916,
+              "gameSeconds": 28.763888888888893,
+              "before": 748.3351118299696,
+              "after": 778.3351118299696,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 63,
+              "realSeconds": 32.263888888888914,
+              "gameSeconds": 29.09388888888889,
+              "before": 747.6675559149847,
+              "after": 777.6675559149847,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 64,
+              "realSeconds": 32.83388888888892,
+              "gameSeconds": 29.578888888888894,
+              "before": 739.5837779574924,
+              "after": 769.5837779574924,
+              "attackSpeed": 1.5
+            }
+          ],
+          "comboSamples": [
+            {
+              "realSeconds": 2.0283333333333333,
+              "gameSeconds": 1.8733333333333333,
+              "gauge": 68.45833333333333
+            },
+            {
+              "realSeconds": 11.436666666666664,
+              "gameSeconds": 10.506666666666662,
+              "gauge": 361.3645833333333
+            },
+            {
+              "realSeconds": 19.145,
+              "gameSeconds": 17.439999999999987,
+              "gauge": 556.5217013888887
+            },
+            {
+              "realSeconds": 26.231111111111126,
+              "gameSeconds": 23.751111111111108,
+              "gauge": 690.9661458333327
+            },
+            {
+              "realSeconds": 32.73388888888892,
+              "gameSeconds": 29.478888888888893,
+              "gauge": 744.5837779574924
+            },
+            {
+              "realSeconds": 38.70888888888888,
+              "gameSeconds": 34.67888888888889,
+              "gauge": 744.6428553399035
+            },
+            {
+              "realSeconds": 44.68388888888882,
+              "gameSeconds": 39.878888888888866,
+              "gauge": 744.6428571428022
+            },
+            {
+              "realSeconds": 50.65888888888882,
+              "gameSeconds": 45.07888888888889,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 56.63388888888882,
+              "gameSeconds": 50.27888888888892,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 62.60888888888882,
+              "gameSeconds": 55.47888888888895,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 68.5838888888888,
+              "gameSeconds": 60.678888888888984,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 74.55888888888876,
+              "gameSeconds": 65.87888888888902,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 80.53388888888873,
+              "gameSeconds": 71.07888888888905,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 86.50888888888869,
+              "gameSeconds": 76.27888888888909,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 92.48388888888866,
+              "gameSeconds": 81.47888888888912,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 98.45888888888862,
+              "gameSeconds": 86.67888888888915,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 104.43388888888859,
+              "gameSeconds": 91.87888888888918,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 110.40888888888855,
+              "gameSeconds": 97.07888888888921,
+              "gauge": 744.6428571428571
+            },
+            {
+              "realSeconds": 116.38388888888852,
+              "gameSeconds": 102.27888888888924,
+              "gauge": 744.6428571428571
+            }
+          ]
+        },
+        {
+          "model": "continuous",
+          "attackUptime": 0.5,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 12.420000000000002,
+            "High": 29.519999999999996
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 14,
+            "High": 35
+          },
+          "firstFeverExitRealSeconds": null,
+          "firstFeverDurationRealSeconds": null,
+          "finalGauge": 528.8333333333267,
+          "simulatedRealSeconds": 120.28166666666664,
+          "hits": 161,
+          "occupancy": {
+            "Low": 12.420000000000002,
+            "Normal": 35.30916666666649,
+            "High": 72.55250000000004,
+            "FEVER": 0
+          },
+          "attackStartCounts": {
+            "Low": 14,
+            "Normal": 65,
+            "High": 82,
+            "FEVER": 0
+          },
+          "firstFeverAttackRealSeconds": null,
+          "firstFeverEvent": null,
+          "eventsNearFirstFever": [],
+          "comboSamples": [
+            {
+              "realSeconds": 2.965,
+              "gameSeconds": 2.81,
+              "gauge": 56.75
+            },
+            {
+              "realSeconds": 16.99,
+              "gameSeconds": 16.059999999999995,
+              "gauge": 287.4375
+            },
+            {
+              "realSeconds": 29.064999999999994,
+              "gameSeconds": 27.359999999999985,
+              "gauge": 454.9375
+            },
+            {
+              "realSeconds": 40.173333333333304,
+              "gameSeconds": 37.693333333333314,
+              "gauge": 492.43465169270826
+            },
+            {
+              "realSeconds": 50.91499999999993,
+              "gameSeconds": 47.65999999999996,
+              "gauge": 493.3052495320637
+            },
+            {
+              "realSeconds": 61.65666666666654,
+              "gameSeconds": 57.6266666666666,
+              "gauge": 493.3324557145436
+            },
+            {
+              "realSeconds": 72.39833333333318,
+              "gameSeconds": 67.59333333333325,
+              "gauge": 493.3333059077461
+            },
+            {
+              "realSeconds": 83.13999999999987,
+              "gameSeconds": 77.56,
+              "gauge": 493.33333247628366
+            },
+            {
+              "realSeconds": 93.88166666666656,
+              "gameSeconds": 87.52666666666676,
+              "gauge": 493.33333330655046
+            },
+            {
+              "realSeconds": 104.62333333333326,
+              "gameSeconds": 97.49333333333352,
+              "gauge": 493.3333333324963
+            },
+            {
+              "realSeconds": 115.36499999999995,
+              "gameSeconds": 107.46000000000028,
+              "gauge": 493.3333333333071
+            }
+          ]
+        },
+        {
+          "model": "quantized",
+          "attackUptime": 1,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 5.36,
+            "High": 10.579999999999997,
+            "FEVER": 17.53
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 11,
+            "High": 23,
+            "FEVER": 41
+          },
+          "firstFeverExitRealSeconds": 17.65125,
+          "firstFeverDurationRealSeconds": 0.12124999999999986,
+          "finalGauge": 980,
+          "simulatedRealSeconds": 120.26499999999862,
+          "hits": 369,
+          "occupancy": {
+            "Low": 5.36,
+            "Normal": 5.355000000000001,
+            "High": 7.428281250000002,
+            "FEVER": 102.12171874999885
+          },
+          "attackStartCounts": {
+            "Low": 11,
+            "Normal": 12,
+            "High": 20,
+            "FEVER": 326
+          },
+          "firstFeverAttackRealSeconds": 18.585000000000008,
+          "firstFeverEvent": {
+            "hit": 41,
+            "realSeconds": 17.53,
+            "gameSeconds": 15.479999999999984,
+            "before": 728.625,
+            "after": 758.625,
+            "attackSpeed": 1.5
+          },
+          "eventsNearFirstFever": [
+            {
+              "hit": 39,
+              "realSeconds": 16.849999999999998,
+              "gameSeconds": 14.919999999999986,
+              "before": 696.625,
+              "after": 726.625,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 40,
+              "realSeconds": 17.235,
+              "gameSeconds": 15.219999999999985,
+              "before": 711.625,
+              "after": 741.625,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 41,
+              "realSeconds": 17.53,
+              "gameSeconds": 15.479999999999984,
+              "before": 728.625,
+              "after": 758.625,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 42,
+              "realSeconds": 18.005000000000003,
+              "gameSeconds": 15.919999999999984,
+              "before": 732.3125,
+              "after": 762.3125,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 43,
+              "realSeconds": 18.390000000000008,
+              "gameSeconds": 16.219999999999988,
+              "before": 741.15625,
+              "after": 771.15625,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 44,
+              "realSeconds": 18.665000000000006,
+              "gameSeconds": 16.459999999999987,
+              "before": 748.578125,
+              "after": 778.578125,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 45,
+              "realSeconds": 19.040000000000006,
+              "gameSeconds": 16.799999999999986,
+              "before": 747.2890625,
+              "after": 777.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 46,
+              "realSeconds": 19.365000000000006,
+              "gameSeconds": 17.039999999999985,
+              "before": 753.2890625,
+              "after": 783.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 47,
+              "realSeconds": 19.600000000000005,
+              "gameSeconds": 17.239999999999984,
+              "before": 763.2890625,
+              "after": 793.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 48,
+              "realSeconds": 19.975000000000005,
+              "gameSeconds": 17.579999999999984,
+              "before": 759.2890625,
+              "after": 789.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 49,
+              "realSeconds": 20.300000000000004,
+              "gameSeconds": 17.819999999999983,
+              "before": 765.2890625,
+              "after": 795.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 50,
+              "realSeconds": 20.535000000000004,
+              "gameSeconds": 18.019999999999982,
+              "before": 775.2890625,
+              "after": 805.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 51,
+              "realSeconds": 20.910000000000004,
+              "gameSeconds": 18.35999999999998,
+              "before": 771.2890625,
+              "after": 801.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 52,
+              "realSeconds": 21.235000000000003,
+              "gameSeconds": 18.59999999999998,
+              "before": 777.2890625,
+              "after": 807.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 53,
+              "realSeconds": 21.470000000000002,
+              "gameSeconds": 18.79999999999998,
+              "before": 787.2890625,
+              "after": 817.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 54,
+              "realSeconds": 21.845000000000002,
+              "gameSeconds": 19.13999999999998,
+              "before": 783.2890625,
+              "after": 813.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 55,
+              "realSeconds": 22.17,
+              "gameSeconds": 19.379999999999978,
+              "before": 789.2890625,
+              "after": 819.2890625,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 56,
+              "realSeconds": 22.405,
+              "gameSeconds": 19.579999999999977,
+              "before": 799.2890625,
+              "after": 829.2890625,
+              "attackSpeed": 2
+            }
+          ],
+          "comboSamples": [
+            {
+              "realSeconds": 1.595,
+              "gameSeconds": 1.44,
+              "gauge": 74
+            },
+            {
+              "realSeconds": 8.83,
+              "gameSeconds": 7.8999999999999995,
+              "gauge": 405.25
+            },
+            {
+              "realSeconds": 14.824999999999994,
+              "gameSeconds": 13.119999999999989,
+              "gauge": 636.625
+            },
+            {
+              "realSeconds": 20.220000000000006,
+              "gameSeconds": 17.739999999999984,
+              "gauge": 773.2890625
+            },
+            {
+              "realSeconds": 24.895,
+              "gameSeconds": 21.639999999999972,
+              "gauge": 833.2890625
+            },
+            {
+              "realSeconds": 29.569999999999993,
+              "gameSeconds": 25.53999999999996,
+              "gauge": 893.2890625
+            },
+            {
+              "realSeconds": 34.24499999999995,
+              "gameSeconds": 29.439999999999948,
+              "gauge": 953.2890625
+            },
+            {
+              "realSeconds": 38.91999999999985,
+              "gameSeconds": 33.33999999999992,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 43.59499999999976,
+              "gameSeconds": 37.23999999999985,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 48.26999999999966,
+              "gameSeconds": 41.13999999999979,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 52.94499999999957,
+              "gameSeconds": 45.03999999999972,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 57.61999999999947,
+              "gameSeconds": 48.93999999999966,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 62.294999999999376,
+              "gameSeconds": 52.83999999999959,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 66.9699999999993,
+              "gameSeconds": 56.739999999999526,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 71.64499999999924,
+              "gameSeconds": 60.63999999999946,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 76.31999999999918,
+              "gameSeconds": 64.53999999999941,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 80.99499999999912,
+              "gameSeconds": 68.43999999999942,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 85.66999999999906,
+              "gameSeconds": 72.33999999999942,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 90.344999999999,
+              "gameSeconds": 76.23999999999943,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 95.01999999999894,
+              "gameSeconds": 80.13999999999943,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 99.69499999999888,
+              "gameSeconds": 84.03999999999944,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 104.36999999999883,
+              "gameSeconds": 87.93999999999944,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 109.04499999999877,
+              "gameSeconds": 91.83999999999945,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 113.7199999999987,
+              "gameSeconds": 95.73999999999945,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 118.39499999999865,
+              "gameSeconds": 99.63999999999946,
+              "gauge": 980
+            }
+          ]
+        },
+        {
+          "model": "quantized",
+          "attackUptime": 0.75,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 6.8,
+            "High": 15.454999999999993,
+            "FEVER": 30.43833333333336
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 11,
+            "High": 26,
+            "FEVER": 56
+          },
+          "firstFeverExitRealSeconds": 30.4807291666667,
+          "firstFeverDurationRealSeconds": 0.04239583333333741,
+          "finalGauge": 757.7142857142858,
+          "simulatedRealSeconds": 120.19666666666494,
+          "hits": 254,
+          "occupancy": {
+            "Low": 7.31,
+            "Normal": 8.536249999999999,
+            "High": 54.91824404761913,
+            "FEVER": 49.43217261904754
+          },
+          "attackStartCounts": {
+            "Low": 12,
+            "Normal": 15,
+            "High": 162,
+            "FEVER": 65
+          },
+          "firstFeverAttackRealSeconds": 32.1216666666667,
+          "firstFeverEvent": {
+            "hit": 56,
+            "realSeconds": 30.43833333333336,
+            "gameSeconds": 27.613333333333344,
+            "before": 720.7395833333336,
+            "after": 750.7395833333336,
+            "attackSpeed": 1.5
+          },
+          "eventsNearFirstFever": [
+            {
+              "hit": 55,
+              "realSeconds": 30.14333333333336,
+              "gameSeconds": 27.353333333333342,
+              "before": 703.7395833333336,
+              "after": 733.7395833333336,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 56,
+              "realSeconds": 30.43833333333336,
+              "gameSeconds": 27.613333333333344,
+              "before": 720.7395833333336,
+              "after": 750.7395833333336,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 57,
+              "realSeconds": 30.913333333333362,
+              "gameSeconds": 28.053333333333345,
+              "before": 728.3697916666667,
+              "after": 758.3697916666667,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 58,
+              "realSeconds": 31.6316666666667,
+              "gameSeconds": 28.68666666666668,
+              "before": 722.5182291666667,
+              "after": 752.5182291666667,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 59,
+              "realSeconds": 31.9266666666667,
+              "gameSeconds": 28.946666666666683,
+              "before": 738.2591145833334,
+              "after": 768.2591145833334,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 60,
+              "realSeconds": 32.3416666666667,
+              "gameSeconds": 29.326666666666686,
+              "before": 740.1295572916667,
+              "after": 770.1295572916667,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 61,
+              "realSeconds": 32.98666666666669,
+              "gameSeconds": 29.886666666666688,
+              "before": 732.0647786458334,
+              "after": 762.0647786458334,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 62,
+              "realSeconds": 33.281666666666695,
+              "gameSeconds": 30.14666666666669,
+              "before": 743.0323893229166,
+              "after": 773.0323893229166,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 63,
+              "realSeconds": 33.69666666666669,
+              "gameSeconds": 30.52666666666669,
+              "before": 742.5161946614583,
+              "after": 772.5161946614583,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 64,
+              "realSeconds": 34.34166666666668,
+              "gameSeconds": 31.08666666666669,
+              "before": 733.2580973307291,
+              "after": 763.2580973307291,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 65,
+              "realSeconds": 34.636666666666684,
+              "gameSeconds": 31.346666666666692,
+              "before": 743.6290486653646,
+              "after": 773.6290486653646,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 66,
+              "realSeconds": 35.05166666666668,
+              "gameSeconds": 31.726666666666695,
+              "before": 742.8145243326824,
+              "after": 772.8145243326824,
+              "attackSpeed": 2
+            }
+          ],
+          "comboSamples": [
+            {
+              "realSeconds": 2.0749999999999997,
+              "gameSeconds": 1.92,
+              "gauge": 68
+            },
+            {
+              "realSeconds": 11.649999999999997,
+              "gameSeconds": 10.719999999999995,
+              "gauge": 359.125
+            },
+            {
+              "realSeconds": 19.625,
+              "gameSeconds": 17.91999999999999,
+              "gauge": 545.40625
+            },
+            {
+              "realSeconds": 27.066666666666684,
+              "gameSeconds": 24.58666666666667,
+              "gauge": 662.0729166666669
+            },
+            {
+              "realSeconds": 34.24166666666668,
+              "gameSeconds": 30.98666666666669,
+              "gauge": 738.2580973307291
+            },
+            {
+              "realSeconds": 41.01666666666666,
+              "gameSeconds": 36.9866666666667,
+              "gauge": 738.4285662261149
+            },
+            {
+              "realSeconds": 47.79166666666661,
+              "gameSeconds": 42.98666666666668,
+              "gauge": 738.4285714284127
+            },
+            {
+              "realSeconds": 54.56666666666658,
+              "gameSeconds": 48.98666666666668,
+              "gauge": 738.4285714285714
+            },
+            {
+              "realSeconds": 61.34166666666656,
+              "gameSeconds": 54.98666666666669,
+              "gauge": 738.4285714285714
+            },
+            {
+              "realSeconds": 68.11666666666643,
+              "gameSeconds": 60.98666666666671,
+              "gauge": 738.4285714285714
+            },
+            {
+              "realSeconds": 74.89166666666624,
+              "gameSeconds": 66.98666666666666,
+              "gauge": 738.4285714285714
+            },
+            {
+              "realSeconds": 81.66666666666605,
+              "gameSeconds": 72.98666666666654,
+              "gauge": 738.4285714285714
+            },
+            {
+              "realSeconds": 88.44166666666585,
+              "gameSeconds": 78.98666666666641,
+              "gauge": 738.4285714285714
+            },
+            {
+              "realSeconds": 95.21666666666566,
+              "gameSeconds": 84.98666666666628,
+              "gauge": 738.4285714285714
+            },
+            {
+              "realSeconds": 101.99166666666547,
+              "gameSeconds": 90.98666666666615,
+              "gauge": 738.4285714285714
+            },
+            {
+              "realSeconds": 108.76666666666527,
+              "gameSeconds": 96.98666666666603,
+              "gauge": 738.4285714285714
+            },
+            {
+              "realSeconds": 115.54166666666508,
+              "gameSeconds": 102.9866666666659,
+              "gauge": 738.4285714285714
+            }
+          ]
+        },
+        {
+          "model": "quantized",
+          "attackUptime": 0.5,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 12.715000000000003,
+            "High": 30.675000000000015
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 14,
+            "High": 36
+          },
+          "firstFeverExitRealSeconds": null,
+          "firstFeverDurationRealSeconds": null,
+          "finalGauge": 488.9999999999926,
+          "simulatedRealSeconds": 121.57999999999976,
+          "hits": 156,
+          "occupancy": {
+            "Low": 12.885000000000003,
+            "Normal": 42.12999999999968,
+            "High": 66.56500000000023,
+            "FEVER": 0
+          },
+          "attackStartCounts": {
+            "Low": 15,
+            "Normal": 62,
+            "High": 79,
+            "FEVER": 0
+          },
+          "firstFeverAttackRealSeconds": null,
+          "firstFeverEvent": null,
+          "eventsNearFirstFever": [],
+          "comboSamples": [
+            {
+              "realSeconds": 3.035,
+              "gameSeconds": 2.88,
+              "gauge": 56
+            },
+            {
+              "realSeconds": 17.490000000000002,
+              "gameSeconds": 16.56,
+              "gauge": 280.875
+            },
+            {
+              "realSeconds": 29.665000000000013,
+              "gameSeconds": 27.960000000000004,
+              "gauge": 445.875
+            },
+            {
+              "realSeconds": 41.11999999999999,
+              "gameSeconds": 38.64000000000001,
+              "gauge": 488.49365234375
+            },
+            {
+              "realSeconds": 52.29499999999995,
+              "gameSeconds": 49.04,
+              "gauge": 488.9841766357422
+            },
+            {
+              "realSeconds": 63.469999999999914,
+              "gameSeconds": 59.43999999999999,
+              "gauge": 488.99950551986694
+            },
+            {
+              "realSeconds": 74.64499999999988,
+              "gameSeconds": 69.83999999999999,
+              "gauge": 488.99998454749584
+            },
+            {
+              "realSeconds": 85.81999999999984,
+              "gameSeconds": 80.24000000000001,
+              "gauge": 488.99999951710925
+            },
+            {
+              "realSeconds": 96.99499999999978,
+              "gameSeconds": 90.64000000000001,
+              "gauge": 488.99999998490966
+            },
+            {
+              "realSeconds": 108.16999999999977,
+              "gameSeconds": 101.04000000000008,
+              "gauge": 488.9999999995284
+            },
+            {
+              "realSeconds": 119.34499999999976,
+              "gameSeconds": 111.44000000000013,
+              "gauge": 488.9999999999853
+            }
+          ]
+        }
+      ],
+      "twoTargetSimulation": {
+        "model": "continuous",
+        "attackUptime": 1,
+        "targets": 2,
+        "gain": 30,
+        "firstThresholdRealSeconds": {
+          "Normal": 2.12,
+          "High": 4.400000000000002,
+          "FEVER": 6.633333333333336
+        },
+        "firstThresholdHitNumber": {
+          "Normal": 5,
+          "High": 10,
+          "FEVER": 16
+        },
+        "firstFeverExitRealSeconds": null,
+        "firstFeverDurationRealSeconds": null,
+        "finalGauge": 987.5,
+        "simulatedRealSeconds": 120.02083333333243,
+        "hits": 405,
+        "occupancy": {
+          "Low": 2.12,
+          "Normal": 2.2800000000000002,
+          "High": 2.233333333333334,
+          "FEVER": 113.38749999999919
+        },
+        "attackStartCounts": {
+          "Low": 5,
+          "Normal": 5,
+          "High": 6,
+          "FEVER": 389
+        },
+        "firstFeverAttackRealSeconds": 6.818333333333337,
+        "firstFeverEvent": {
+          "hit": 16,
+          "realSeconds": 6.633333333333336,
+          "gameSeconds": 5.858333333333335,
+          "before": 731.4583333333333,
+          "after": 791.4583333333333,
+          "attackSpeed": 1.5
+        },
+        "eventsNearFirstFever": [
+          {
+            "hit": 14,
+            "realSeconds": 5.816666666666669,
+            "gameSeconds": 5.161666666666668,
+            "before": 646.2916666666666,
+            "after": 706.2916666666666,
+            "attackSpeed": 1.5
+          },
+          {
+            "hit": 15,
+            "realSeconds": 6.28166666666667,
+            "gameSeconds": 5.591666666666669,
+            "before": 684.7916666666666,
+            "after": 744.7916666666666,
+            "attackSpeed": 1.5
+          },
+          {
+            "hit": 16,
+            "realSeconds": 6.633333333333336,
+            "gameSeconds": 5.858333333333335,
+            "before": 731.4583333333333,
+            "after": 791.4583333333333,
+            "attackSpeed": 1.5
+          },
+          {
+            "hit": 17,
+            "realSeconds": 6.893333333333337,
+            "gameSeconds": 6.083333333333336,
+            "before": 768.9583333333333,
+            "after": 828.9583333333333,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 18,
+            "realSeconds": 7.258333333333337,
+            "gameSeconds": 6.413333333333336,
+            "before": 795.9583333333333,
+            "after": 855.9583333333333,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 19,
+            "realSeconds": 7.543333333333337,
+            "gameSeconds": 6.613333333333336,
+            "before": 835.9583333333333,
+            "after": 895.9583333333333,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 20,
+            "realSeconds": 7.765833333333338,
+            "gameSeconds": 6.800833333333336,
+            "before": 877.2083333333333,
+            "after": 937.2083333333333,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 21,
+            "realSeconds": 8.130833333333337,
+            "gameSeconds": 7.130833333333336,
+            "before": 904.2083333333333,
+            "after": 964.2083333333333,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 22,
+            "realSeconds": 8.415833333333337,
+            "gameSeconds": 7.330833333333336,
+            "before": 944.2083333333333,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 23,
+            "realSeconds": 8.638333333333337,
+            "gameSeconds": 7.518333333333336,
+            "before": 981.25,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 24,
+            "realSeconds": 9.003333333333337,
+            "gameSeconds": 7.848333333333336,
+            "before": 967,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 25,
+            "realSeconds": 9.288333333333338,
+            "gameSeconds": 8.048333333333336,
+            "before": 980,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 26,
+            "realSeconds": 9.510833333333338,
+            "gameSeconds": 8.235833333333336,
+            "before": 981.25,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 27,
+            "realSeconds": 9.875833333333338,
+            "gameSeconds": 8.565833333333336,
+            "before": 967,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 28,
+            "realSeconds": 10.160833333333338,
+            "gameSeconds": 8.765833333333335,
+            "before": 980,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 29,
+            "realSeconds": 10.383333333333338,
+            "gameSeconds": 8.953333333333335,
+            "before": 981.25,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 30,
+            "realSeconds": 10.748333333333338,
+            "gameSeconds": 9.283333333333335,
+            "before": 967,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 31,
+            "realSeconds": 11.033333333333339,
+            "gameSeconds": 9.483333333333334,
+            "before": 980,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 32,
+            "realSeconds": 11.255833333333339,
+            "gameSeconds": 9.670833333333334,
+            "before": 981.25,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 33,
+            "realSeconds": 11.620833333333339,
+            "gameSeconds": 10.000833333333334,
+            "before": 967,
+            "after": 1000,
+            "attackSpeed": 2
+          }
+        ],
+        "comboSamples": [
+          {
+            "realSeconds": 1.56,
+            "gameSeconds": 1.405,
+            "gauge": 164.3125
+          },
+          {
+            "realSeconds": 7.468333333333337,
+            "gameSeconds": 6.538333333333336,
+            "gauge": 843.4583333333333
+          },
+          {
+            "realSeconds": 11.83083333333334,
+            "gameSeconds": 10.125833333333334,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 16.193333333333342,
+            "gameSeconds": 13.713333333333331,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 20.555833333333354,
+            "gameSeconds": 17.30083333333333,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 24.918333333333365,
+            "gameSeconds": 20.888333333333335,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 29.280833333333376,
+            "gameSeconds": 24.47583333333334,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 33.64333333333337,
+            "gameSeconds": 28.063333333333347,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 38.00583333333335,
+            "gameSeconds": 31.650833333333352,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 42.368333333333325,
+            "gameSeconds": 35.23833333333336,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 46.7308333333333,
+            "gameSeconds": 38.825833333333364,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 51.09333333333328,
+            "gameSeconds": 42.41333333333337,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 55.45583333333325,
+            "gameSeconds": 46.000833333333375,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 59.81833333333323,
+            "gameSeconds": 49.58833333333338,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 64.1808333333332,
+            "gameSeconds": 53.17583333333339,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 68.54333333333314,
+            "gameSeconds": 56.76333333333339,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 72.90583333333308,
+            "gameSeconds": 60.3508333333334,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 77.26833333333302,
+            "gameSeconds": 63.938333333333404,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 81.63083333333296,
+            "gameSeconds": 67.52583333333341,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 85.9933333333329,
+            "gameSeconds": 71.11333333333341,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 90.35583333333284,
+            "gameSeconds": 74.70083333333342,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 94.71833333333278,
+            "gameSeconds": 78.28833333333343,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 99.08083333333272,
+            "gameSeconds": 81.87583333333343,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 103.44333333333266,
+            "gameSeconds": 85.46333333333344,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 107.8058333333326,
+            "gameSeconds": 89.05083333333344,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 112.16833333333254,
+            "gameSeconds": 92.63833333333345,
+            "gauge": 987.5
+          },
+          {
+            "realSeconds": 116.53083333333248,
+            "gameSeconds": 96.22583333333345,
+            "gauge": 987.5
+          }
+        ]
+      },
+      "feverStartedAt1000": [
+        {
+          "model": "continuous",
+          "attackUptime": 1,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "FEVER": 0,
+            "Normal": 0,
+            "High": 0
+          },
+          "firstThresholdHitNumber": {},
+          "firstFeverExitRealSeconds": null,
+          "firstFeverDurationRealSeconds": null,
+          "finalGauge": 988.75,
+          "simulatedRealSeconds": 30.110000000000046,
+          "hits": 104,
+          "occupancy": {
+            "Low": 0,
+            "Normal": 0,
+            "High": 0,
+            "FEVER": 30.110000000000046
+          },
+          "attackStartCounts": {
+            "Low": 0,
+            "Normal": 0,
+            "High": 0,
+            "FEVER": 104
+          },
+          "firstFeverAttackRealSeconds": 0,
+          "firstFeverEvent": {
+            "hit": 1,
+            "realSeconds": 0.075,
+            "gameSeconds": 0.075,
+            "before": 992.5,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          "eventsNearFirstFever": [
+            {
+              "hit": 1,
+              "realSeconds": 0.075,
+              "gameSeconds": 0.075,
+              "before": 992.5,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 2,
+              "realSeconds": 0.2975,
+              "gameSeconds": 0.2625,
+              "before": 981.25,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 3,
+              "realSeconds": 0.6625,
+              "gameSeconds": 0.5925,
+              "before": 967,
+              "after": 997,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 4,
+              "realSeconds": 0.9474999999999999,
+              "gameSeconds": 0.7925,
+              "before": 977,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 5,
+              "realSeconds": 1.17,
+              "gameSeconds": 0.98,
+              "before": 981.25,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 6,
+              "realSeconds": 1.535,
+              "gameSeconds": 1.31,
+              "before": 967,
+              "after": 997,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 7,
+              "realSeconds": 1.8199999999999998,
+              "gameSeconds": 1.51,
+              "before": 977,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 8,
+              "realSeconds": 2.0425,
+              "gameSeconds": 1.6975,
+              "before": 981.25,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 9,
+              "realSeconds": 2.4074999999999998,
+              "gameSeconds": 2.0275,
+              "before": 967,
+              "after": 997,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 10,
+              "realSeconds": 2.6925,
+              "gameSeconds": 2.2275,
+              "before": 977,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 11,
+              "realSeconds": 2.915,
+              "gameSeconds": 2.415,
+              "before": 981.25,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 12,
+              "realSeconds": 3.28,
+              "gameSeconds": 2.7449999999999997,
+              "before": 967,
+              "after": 997,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 13,
+              "realSeconds": 3.565,
+              "gameSeconds": 2.945,
+              "before": 977,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 14,
+              "realSeconds": 3.7875,
+              "gameSeconds": 3.1325,
+              "before": 981.25,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 15,
+              "realSeconds": 4.1525,
+              "gameSeconds": 3.4624999999999995,
+              "before": 967,
+              "after": 997,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 16,
+              "realSeconds": 4.4375,
+              "gameSeconds": 3.6624999999999996,
+              "before": 977,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 17,
+              "realSeconds": 4.66,
+              "gameSeconds": 3.8499999999999996,
+              "before": 981.25,
+              "after": 1000,
+              "attackSpeed": 2
+            }
+          ],
+          "comboSamples": [
+            {
+              "realSeconds": 0.8724999999999999,
+              "gameSeconds": 0.7175,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 5.235,
+              "gameSeconds": 4.305,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 9.597500000000004,
+              "gameSeconds": 7.892500000000001,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 13.960000000000006,
+              "gameSeconds": 11.479999999999999,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 18.322500000000016,
+              "gameSeconds": 15.067499999999995,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 22.685000000000027,
+              "gameSeconds": 18.655,
+              "gauge": 984.5
+            },
+            {
+              "realSeconds": 27.04750000000004,
+              "gameSeconds": 22.242500000000007,
+              "gauge": 984.5
+            }
+          ]
+        },
+        {
+          "model": "quantized",
+          "attackUptime": 1,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "FEVER": 0,
+            "Normal": 0,
+            "High": 0
+          },
+          "firstThresholdHitNumber": {},
+          "firstFeverExitRealSeconds": null,
+          "firstFeverDurationRealSeconds": null,
+          "finalGauge": 988,
+          "simulatedRealSeconds": 30.15499999999999,
+          "hits": 97,
+          "occupancy": {
+            "Low": 0,
+            "Normal": 0,
+            "High": 0,
+            "FEVER": 30.15499999999999
+          },
+          "attackStartCounts": {
+            "Low": 0,
+            "Normal": 0,
+            "High": 0,
+            "FEVER": 97
+          },
+          "firstFeverAttackRealSeconds": 0,
+          "firstFeverEvent": {
+            "hit": 1,
+            "realSeconds": 0.08,
+            "gameSeconds": 0.08,
+            "before": 992,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          "eventsNearFirstFever": [
+            {
+              "hit": 1,
+              "realSeconds": 0.08,
+              "gameSeconds": 0.08,
+              "before": 992,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 2,
+              "realSeconds": 0.315,
+              "gameSeconds": 0.28,
+              "before": 980,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 3,
+              "realSeconds": 0.69,
+              "gameSeconds": 0.62,
+              "before": 966,
+              "after": 996,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 4,
+              "realSeconds": 1.015,
+              "gameSeconds": 0.86,
+              "before": 972,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 5,
+              "realSeconds": 1.25,
+              "gameSeconds": 1.06,
+              "before": 980,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 6,
+              "realSeconds": 1.625,
+              "gameSeconds": 1.4000000000000001,
+              "before": 966,
+              "after": 996,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 7,
+              "realSeconds": 1.95,
+              "gameSeconds": 1.6400000000000001,
+              "before": 972,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 8,
+              "realSeconds": 2.185,
+              "gameSeconds": 1.8400000000000003,
+              "before": 980,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 9,
+              "realSeconds": 2.5600000000000005,
+              "gameSeconds": 2.1800000000000006,
+              "before": 966,
+              "after": 996,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 10,
+              "realSeconds": 2.8850000000000007,
+              "gameSeconds": 2.420000000000001,
+              "before": 972,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 11,
+              "realSeconds": 3.120000000000001,
+              "gameSeconds": 2.620000000000001,
+              "before": 980,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 12,
+              "realSeconds": 3.4950000000000014,
+              "gameSeconds": 2.9600000000000013,
+              "before": 966,
+              "after": 996,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 13,
+              "realSeconds": 3.8200000000000016,
+              "gameSeconds": 3.2000000000000015,
+              "before": 972,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 14,
+              "realSeconds": 4.0550000000000015,
+              "gameSeconds": 3.4000000000000017,
+              "before": 980,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 15,
+              "realSeconds": 4.4300000000000015,
+              "gameSeconds": 3.740000000000002,
+              "before": 966,
+              "after": 996,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 16,
+              "realSeconds": 4.755000000000002,
+              "gameSeconds": 3.980000000000002,
+              "before": 972,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 17,
+              "realSeconds": 4.990000000000002,
+              "gameSeconds": 4.180000000000002,
+              "before": 980,
+              "after": 1000,
+              "attackSpeed": 2
+            }
+          ],
+          "comboSamples": [
+            {
+              "realSeconds": 0.9349999999999999,
+              "gameSeconds": 0.78,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 5.610000000000002,
+              "gameSeconds": 4.680000000000002,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 10.285000000000005,
+              "gameSeconds": 8.580000000000004,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 14.960000000000008,
+              "gameSeconds": 12.48,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 19.635000000000005,
+              "gameSeconds": 16.379999999999995,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 24.31,
+              "gameSeconds": 20.279999999999983,
+              "gauge": 980
+            },
+            {
+              "realSeconds": 28.984999999999992,
+              "gameSeconds": 24.17999999999997,
+              "gauge": 980
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "Assets/Scenes/City01_SilentBlock.unity",
+      "attack": {
+        "basicWindupTime": 0.2,
+        "basicActiveTime": 0.3,
+        "basicRecoveryTime": 0.1,
+        "basicContactDelay": 0.1,
+        "thirdWindupTime": 0.4,
+        "thirdActiveTime": 0.3,
+        "thirdLandingActiveTime": 0.3,
+        "thirdRecoveryTime": 0.2,
+        "thirdContactDelay": 0.3,
+        "thirdHopHeight": 0.7,
+        "thirdAttackFallSpeed": 20
+      },
+      "hitStop": {
+        "basicDuration": 0.05,
+        "thirdDuration": 0.15
+      },
+      "continuousRates": [
+        {
+          "stage": "Low",
+          "speed": 1,
+          "comboGameSeconds": 2.135,
+          "comboRealSeconds": 2.385,
+          "hitsPerRealSecond": 1.257861635220126,
+          "grossGainPerRealSecond": 37.735849056603776,
+          "decayPerRealSecond": 11.18972746331237,
+          "netGainPerRealSecond": 26.546121593291407,
+          "netWithUnscaledDecay": 25.235849056603776,
+          "minimumAttackUptime": 0.2965277777777777
+        },
+        {
+          "stage": "Normal",
+          "speed": 1.25,
+          "comboGameSeconds": 1.7149999999999999,
+          "comboRealSeconds": 1.9649999999999999,
+          "hitsPerRealSecond": 1.5267175572519085,
+          "grossGainPerRealSecond": 45.80152671755725,
+          "decayPerRealSecond": 21.81933842239186,
+          "netGainPerRealSecond": 23.982188295165397,
+          "netWithUnscaledDecay": 20.801526717557252,
+          "minimumAttackUptime": 0.47638888888888886
+        },
+        {
+          "stage": "High",
+          "speed": 1.5,
+          "comboGameSeconds": 1.435,
+          "comboRealSeconds": 1.685,
+          "hitsPerRealSecond": 1.7804154302670623,
+          "grossGainPerRealSecond": 53.41246290801187,
+          "decayPerRealSecond": 42.581602373887236,
+          "netGainPerRealSecond": 10.830860534124628,
+          "netWithUnscaledDecay": 3.412462908011868,
+          "minimumAttackUptime": 0.7972222222222223
+        },
+        {
+          "stage": "FEVER",
+          "speed": 2,
+          "comboGameSeconds": 1.085,
+          "comboRealSeconds": 1.335,
+          "hitsPerRealSecond": 2.247191011235955,
+          "grossGainPerRealSecond": 67.41573033707866,
+          "decayPerRealSecond": 81.27340823970037,
+          "netGainPerRealSecond": -13.857677902621724,
+          "netWithUnscaledDecay": -32.58426966292134,
+          "minimumAttackUptime": 1.2055555555555555
+        }
+      ],
+      "quantizedRates": [
+        {
+          "stage": "Low",
+          "speed": 1,
+          "comboGameSeconds": 2.1399999999999997,
+          "comboRealSeconds": 2.3899999999999997,
+          "hitsPerRealSecond": 1.2552301255230127,
+          "grossGainPerRealSecond": 37.65690376569038,
+          "decayPerRealSecond": 11.192468619246862,
+          "netGainPerRealSecond": 26.464435146443517,
+          "netWithUnscaledDecay": 25.15690376569038,
+          "minimumAttackUptime": 0.29722222222222217
+        },
+        {
+          "stage": "Normal",
+          "speed": 1.25,
+          "comboGameSeconds": 1.72,
+          "comboRealSeconds": 1.97,
+          "hitsPerRealSecond": 1.5228426395939088,
+          "grossGainPerRealSecond": 45.68527918781726,
+          "decayPerRealSecond": 21.82741116751269,
+          "netGainPerRealSecond": 23.85786802030457,
+          "netWithUnscaledDecay": 20.685279187817258,
+          "minimumAttackUptime": 0.4777777777777778
+        },
+        {
+          "stage": "High",
+          "speed": 1.5,
+          "comboGameSeconds": 1.46,
+          "comboRealSeconds": 1.71,
+          "hitsPerRealSecond": 1.7543859649122808,
+          "grossGainPerRealSecond": 52.631578947368425,
+          "decayPerRealSecond": 42.69005847953216,
+          "netGainPerRealSecond": 9.941520467836257,
+          "netWithUnscaledDecay": 2.631578947368425,
+          "minimumAttackUptime": 0.8111111111111111
+        },
+        {
+          "stage": "FEVER",
+          "speed": 2,
+          "comboGameSeconds": 1.1,
+          "comboRealSeconds": 1.35,
+          "hitsPerRealSecond": 2.222222222222222,
+          "grossGainPerRealSecond": 66.66666666666666,
+          "decayPerRealSecond": 81.48148148148148,
+          "netGainPerRealSecond": -14.814814814814824,
+          "netWithUnscaledDecay": -33.33333333333334,
+          "minimumAttackUptime": 1.2222222222222223
+        }
+      ],
+      "uptimeRates": [
+        {
+          "attackUptime": 0.5,
+          "rates": [
+            {
+              "stage": "Low",
+              "speed": 1,
+              "comboGameSeconds": 2.135,
+              "comboRealSeconds": 2.385,
+              "hitsPerRealSecond": 0.6637168141592921,
+              "grossGainPerRealSecond": 19.911504424778762,
+              "decayPerRealSecond": 11.80862831858407,
+              "netGainPerRealSecond": 8.102876106194692,
+              "netWithUnscaledDecay": 7.411504424778762,
+              "minimumAttackUptime": 0.2965277777777777
+            },
+            {
+              "stage": "Normal",
+              "speed": 1.25,
+              "comboGameSeconds": 1.7149999999999999,
+              "comboRealSeconds": 1.9649999999999999,
+              "hitsPerRealSecond": 0.8152173913043479,
+              "grossGainPerRealSecond": 24.456521739130437,
+              "decayPerRealSecond": 23.30163043478261,
+              "netGainPerRealSecond": 1.1548913043478262,
+              "netWithUnscaledDecay": -0.5434782608695627,
+              "minimumAttackUptime": 0.47638888888888886
+            },
+            {
+              "stage": "High",
+              "speed": 1.5,
+              "comboGameSeconds": 1.435,
+              "comboRealSeconds": 1.685,
+              "hitsPerRealSecond": 0.9615384615384615,
+              "grossGainPerRealSecond": 28.846153846153847,
+              "decayPerRealSecond": 45.993589743589745,
+              "netGainPerRealSecond": -17.147435897435898,
+              "netWithUnscaledDecay": -21.153846153846153,
+              "minimumAttackUptime": 0.7972222222222223
+            },
+            {
+              "stage": "FEVER",
+              "speed": 2,
+              "comboGameSeconds": 1.085,
+              "comboRealSeconds": 1.335,
+              "hitsPerRealSecond": 1.2396694214876034,
+              "grossGainPerRealSecond": 37.1900826446281,
+              "decayPerRealSecond": 89.6694214876033,
+              "netGainPerRealSecond": -52.47933884297521,
+              "netWithUnscaledDecay": -62.8099173553719,
+              "minimumAttackUptime": 1.2055555555555555
+            }
+          ]
+        },
+        {
+          "attackUptime": 0.75,
+          "rates": [
+            {
+              "stage": "Low",
+              "speed": 1,
+              "comboGameSeconds": 2.135,
+              "comboRealSeconds": 2.385,
+              "hitsPerRealSecond": 0.9687836383207752,
+              "grossGainPerRealSecond": 29.063509149623254,
+              "decayPerRealSecond": 11.490850376749194,
+              "netGainPerRealSecond": 17.57265877287406,
+              "netWithUnscaledDecay": 16.563509149623254,
+              "minimumAttackUptime": 0.2965277777777777
+            },
+            {
+              "stage": "Normal",
+              "speed": 1.25,
+              "comboGameSeconds": 1.7149999999999999,
+              "comboRealSeconds": 1.9649999999999999,
+              "hitsPerRealSecond": 1.1826544021024967,
+              "grossGainPerRealSecond": 35.4796320630749,
+              "decayPerRealSecond": 22.536136662286463,
+              "netGainPerRealSecond": 12.943495400788438,
+              "netWithUnscaledDecay": 10.479632063074902,
+              "minimumAttackUptime": 0.47638888888888886
+            },
+            {
+              "stage": "High",
+              "speed": 1.5,
+              "comboGameSeconds": 1.435,
+              "comboRealSeconds": 1.685,
+              "hitsPerRealSecond": 1.3867488443759632,
+              "grossGainPerRealSecond": 41.60246533127889,
+              "decayPerRealSecond": 44.22187981510016,
+              "netGainPerRealSecond": -2.619414483821266,
+              "netWithUnscaledDecay": -8.397534668721107,
+              "minimumAttackUptime": 0.7972222222222223
+            },
+            {
+              "stage": "FEVER",
+              "speed": 2,
+              "comboGameSeconds": 1.085,
+              "comboRealSeconds": 1.335,
+              "hitsPerRealSecond": 1.7681728880157173,
+              "grossGainPerRealSecond": 53.04518664047151,
+              "decayPerRealSecond": 85.26522593320236,
+              "netGainPerRealSecond": -32.22003929273084,
+              "netWithUnscaledDecay": -46.95481335952849,
+              "minimumAttackUptime": 1.2055555555555555
+            }
+          ]
+        },
+        {
+          "attackUptime": 1,
+          "rates": [
+            {
+              "stage": "Low",
+              "speed": 1,
+              "comboGameSeconds": 2.135,
+              "comboRealSeconds": 2.385,
+              "hitsPerRealSecond": 1.257861635220126,
+              "grossGainPerRealSecond": 37.735849056603776,
+              "decayPerRealSecond": 11.18972746331237,
+              "netGainPerRealSecond": 26.546121593291407,
+              "netWithUnscaledDecay": 25.235849056603776,
+              "minimumAttackUptime": 0.2965277777777777
+            },
+            {
+              "stage": "Normal",
+              "speed": 1.25,
+              "comboGameSeconds": 1.7149999999999999,
+              "comboRealSeconds": 1.9649999999999999,
+              "hitsPerRealSecond": 1.5267175572519085,
+              "grossGainPerRealSecond": 45.80152671755725,
+              "decayPerRealSecond": 21.81933842239186,
+              "netGainPerRealSecond": 23.982188295165397,
+              "netWithUnscaledDecay": 20.801526717557252,
+              "minimumAttackUptime": 0.47638888888888886
+            },
+            {
+              "stage": "High",
+              "speed": 1.5,
+              "comboGameSeconds": 1.435,
+              "comboRealSeconds": 1.685,
+              "hitsPerRealSecond": 1.7804154302670623,
+              "grossGainPerRealSecond": 53.41246290801187,
+              "decayPerRealSecond": 42.581602373887236,
+              "netGainPerRealSecond": 10.830860534124628,
+              "netWithUnscaledDecay": 3.412462908011868,
+              "minimumAttackUptime": 0.7972222222222223
+            },
+            {
+              "stage": "FEVER",
+              "speed": 2,
+              "comboGameSeconds": 1.085,
+              "comboRealSeconds": 1.335,
+              "hitsPerRealSecond": 2.247191011235955,
+              "grossGainPerRealSecond": 67.41573033707866,
+              "decayPerRealSecond": 81.27340823970037,
+              "netGainPerRealSecond": -13.857677902621724,
+              "netWithUnscaledDecay": -32.58426966292134,
+              "minimumAttackUptime": 1.2055555555555555
+            }
+          ]
+        }
+      ],
+      "simulations": [
+        {
+          "model": "continuous",
+          "attackUptime": 1,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 9.004999999999999,
+            "High": 19.605,
+            "FEVER": 41.550000000000004
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 12,
+            "High": 28,
+            "FEVER": 67
+          },
+          "firstFeverExitRealSeconds": 41.64346354166667,
+          "firstFeverDurationRealSeconds": 0.09346354166666515,
+          "finalGauge": 741.3333333333334,
+          "simulatedRealSeconds": 120.54500000000007,
+          "hits": 207,
+          "occupancy": {
+            "Low": 9.157499999999999,
+            "Normal": 10.662604166666672,
+            "High": 71.95963541666673,
+            "FEVER": 28.76526041666668
+          },
+          "attackStartCounts": {
+            "Low": 12,
+            "Normal": 16,
+            "High": 179,
+            "FEVER": 0
+          },
+          "firstFeverAttackRealSeconds": null,
+          "firstFeverEvent": {
+            "hit": 67,
+            "realSeconds": 41.550000000000004,
+            "gameSeconds": 36.050000000000004,
+            "before": 724.3463541666666,
+            "after": 754.3463541666666,
+            "attackSpeed": 1.5
+          },
+          "eventsNearFirstFever": [
+            {
+              "hit": 66,
+              "realSeconds": 40.93166666666667,
+              "gameSeconds": 35.58166666666667,
+              "before": 717.7630208333333,
+              "after": 747.7630208333333,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 67,
+              "realSeconds": 41.550000000000004,
+              "gameSeconds": 36.050000000000004,
+              "before": 724.3463541666666,
+              "after": 754.3463541666666,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 68,
+              "realSeconds": 42.00000000000001,
+              "gameSeconds": 36.45000000000001,
+              "before": 732.1731770833334,
+              "after": 762.1731770833334,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 69,
+              "realSeconds": 42.616666666666674,
+              "gameSeconds": 37.01666666666668,
+              "before": 727.7532552083334,
+              "after": 757.7532552083334,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 70,
+              "realSeconds": 43.23500000000001,
+              "gameSeconds": 37.485000000000014,
+              "before": 730.4599609375,
+              "after": 760.4599609375,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 71,
+              "realSeconds": 43.68500000000001,
+              "gameSeconds": 37.88500000000002,
+              "before": 735.22998046875,
+              "after": 765.22998046875,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 72,
+              "realSeconds": 44.30166666666668,
+              "gameSeconds": 38.45166666666669,
+              "before": 729.2816569010416,
+              "after": 759.2816569010416,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 73,
+              "realSeconds": 44.92000000000001,
+              "gameSeconds": 38.92000000000002,
+              "before": 731.2241617838541,
+              "after": 761.2241617838541,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 74,
+              "realSeconds": 45.37000000000001,
+              "gameSeconds": 39.32000000000003,
+              "before": 735.6120808919271,
+              "after": 765.6120808919271,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 75,
+              "realSeconds": 45.98666666666667,
+              "gameSeconds": 39.88666666666669,
+              "before": 729.4727071126302,
+              "after": 759.4727071126302,
+              "attackSpeed": 1.5
+            }
+          ],
+          "comboSamples": [
+            {
+              "realSeconds": 2.385,
+              "gameSeconds": 2.135,
+              "gauge": 67.0625
+            },
+            {
+              "realSeconds": 13.470000000000002,
+              "gameSeconds": 11.969999999999997,
+              "gauge": 348.34375
+            },
+            {
+              "realSeconds": 22.814999999999998,
+              "gameSeconds": 20.064999999999994,
+              "gauge": 533.5963541666666
+            },
+            {
+              "realSeconds": 31.23999999999999,
+              "gameSeconds": 27.239999999999988,
+              "gauge": 624.8463541666666
+            },
+            {
+              "realSeconds": 39.665,
+              "gameSeconds": 34.41499999999999,
+              "gauge": 716.0963541666666
+            },
+            {
+              "realSeconds": 48.09,
+              "gameSeconds": 41.59000000000003,
+              "gauge": 741.3316275278727
+            },
+            {
+              "realSeconds": 56.51500000000002,
+              "gameSeconds": 48.765000000000086,
+              "gauge": 741.3333332812763
+            },
+            {
+              "realSeconds": 64.94,
+              "gameSeconds": 55.940000000000104,
+              "gauge": 741.3333333333318
+            },
+            {
+              "realSeconds": 73.36500000000001,
+              "gameSeconds": 63.11500000000012,
+              "gauge": 741.3333333333334
+            },
+            {
+              "realSeconds": 81.79000000000002,
+              "gameSeconds": 70.29000000000013,
+              "gauge": 741.3333333333334
+            },
+            {
+              "realSeconds": 90.21500000000003,
+              "gameSeconds": 77.46500000000015,
+              "gauge": 741.3333333333334
+            },
+            {
+              "realSeconds": 98.64000000000004,
+              "gameSeconds": 84.64000000000016,
+              "gauge": 741.3333333333334
+            },
+            {
+              "realSeconds": 107.06500000000005,
+              "gameSeconds": 91.81500000000017,
+              "gauge": 741.3333333333334
+            },
+            {
+              "realSeconds": 115.49000000000007,
+              "gameSeconds": 98.99000000000018,
+              "gauge": 741.3333333333334
+            }
+          ]
+        },
+        {
+          "model": "continuous",
+          "attackUptime": 0.75,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 13.336666666666671,
+            "High": 31.96333333333331
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 14,
+            "High": 36
+          },
+          "firstFeverExitRealSeconds": null,
+          "firstFeverDurationRealSeconds": null,
+          "finalGauge": 519,
+          "simulatedRealSeconds": 120.34666666666618,
+          "hits": 152,
+          "occupancy": {
+            "Low": 13.336666666666671,
+            "Normal": 37.07333333333321,
+            "High": 69.93666666666651,
+            "FEVER": 0
+          },
+          "attackStartCounts": {
+            "Low": 14,
+            "Normal": 62,
+            "High": 76,
+            "FEVER": 0
+          },
+          "firstFeverAttackRealSeconds": null,
+          "firstFeverEvent": null,
+          "eventsNearFirstFever": [],
+          "comboSamples": [
+            {
+              "realSeconds": 3.0966666666666662,
+              "gameSeconds": 2.8466666666666662,
+              "gauge": 58.16666666666667
+            },
+            {
+              "realSeconds": 17.780000000000005,
+              "gameSeconds": 16.28,
+              "gauge": 290.33333333333326
+            },
+            {
+              "realSeconds": 30.463333333333313,
+              "gameSeconds": 27.71333333333331,
+              "gauge": 454.49999999999983
+            },
+            {
+              "realSeconds": 42.18666666666664,
+              "gameSeconds": 38.18666666666667,
+              "gauge": 495.96411132812506
+            },
+            {
+              "realSeconds": 53.53666666666662,
+              "gameSeconds": 48.28666666666668,
+              "gauge": 495.99996495246893
+            },
+            {
+              "realSeconds": 64.88666666666661,
+              "gameSeconds": 58.38666666666672,
+              "gauge": 495.99999996577395
+            },
+            {
+              "realSeconds": 76.23666666666654,
+              "gameSeconds": 68.4866666666667,
+              "gauge": 495.99999999996663
+            },
+            {
+              "realSeconds": 87.58666666666645,
+              "gameSeconds": 78.5866666666666,
+              "gauge": 496.00000000000006
+            },
+            {
+              "realSeconds": 98.93666666666635,
+              "gameSeconds": 88.68666666666651,
+              "gauge": 496.00000000000006
+            },
+            {
+              "realSeconds": 110.28666666666626,
+              "gameSeconds": 98.78666666666642,
+              "gauge": 496.00000000000006
+            }
+          ]
+        },
+        {
+          "model": "continuous",
+          "attackUptime": 0.5,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 24.45000000000002
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 18
+          },
+          "firstFeverExitRealSeconds": null,
+          "firstFeverDurationRealSeconds": null,
+          "finalGauge": 342.40625,
+          "simulatedRealSeconds": 120.31999999999962,
+          "hits": 93,
+          "occupancy": {
+            "Low": 30.432500000000022,
+            "Normal": 89.88749999999978,
+            "High": 0,
+            "FEVER": 0
+          },
+          "attackStartCounts": {
+            "Low": 23,
+            "Normal": 70,
+            "High": 0,
+            "FEVER": 0
+          },
+          "firstFeverAttackRealSeconds": null,
+          "firstFeverEvent": null,
+          "eventsNearFirstFever": [],
+          "comboSamples": [
+            {
+              "realSeconds": 4.52,
+              "gameSeconds": 4.27,
+              "gauge": 40.375
+            },
+            {
+              "realSeconds": 27.12000000000002,
+              "gameSeconds": 25.62000000000001,
+              "gauge": 221
+            },
+            {
+              "realSeconds": 46.719999999999985,
+              "gameSeconds": 43.97000000000001,
+              "gauge": 257.40625
+            },
+            {
+              "realSeconds": 65.11999999999995,
+              "gameSeconds": 61.12000000000005,
+              "gauge": 278.65625
+            },
+            {
+              "realSeconds": 83.51999999999984,
+              "gameSeconds": 78.26999999999997,
+              "gauge": 299.90625
+            },
+            {
+              "realSeconds": 101.91999999999973,
+              "gameSeconds": 95.41999999999986,
+              "gauge": 321.15625
+            },
+            {
+              "realSeconds": 120.31999999999962,
+              "gameSeconds": 112.56999999999975,
+              "gauge": 342.40625
+            }
+          ]
+        },
+        {
+          "model": "quantized",
+          "attackUptime": 1,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 9.030000000000001,
+            "High": 19.650000000000002,
+            "FEVER": 43.63000000000004
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 12,
+            "High": 28,
+            "FEVER": 70
+          },
+          "firstFeverExitRealSeconds": 43.73250000000004,
+          "firstFeverDurationRealSeconds": 0.10249999999999915,
+          "finalGauge": 740.2857142857142,
+          "simulatedRealSeconds": 120.38000000000027,
+          "hits": 204,
+          "occupancy": {
+            "Low": 9.190000000000001,
+            "Normal": 10.710000000000006,
+            "High": 74.03071428571445,
+            "FEVER": 26.449285714285708
+          },
+          "attackStartCounts": {
+            "Low": 12,
+            "Normal": 16,
+            "High": 176,
+            "FEVER": 0
+          },
+          "firstFeverAttackRealSeconds": null,
+          "firstFeverEvent": {
+            "hit": 70,
+            "realSeconds": 43.63000000000004,
+            "gameSeconds": 37.88000000000003,
+            "before": 725.25,
+            "after": 755.25,
+            "attackSpeed": 1.5
+          },
+          "eventsNearFirstFever": [
+            {
+              "hit": 69,
+              "realSeconds": 43.000000000000036,
+              "gameSeconds": 37.40000000000003,
+              "before": 719.25,
+              "after": 749.25,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 70,
+              "realSeconds": 43.63000000000004,
+              "gameSeconds": 37.88000000000003,
+              "before": 725.25,
+              "after": 755.25,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 71,
+              "realSeconds": 44.08000000000004,
+              "gameSeconds": 38.28000000000004,
+              "before": 732.625,
+              "after": 762.625,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 72,
+              "realSeconds": 44.710000000000036,
+              "gameSeconds": 38.860000000000035,
+              "before": 727.3125,
+              "after": 757.3125,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 73,
+              "realSeconds": 45.34000000000003,
+              "gameSeconds": 39.34000000000003,
+              "before": 729.65625,
+              "after": 759.65625,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 74,
+              "realSeconds": 45.79000000000003,
+              "gameSeconds": 39.74000000000003,
+              "before": 734.828125,
+              "after": 764.828125,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 75,
+              "realSeconds": 46.42000000000002,
+              "gameSeconds": 40.32000000000003,
+              "before": 728.4140625,
+              "after": 758.4140625,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 76,
+              "realSeconds": 47.050000000000026,
+              "gameSeconds": 40.80000000000003,
+              "before": 730.20703125,
+              "after": 760.20703125,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 77,
+              "realSeconds": 47.50000000000002,
+              "gameSeconds": 41.20000000000003,
+              "before": 735.103515625,
+              "after": 765.103515625,
+              "attackSpeed": 1.5
+            },
+            {
+              "hit": 78,
+              "realSeconds": 48.130000000000024,
+              "gameSeconds": 41.78000000000004,
+              "before": 728.5517578125,
+              "after": 758.5517578125,
+              "attackSpeed": 1.5
+            }
+          ],
+          "comboSamples": [
+            {
+              "realSeconds": 2.39,
+              "gameSeconds": 2.1399999999999997,
+              "gauge": 67
+            },
+            {
+              "realSeconds": 13.500000000000007,
+              "gameSeconds": 12,
+              "gauge": 348
+            },
+            {
+              "realSeconds": 22.909999999999997,
+              "gameSeconds": 20.159999999999993,
+              "gauge": 531.25
+            },
+            {
+              "realSeconds": 31.459999999999983,
+              "gameSeconds": 27.45999999999998,
+              "gauge": 616.25
+            },
+            {
+              "realSeconds": 40.01000000000002,
+              "gameSeconds": 34.76,
+              "gauge": 701.25
+            },
+            {
+              "realSeconds": 48.560000000000024,
+              "gameSeconds": 42.06000000000004,
+              "gauge": 740.27587890625
+            },
+            {
+              "realSeconds": 57.11000000000003,
+              "gameSeconds": 49.36000000000008,
+              "gauge": 740.2857139855623
+            },
+            {
+              "realSeconds": 65.66000000000001,
+              "gameSeconds": 56.6600000000001,
+              "gauge": 740.2857142857051
+            },
+            {
+              "realSeconds": 74.21000000000005,
+              "gameSeconds": 63.96000000000013,
+              "gauge": 740.2857142857142
+            },
+            {
+              "realSeconds": 82.76000000000009,
+              "gameSeconds": 71.26000000000016,
+              "gauge": 740.2857142857142
+            },
+            {
+              "realSeconds": 91.31000000000013,
+              "gameSeconds": 78.5600000000002,
+              "gauge": 740.2857142857142
+            },
+            {
+              "realSeconds": 99.86000000000017,
+              "gameSeconds": 85.86000000000024,
+              "gauge": 740.2857142857142
+            },
+            {
+              "realSeconds": 108.41000000000021,
+              "gameSeconds": 93.16000000000028,
+              "gauge": 740.2857142857142
+            },
+            {
+              "realSeconds": 116.96000000000025,
+              "gameSeconds": 100.46000000000032,
+              "gauge": 740.2857142857142
+            }
+          ]
+        },
+        {
+          "model": "quantized",
+          "attackUptime": 0.75,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 13.363333333333339,
+            "High": 32.03666666666665
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 14,
+            "High": 36
+          },
+          "firstFeverExitRealSeconds": null,
+          "firstFeverDurationRealSeconds": null,
+          "finalGauge": 495.0476190476191,
+          "simulatedRealSeconds": 120.71333333333347,
+          "hits": 150,
+          "occupancy": {
+            "Low": 13.363333333333339,
+            "Normal": 39.408571428571356,
+            "High": 67.94142857142852,
+            "FEVER": 0
+          },
+          "attackStartCounts": {
+            "Low": 14,
+            "Normal": 61,
+            "High": 75,
+            "FEVER": 0
+          },
+          "firstFeverAttackRealSeconds": null,
+          "firstFeverEvent": null,
+          "eventsNearFirstFever": [],
+          "comboSamples": [
+            {
+              "realSeconds": 3.103333333333333,
+              "gameSeconds": 2.8533333333333326,
+              "gauge": 58.083333333333336
+            },
+            {
+              "realSeconds": 17.820000000000007,
+              "gameSeconds": 16.32,
+              "gauge": 289.66666666666674
+            },
+            {
+              "realSeconds": 30.536666666666655,
+              "gameSeconds": 27.786666666666648,
+              "gauge": 453.00000000000017
+            },
+            {
+              "realSeconds": 42.39999999999998,
+              "gameSeconds": 38.39999999999999,
+              "gauge": 495.04158528645837
+            },
+            {
+              "realSeconds": 53.91666666666665,
+              "gameSeconds": 48.6666666666667,
+              "gauge": 495.0476188634833
+            },
+            {
+              "realSeconds": 65.4333333333333,
+              "gameSeconds": 58.93333333333339,
+              "gauge": 495.04761904761347
+            },
+            {
+              "realSeconds": 76.94999999999997,
+              "gameSeconds": 69.2000000000001,
+              "gauge": 495.0476190476191
+            },
+            {
+              "realSeconds": 88.46666666666668,
+              "gameSeconds": 79.46666666666681,
+              "gauge": 495.0476190476191
+            },
+            {
+              "realSeconds": 99.98333333333339,
+              "gameSeconds": 89.73333333333352,
+              "gauge": 495.0476190476191
+            },
+            {
+              "realSeconds": 111.5000000000001,
+              "gameSeconds": 100.00000000000023,
+              "gauge": 495.0476190476191
+            }
+          ]
+        },
+        {
+          "model": "quantized",
+          "attackUptime": 0.5,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "Normal": 24.510000000000012
+          },
+          "firstThresholdHitNumber": {
+            "Normal": 18
+          },
+          "firstFeverExitRealSeconds": null,
+          "firstFeverDurationRealSeconds": null,
+          "finalGauge": 333.833984375,
+          "simulatedRealSeconds": 120.86999999999952,
+          "hits": 93,
+          "occupancy": {
+            "Low": 30.84671875000002,
+            "Normal": 90.02328124999976,
+            "High": 0,
+            "FEVER": 0
+          },
+          "attackStartCounts": {
+            "Low": 24,
+            "Normal": 69,
+            "High": 0,
+            "FEVER": 0
+          },
+          "firstFeverAttackRealSeconds": null,
+          "firstFeverEvent": null,
+          "eventsNearFirstFever": [],
+          "comboSamples": [
+            {
+              "realSeconds": 4.529999999999999,
+              "gameSeconds": 4.279999999999999,
+              "gauge": 40.25
+            },
+            {
+              "realSeconds": 27.180000000000014,
+              "gameSeconds": 25.680000000000014,
+              "gauge": 220.625
+            },
+            {
+              "realSeconds": 47.069999999999986,
+              "gameSeconds": 44.320000000000014,
+              "gauge": 251.66796875
+            },
+            {
+              "realSeconds": 65.51999999999998,
+              "gameSeconds": 61.52000000000004,
+              "gauge": 273.833984375
+            },
+            {
+              "realSeconds": 83.96999999999983,
+              "gameSeconds": 78.71999999999993,
+              "gauge": 293.833984375
+            },
+            {
+              "realSeconds": 102.41999999999967,
+              "gameSeconds": 95.91999999999977,
+              "gauge": 313.833984375
+            },
+            {
+              "realSeconds": 120.86999999999952,
+              "gameSeconds": 113.11999999999962,
+              "gauge": 333.833984375
+            }
+          ]
+        }
+      ],
+      "twoTargetSimulation": {
+        "model": "continuous",
+        "attackUptime": 1,
+        "targets": 2,
+        "gain": 30,
+        "firstThresholdRealSeconds": {
+          "Normal": 3.334999999999999,
+          "High": 7.325000000000001,
+          "FEVER": 10.734999999999998
+        },
+        "firstThresholdHitNumber": {
+          "Normal": 5,
+          "High": 11,
+          "FEVER": 17
+        },
+        "firstFeverExitRealSeconds": 10.8290625,
+        "firstFeverDurationRealSeconds": 0.09406250000000149,
+        "finalGauge": 985,
+        "simulatedRealSeconds": 120.25500000000056,
+        "hits": 262,
+        "occupancy": {
+          "Low": 3.442499999999999,
+          "Normal": 3.8825000000000003,
+          "High": 4.012239583333332,
+          "FEVER": 108.91776041666705
+        },
+        "attackStartCounts": {
+          "Low": 5,
+          "Normal": 6,
+          "High": 7,
+          "FEVER": 244
+        },
+        "firstFeverAttackRealSeconds": 11.769999999999998,
+        "firstFeverEvent": {
+          "hit": 17,
+          "realSeconds": 10.734999999999998,
+          "gameSeconds": 9.434999999999999,
+          "before": 694.4062500000001,
+          "after": 754.4062500000001,
+          "attackSpeed": 1.5
+        },
+        "eventsNearFirstFever": [
+          {
+            "hit": 16,
+            "realSeconds": 10.284999999999998,
+            "gameSeconds": 9.035,
+            "before": 654.4062500000001,
+            "after": 714.4062500000001,
+            "attackSpeed": 1.5
+          },
+          {
+            "hit": 17,
+            "realSeconds": 10.734999999999998,
+            "gameSeconds": 9.434999999999999,
+            "before": 694.4062500000001,
+            "after": 754.4062500000001,
+            "attackSpeed": 1.5
+          },
+          {
+            "hit": 18,
+            "realSeconds": 11.351666666666665,
+            "gameSeconds": 10.001666666666665,
+            "before": 723.8697916666667,
+            "after": 783.8697916666667,
+            "attackSpeed": 1.5
+          },
+          {
+            "hit": 19,
+            "realSeconds": 11.919999999999998,
+            "gameSeconds": 10.419999999999998,
+            "before": 746.0182291666666,
+            "after": 806.0182291666666,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 20,
+            "realSeconds": 12.27,
+            "gameSeconds": 10.719999999999999,
+            "before": 776.0182291666666,
+            "after": 836.0182291666666,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 21,
+            "realSeconds": 12.745000000000001,
+            "gameSeconds": 11.145,
+            "before": 793.5182291666666,
+            "after": 853.5182291666666,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 22,
+            "realSeconds": 13.255,
+            "gameSeconds": 11.505,
+            "before": 817.5182291666666,
+            "after": 877.5182291666666,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 23,
+            "realSeconds": 13.605000000000002,
+            "gameSeconds": 11.805000000000001,
+            "before": 847.5182291666666,
+            "after": 907.5182291666666,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 24,
+            "realSeconds": 14.080000000000004,
+            "gameSeconds": 12.230000000000002,
+            "before": 865.0182291666666,
+            "after": 925.0182291666666,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 25,
+            "realSeconds": 14.590000000000005,
+            "gameSeconds": 12.590000000000002,
+            "before": 889.0182291666666,
+            "after": 949.0182291666666,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 26,
+            "realSeconds": 14.940000000000007,
+            "gameSeconds": 12.890000000000002,
+            "before": 919.0182291666666,
+            "after": 979.0182291666666,
+            "attackSpeed": 2
+          },
+          {
+            "hit": 27,
+            "realSeconds": 15.415000000000008,
+            "gameSeconds": 13.315000000000003,
+            "before": 936.5182291666666,
+            "after": 996.5182291666666,
+            "attackSpeed": 2
+          }
+        ],
+        "comboSamples": [
+          {
+            "realSeconds": 2.385,
+            "gameSeconds": 2.135,
+            "gauge": 157.0625
+          },
+          {
+            "realSeconds": 11.769999999999998,
+            "gameSeconds": 10.269999999999998,
+            "gauge": 757.0364583333334
+          },
+          {
+            "realSeconds": 18.445,
+            "gameSeconds": 15.695000000000004,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 25.11999999999997,
+            "gameSeconds": 21.119999999999976,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 31.794999999999938,
+            "gameSeconds": 26.544999999999945,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 38.46999999999988,
+            "gameSeconds": 31.969999999999914,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 45.14499999999981,
+            "gameSeconds": 37.39499999999988,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 51.819999999999744,
+            "gameSeconds": 42.81999999999985,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 58.49499999999968,
+            "gameSeconds": 48.24499999999982,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 65.16999999999965,
+            "gameSeconds": 53.66999999999979,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 71.84499999999976,
+            "gameSeconds": 59.09499999999976,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 78.51999999999987,
+            "gameSeconds": 64.51999999999973,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 85.19499999999998,
+            "gameSeconds": 69.94499999999984,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 91.87000000000009,
+            "gameSeconds": 75.36999999999995,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 98.5450000000002,
+            "gameSeconds": 80.79500000000006,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 105.22000000000031,
+            "gameSeconds": 86.22000000000017,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 111.89500000000042,
+            "gameSeconds": 91.64500000000028,
+            "gauge": 979
+          },
+          {
+            "realSeconds": 118.57000000000053,
+            "gameSeconds": 97.07000000000039,
+            "gauge": 979
+          }
+        ]
+      },
+      "feverStartedAt1000": [
+        {
+          "model": "continuous",
+          "attackUptime": 1,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "FEVER": 0,
+            "Normal": 0,
+            "High": 0
+          },
+          "firstThresholdHitNumber": {},
+          "firstFeverExitRealSeconds": 16.15000000000003,
+          "firstFeverDurationRealSeconds": 16.15000000000003,
+          "finalGauge": 761.500000002794,
+          "simulatedRealSeconds": 30.070000000000004,
+          "hits": 68,
+          "occupancy": {
+            "Low": 0,
+            "Normal": 0,
+            "High": 3.6700000000558797,
+            "FEVER": 26.39999999994413
+          },
+          "attackStartCounts": {
+            "Low": 0,
+            "Normal": 0,
+            "High": 0,
+            "FEVER": 68
+          },
+          "firstFeverAttackRealSeconds": 0,
+          "firstFeverEvent": {
+            "hit": 1,
+            "realSeconds": 0.15000000000000002,
+            "gameSeconds": 0.15000000000000002,
+            "before": 985,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          "eventsNearFirstFever": [
+            {
+              "hit": 1,
+              "realSeconds": 0.15000000000000002,
+              "gameSeconds": 0.15000000000000002,
+              "before": 985,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 2,
+              "realSeconds": 0.5,
+              "gameSeconds": 0.45,
+              "before": 970,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 3,
+              "realSeconds": 0.975,
+              "gameSeconds": 0.875,
+              "before": 957.5,
+              "after": 987.5,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 4,
+              "realSeconds": 1.4849999999999999,
+              "gameSeconds": 1.2349999999999999,
+              "before": 951.5,
+              "after": 981.5,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 5,
+              "realSeconds": 1.835,
+              "gameSeconds": 1.5349999999999997,
+              "before": 951.5,
+              "after": 981.5,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 6,
+              "realSeconds": 2.31,
+              "gameSeconds": 1.9599999999999995,
+              "before": 939,
+              "after": 969,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 7,
+              "realSeconds": 2.82,
+              "gameSeconds": 2.3199999999999994,
+              "before": 933,
+              "after": 963,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 8,
+              "realSeconds": 3.1699999999999995,
+              "gameSeconds": 2.619999999999999,
+              "before": 933,
+              "after": 963,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 9,
+              "realSeconds": 3.644999999999999,
+              "gameSeconds": 3.044999999999999,
+              "before": 920.5,
+              "after": 950.5,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 10,
+              "realSeconds": 4.154999999999999,
+              "gameSeconds": 3.404999999999999,
+              "before": 914.5,
+              "after": 944.5,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 11,
+              "realSeconds": 4.505,
+              "gameSeconds": 3.7049999999999987,
+              "before": 914.5,
+              "after": 944.5,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 12,
+              "realSeconds": 4.98,
+              "gameSeconds": 4.129999999999999,
+              "before": 902,
+              "after": 932,
+              "attackSpeed": 2
+            }
+          ],
+          "comboSamples": [
+            {
+              "realSeconds": 1.335,
+              "gameSeconds": 1.085,
+              "gauge": 966.5
+            },
+            {
+              "realSeconds": 8.010000000000005,
+              "gameSeconds": 6.5100000000000025,
+              "gauge": 874
+            },
+            {
+              "realSeconds": 14.685000000000027,
+              "gameSeconds": 11.93500000000001,
+              "gauge": 781.5
+            },
+            {
+              "realSeconds": 21.36000000000002,
+              "gameSeconds": 17.36000000000001,
+              "gauge": 751.0029296875
+            },
+            {
+              "realSeconds": 28.035000000000004,
+              "gameSeconds": 22.784999999999993,
+              "gauge": 751.000000089407
+            }
+          ]
+        },
+        {
+          "model": "quantized",
+          "attackUptime": 1,
+          "targets": 1,
+          "gain": 30,
+          "firstThresholdRealSeconds": {
+            "FEVER": 0,
+            "Normal": 0,
+            "High": 0
+          },
+          "firstThresholdHitNumber": {},
+          "firstFeverExitRealSeconds": 15.010000000000016,
+          "firstFeverDurationRealSeconds": 15.010000000000016,
+          "finalGauge": 758.0000000009313,
+          "simulatedRealSeconds": 30.050000000000015,
+          "hits": 67,
+          "occupancy": {
+            "Low": 0,
+            "Normal": 0,
+            "High": 4.240000000018627,
+            "FEVER": 25.809999999981397
+          },
+          "attackStartCounts": {
+            "Low": 0,
+            "Normal": 0,
+            "High": 0,
+            "FEVER": 67
+          },
+          "firstFeverAttackRealSeconds": 0,
+          "firstFeverEvent": {
+            "hit": 1,
+            "realSeconds": 0.16,
+            "gameSeconds": 0.16,
+            "before": 984,
+            "after": 1000,
+            "attackSpeed": 2
+          },
+          "eventsNearFirstFever": [
+            {
+              "hit": 1,
+              "realSeconds": 0.16,
+              "gameSeconds": 0.16,
+              "before": 984,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 2,
+              "realSeconds": 0.51,
+              "gameSeconds": 0.45999999999999996,
+              "before": 970,
+              "after": 1000,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 3,
+              "realSeconds": 0.9800000000000001,
+              "gameSeconds": 0.88,
+              "before": 958,
+              "after": 988,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 4,
+              "realSeconds": 1.51,
+              "gameSeconds": 1.26,
+              "before": 950,
+              "after": 980,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 5,
+              "realSeconds": 1.8599999999999999,
+              "gameSeconds": 1.5599999999999998,
+              "before": 950,
+              "after": 980,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 6,
+              "realSeconds": 2.33,
+              "gameSeconds": 1.9799999999999998,
+              "before": 938,
+              "after": 968,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 7,
+              "realSeconds": 2.8600000000000003,
+              "gameSeconds": 2.36,
+              "before": 930,
+              "after": 960,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 8,
+              "realSeconds": 3.2100000000000004,
+              "gameSeconds": 2.66,
+              "before": 930,
+              "after": 960,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 9,
+              "realSeconds": 3.6800000000000006,
+              "gameSeconds": 3.08,
+              "before": 918,
+              "after": 948,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 10,
+              "realSeconds": 4.210000000000001,
+              "gameSeconds": 3.46,
+              "before": 910,
+              "after": 940,
+              "attackSpeed": 2
+            },
+            {
+              "hit": 11,
+              "realSeconds": 4.5600000000000005,
+              "gameSeconds": 3.7600000000000002,
+              "before": 910,
+              "after": 940,
+              "attackSpeed": 2
+            }
+          ],
+          "comboSamples": [
+            {
+              "realSeconds": 1.35,
+              "gameSeconds": 1.1,
+              "gauge": 966
+            },
+            {
+              "realSeconds": 8.1,
+              "gameSeconds": 6.6,
+              "gauge": 866
+            },
+            {
+              "realSeconds": 14.850000000000016,
+              "gameSeconds": 12.100000000000003,
+              "gauge": 766
+            },
+            {
+              "realSeconds": 21.60000000000002,
+              "gameSeconds": 17.60000000000001,
+              "gauge": 750.00048828125
+            },
+            {
+              "realSeconds": 28.350000000000016,
+              "gameSeconds": 23.100000000000005,
+              "gauge": 750.0000000149012
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
