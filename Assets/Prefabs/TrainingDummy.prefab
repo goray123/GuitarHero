@@ -597,13 +597,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f77382688e14446a09bb80ee0037ad1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrainingDummy
-  maxHealth: 50
+  maxHealth: 99999
   respawnDelay: 3
   healthBar: {fileID: 2902741507200499494}
   healthBarUI: {fileID: 901300012}
   hitAnimation: {fileID: 7400000, guid: 5bbf74f864b934047a26e5a9b4e24bd2, type: 2}
   deathAnimation: {fileID: 7400000, guid: eb5762243e3ccf14e8d1c0b210d53dce, type: 2}
   reactionPivot: {fileID: 900200002}
+  playDeathReaction: 1
   basicRecoilDistance: 0.08
   thirdRecoilDistance: 0.2
   basicBendAngle: 5
