@@ -1,0 +1,2481 @@
+{
+  "version": 1,
+  "generatedWith": "Built-in ImageGen",
+  "facing": "right",
+  "frameOrder": "top-to-bottom rows, left-to-right columns",
+  "cellSize": [
+    256,
+    256
+  ],
+  "bodyPivot": [
+    0.5,
+    0.125
+  ],
+  "effectPivot": [
+    0.5,
+    0.5
+  ],
+  "sheets": [
+    {
+      "file": "Boss1_Actions_v1.png",
+      "guid": "61edc5bcefc7a67470532a80c80df772",
+      "width": 2048,
+      "height": 2048,
+      "columns": 8,
+      "rows": 8,
+      "cellWidth": 256,
+      "cellHeight": 256,
+      "pixelsPerUnit": 100,
+      "textureType": "Sprite",
+      "spriteMode": "Multiple",
+      "filterMode": "Bilinear",
+      "compression": "None",
+      "mipmaps": false,
+      "rowNames": [
+        "Idle",
+        "Walk",
+        "LowSweep",
+        "MidPunch",
+        "OverheadSlam",
+        "BoosterDash",
+        "RearMissile",
+        "MissileBarrage"
+      ],
+      "frames": [
+        {
+          "name": "Boss1_Idle_00",
+          "animation": "Idle",
+          "frame": 0,
+          "row": 0,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 1792,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2980949902512844,
+          "sourceRect": {
+            "left": 18,
+            "top": 9,
+            "width": 127,
+            "height": 144
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Idle_01",
+          "animation": "Idle",
+          "frame": 1,
+          "row": 0,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 1792,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3674576766462774,
+          "sourceRect": {
+            "left": 179,
+            "top": 9,
+            "width": 125,
+            "height": 144
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Idle_02",
+          "animation": "Idle",
+          "frame": 2,
+          "row": 0,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 1792,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3747399663837751,
+          "sourceRect": {
+            "left": 338,
+            "top": 9,
+            "width": 122,
+            "height": 144
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Idle_03",
+          "animation": "Idle",
+          "frame": 3,
+          "row": 0,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 1792,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3894666682787981,
+          "sourceRect": {
+            "left": 496,
+            "top": 11,
+            "width": 120,
+            "height": 142
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Idle_04",
+          "animation": "Idle",
+          "frame": 4,
+          "row": 0,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 1792,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 4343419486944078,
+          "sourceRect": {
+            "left": 653,
+            "top": 13,
+            "width": 120,
+            "height": 140
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Idle_05",
+          "animation": "Idle",
+          "frame": 5,
+          "row": 0,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 1792,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3496909806960091,
+          "sourceRect": {
+            "left": 808,
+            "top": 16,
+            "width": 122,
+            "height": 137
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Idle_06",
+          "animation": "Idle",
+          "frame": 6,
+          "row": 0,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 1792,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1382685130371875,
+          "sourceRect": {
+            "left": 964,
+            "top": 14,
+            "width": 123,
+            "height": 139
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Idle_07",
+          "animation": "Idle",
+          "frame": 7,
+          "row": 0,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 1792,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 77094226533725,
+          "sourceRect": {
+            "left": 1121,
+            "top": 13,
+            "width": 121,
+            "height": 140
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Walk_00",
+          "animation": "Walk",
+          "frame": 0,
+          "row": 1,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 1536,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 820611195339031,
+          "sourceRect": {
+            "left": 22,
+            "top": 169,
+            "width": 123,
+            "height": 140
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Walk_01",
+          "animation": "Walk",
+          "frame": 1,
+          "row": 1,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 1536,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 227911586927981,
+          "sourceRect": {
+            "left": 177,
+            "top": 170,
+            "width": 128,
+            "height": 139
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Walk_02",
+          "animation": "Walk",
+          "frame": 2,
+          "row": 1,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 1536,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 122581845832238,
+          "sourceRect": {
+            "left": 334,
+            "top": 169,
+            "width": 127,
+            "height": 140
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Walk_03",
+          "animation": "Walk",
+          "frame": 3,
+          "row": 1,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 1536,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2624288877809711,
+          "sourceRect": {
+            "left": 488,
+            "top": 167,
+            "width": 126,
+            "height": 142
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Walk_04",
+          "animation": "Walk",
+          "frame": 4,
+          "row": 1,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 1536,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 434678616926923,
+          "sourceRect": {
+            "left": 650,
+            "top": 167,
+            "width": 121,
+            "height": 142
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Walk_05",
+          "animation": "Walk",
+          "frame": 5,
+          "row": 1,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 1536,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3710568061180573,
+          "sourceRect": {
+            "left": 813,
+            "top": 167,
+            "width": 115,
+            "height": 142
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Walk_06",
+          "animation": "Walk",
+          "frame": 6,
+          "row": 1,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 1536,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 832594403628450,
+          "sourceRect": {
+            "left": 961,
+            "top": 167,
+            "width": 124,
+            "height": 142
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_Walk_07",
+          "animation": "Walk",
+          "frame": 7,
+          "row": 1,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 1536,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1203961559943887,
+          "sourceRect": {
+            "left": 1121,
+            "top": 168,
+            "width": 122,
+            "height": 141
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_LowSweep_00",
+          "animation": "LowSweep",
+          "frame": 0,
+          "row": 2,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 1280,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 4166737184844281,
+          "sourceRect": {
+            "left": 22,
+            "top": 324,
+            "width": 123,
+            "height": 142
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_LowSweep_01",
+          "animation": "LowSweep",
+          "frame": 1,
+          "row": 2,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 1280,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3605322638912144,
+          "sourceRect": {
+            "left": 171,
+            "top": 327,
+            "width": 134,
+            "height": 139
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_LowSweep_02",
+          "animation": "LowSweep",
+          "frame": 2,
+          "row": 2,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 1280,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2951554443733869,
+          "sourceRect": {
+            "left": 320,
+            "top": 337,
+            "width": 139,
+            "height": 130
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_LowSweep_03",
+          "animation": "LowSweep",
+          "frame": 3,
+          "row": 2,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 1280,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 627061673890329,
+          "sourceRect": {
+            "left": 477,
+            "top": 340,
+            "width": 149,
+            "height": 127
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_LowSweep_04",
+          "animation": "LowSweep",
+          "frame": 4,
+          "row": 2,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 1280,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 4371984715380350,
+          "sourceRect": {
+            "left": 638,
+            "top": 338,
+            "width": 147,
+            "height": 128
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_LowSweep_05",
+          "animation": "LowSweep",
+          "frame": 5,
+          "row": 2,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 1280,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3733819381941257,
+          "sourceRect": {
+            "left": 802,
+            "top": 331,
+            "width": 132,
+            "height": 134
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_LowSweep_06",
+          "animation": "LowSweep",
+          "frame": 6,
+          "row": 2,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 1280,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2906503375878695,
+          "sourceRect": {
+            "left": 956,
+            "top": 329,
+            "width": 131,
+            "height": 137
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_LowSweep_07",
+          "animation": "LowSweep",
+          "frame": 7,
+          "row": 2,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 1280,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 4444201708243609,
+          "sourceRect": {
+            "left": 1120,
+            "top": 325,
+            "width": 122,
+            "height": 141
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MidPunch_00",
+          "animation": "MidPunch",
+          "frame": 0,
+          "row": 3,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 1024,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3285270760924967,
+          "sourceRect": {
+            "left": 22,
+            "top": 481,
+            "width": 123,
+            "height": 141
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MidPunch_01",
+          "animation": "MidPunch",
+          "frame": 1,
+          "row": 3,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 1024,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 478904903505399,
+          "sourceRect": {
+            "left": 168,
+            "top": 481,
+            "width": 127,
+            "height": 141
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MidPunch_02",
+          "animation": "MidPunch",
+          "frame": 2,
+          "row": 3,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 1024,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 592524192985253,
+          "sourceRect": {
+            "left": 318,
+            "top": 480,
+            "width": 135,
+            "height": 142
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MidPunch_03",
+          "animation": "MidPunch",
+          "frame": 3,
+          "row": 3,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 1024,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 134184202650891,
+          "sourceRect": {
+            "left": 482,
+            "top": 481,
+            "width": 148,
+            "height": 141
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MidPunch_04",
+          "animation": "MidPunch",
+          "frame": 4,
+          "row": 3,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 1024,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3453607904218833,
+          "sourceRect": {
+            "left": 643,
+            "top": 481,
+            "width": 149,
+            "height": 140
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MidPunch_05",
+          "animation": "MidPunch",
+          "frame": 5,
+          "row": 3,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 1024,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2177344210835256,
+          "sourceRect": {
+            "left": 801,
+            "top": 484,
+            "width": 136,
+            "height": 137
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MidPunch_06",
+          "animation": "MidPunch",
+          "frame": 6,
+          "row": 3,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 1024,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 4219013868575628,
+          "sourceRect": {
+            "left": 962,
+            "top": 483,
+            "width": 120,
+            "height": 138
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MidPunch_07",
+          "animation": "MidPunch",
+          "frame": 7,
+          "row": 3,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 1024,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3737589504126303,
+          "sourceRect": {
+            "left": 1121,
+            "top": 481,
+            "width": 121,
+            "height": 141
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_OverheadSlam_00",
+          "animation": "OverheadSlam",
+          "frame": 0,
+          "row": 4,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 63502762423919,
+          "sourceRect": {
+            "left": 21,
+            "top": 639,
+            "width": 125,
+            "height": 140
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_OverheadSlam_01",
+          "animation": "OverheadSlam",
+          "frame": 1,
+          "row": 4,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1366882822486277,
+          "sourceRect": {
+            "left": 172,
+            "top": 639,
+            "width": 137,
+            "height": 140
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_OverheadSlam_02",
+          "animation": "OverheadSlam",
+          "frame": 2,
+          "row": 4,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 4227650731257612,
+          "sourceRect": {
+            "left": 330,
+            "top": 626,
+            "width": 129,
+            "height": 153
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_OverheadSlam_03",
+          "animation": "OverheadSlam",
+          "frame": 3,
+          "row": 4,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3713807343655617,
+          "sourceRect": {
+            "left": 482,
+            "top": 623,
+            "width": 128,
+            "height": 156
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_OverheadSlam_04",
+          "animation": "OverheadSlam",
+          "frame": 4,
+          "row": 4,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 113999797652980,
+          "sourceRect": {
+            "left": 638,
+            "top": 651,
+            "width": 155,
+            "height": 128
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_OverheadSlam_05",
+          "animation": "OverheadSlam",
+          "frame": 5,
+          "row": 4,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3694661145983604,
+          "sourceRect": {
+            "left": 795,
+            "top": 667,
+            "width": 146,
+            "height": 112
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_OverheadSlam_06",
+          "animation": "OverheadSlam",
+          "frame": 6,
+          "row": 4,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 585708710471382,
+          "sourceRect": {
+            "left": 956,
+            "top": 663,
+            "width": 125,
+            "height": 116
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_OverheadSlam_07",
+          "animation": "OverheadSlam",
+          "frame": 7,
+          "row": 4,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2587912315549629,
+          "sourceRect": {
+            "left": 1118,
+            "top": 645,
+            "width": 124,
+            "height": 134
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_BoosterDash_00",
+          "animation": "BoosterDash",
+          "frame": 0,
+          "row": 5,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3129113416179513,
+          "sourceRect": {
+            "left": 22,
+            "top": 795,
+            "width": 123,
+            "height": 141
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_BoosterDash_01",
+          "animation": "BoosterDash",
+          "frame": 1,
+          "row": 5,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3566546390310722,
+          "sourceRect": {
+            "left": 172,
+            "top": 806,
+            "width": 130,
+            "height": 130
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_BoosterDash_02",
+          "animation": "BoosterDash",
+          "frame": 2,
+          "row": 5,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2720914760548345,
+          "sourceRect": {
+            "left": 320,
+            "top": 815,
+            "width": 139,
+            "height": 121
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_BoosterDash_03",
+          "animation": "BoosterDash",
+          "frame": 3,
+          "row": 5,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 4432066004687135,
+          "sourceRect": {
+            "left": 478,
+            "top": 822,
+            "width": 148,
+            "height": 114
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_BoosterDash_04",
+          "animation": "BoosterDash",
+          "frame": 4,
+          "row": 5,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 213127756270506,
+          "sourceRect": {
+            "left": 632,
+            "top": 828,
+            "width": 149,
+            "height": 108
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_BoosterDash_05",
+          "animation": "BoosterDash",
+          "frame": 5,
+          "row": 5,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2116969507420876,
+          "sourceRect": {
+            "left": 795,
+            "top": 825,
+            "width": 139,
+            "height": 111
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_BoosterDash_06",
+          "animation": "BoosterDash",
+          "frame": 6,
+          "row": 5,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2300019626740776,
+          "sourceRect": {
+            "left": 962,
+            "top": 809,
+            "width": 125,
+            "height": 127
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_BoosterDash_07",
+          "animation": "BoosterDash",
+          "frame": 7,
+          "row": 5,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 441750685902836,
+          "sourceRect": {
+            "left": 1120,
+            "top": 796,
+            "width": 122,
+            "height": 140
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_RearMissile_00",
+          "animation": "RearMissile",
+          "frame": 0,
+          "row": 6,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 821558675808065,
+          "sourceRect": {
+            "left": 22,
+            "top": 952,
+            "width": 123,
+            "height": 141
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_RearMissile_01",
+          "animation": "RearMissile",
+          "frame": 1,
+          "row": 6,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 4137749123873184,
+          "sourceRect": {
+            "left": 174,
+            "top": 951,
+            "width": 127,
+            "height": 142
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_RearMissile_02",
+          "animation": "RearMissile",
+          "frame": 2,
+          "row": 6,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3493728646146394,
+          "sourceRect": {
+            "left": 328,
+            "top": 946,
+            "width": 130,
+            "height": 147
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_RearMissile_03",
+          "animation": "RearMissile",
+          "frame": 3,
+          "row": 6,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1967854110698446,
+          "sourceRect": {
+            "left": 480,
+            "top": 946,
+            "width": 135,
+            "height": 147
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_RearMissile_04",
+          "animation": "RearMissile",
+          "frame": 4,
+          "row": 6,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2855724973391934,
+          "sourceRect": {
+            "left": 640,
+            "top": 946,
+            "width": 132,
+            "height": 147
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_RearMissile_05",
+          "animation": "RearMissile",
+          "frame": 5,
+          "row": 6,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 445920491932077,
+          "sourceRect": {
+            "left": 799,
+            "top": 950,
+            "width": 130,
+            "height": 143
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_RearMissile_06",
+          "animation": "RearMissile",
+          "frame": 6,
+          "row": 6,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3050560361298383,
+          "sourceRect": {
+            "left": 959,
+            "top": 950,
+            "width": 126,
+            "height": 143
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_RearMissile_07",
+          "animation": "RearMissile",
+          "frame": 7,
+          "row": 6,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 440429508749956,
+          "sourceRect": {
+            "left": 1121,
+            "top": 953,
+            "width": 121,
+            "height": 140
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MissileBarrage_00",
+          "animation": "MissileBarrage",
+          "frame": 0,
+          "row": 7,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 156329400624205,
+          "sourceRect": {
+            "left": 21,
+            "top": 1109,
+            "width": 124,
+            "height": 140
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MissileBarrage_01",
+          "animation": "MissileBarrage",
+          "frame": 1,
+          "row": 7,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3104176166168345,
+          "sourceRect": {
+            "left": 167,
+            "top": 1105,
+            "width": 136,
+            "height": 144
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MissileBarrage_02",
+          "animation": "MissileBarrage",
+          "frame": 2,
+          "row": 7,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1325050568536168,
+          "sourceRect": {
+            "left": 321,
+            "top": 1101,
+            "width": 149,
+            "height": 148
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MissileBarrage_03",
+          "animation": "MissileBarrage",
+          "frame": 3,
+          "row": 7,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 913106020090276,
+          "sourceRect": {
+            "left": 476,
+            "top": 1099,
+            "width": 150,
+            "height": 150
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MissileBarrage_04",
+          "animation": "MissileBarrage",
+          "frame": 4,
+          "row": 7,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2774566944352821,
+          "sourceRect": {
+            "left": 632,
+            "top": 1099,
+            "width": 152,
+            "height": 150
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MissileBarrage_05",
+          "animation": "MissileBarrage",
+          "frame": 5,
+          "row": 7,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3525694078851191,
+          "sourceRect": {
+            "left": 791,
+            "top": 1105,
+            "width": 149,
+            "height": 144
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MissileBarrage_06",
+          "animation": "MissileBarrage",
+          "frame": 6,
+          "row": 7,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3163704711611210,
+          "sourceRect": {
+            "left": 954,
+            "top": 1107,
+            "width": 132,
+            "height": 142
+          },
+          "sourceScale": 1.3529411764705883
+        },
+        {
+          "name": "Boss1_MissileBarrage_07",
+          "animation": "MissileBarrage",
+          "frame": 7,
+          "row": 7,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 4016024965909453,
+          "sourceRect": {
+            "left": 1118,
+            "top": 1110,
+            "width": 124,
+            "height": 139
+          },
+          "sourceScale": 1.3529411764705883
+        }
+      ],
+      "source": "boss1-actions-generated.png",
+      "sourceBodyScale": 1.3529411764705883
+    },
+    {
+      "file": "Boss1_Support_v1.png",
+      "guid": "22c1acb263b0ddd7a897a23df7ae5ad0",
+      "width": 2048,
+      "height": 1024,
+      "columns": 8,
+      "rows": 4,
+      "cellWidth": 256,
+      "cellHeight": 256,
+      "pixelsPerUnit": 100,
+      "textureType": "Sprite",
+      "spriteMode": "Multiple",
+      "filterMode": "Bilinear",
+      "compression": "None",
+      "mipmaps": false,
+      "rowNames": [
+        "Hit",
+        "Death",
+        "MissileFlight",
+        "MissileExplosion"
+      ],
+      "frames": [
+        {
+          "name": "Boss1_Hit_00",
+          "animation": "Hit",
+          "frame": 0,
+          "row": 0,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2155689269165225,
+          "sourceRect": {
+            "left": 24,
+            "top": 16,
+            "width": 183,
+            "height": 205
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Hit_01",
+          "animation": "Hit",
+          "frame": 1,
+          "row": 0,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 913662078045751,
+          "sourceRect": {
+            "left": 252,
+            "top": 16,
+            "width": 182,
+            "height": 205
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Hit_02",
+          "animation": "Hit",
+          "frame": 2,
+          "row": 0,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1710689319132221,
+          "sourceRect": {
+            "left": 457,
+            "top": 23,
+            "width": 203,
+            "height": 198
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Hit_03",
+          "animation": "Hit",
+          "frame": 3,
+          "row": 0,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 245812465207166,
+          "sourceRect": {
+            "left": 694,
+            "top": 20,
+            "width": 176,
+            "height": 201
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Hit_04",
+          "animation": "Hit",
+          "frame": 4,
+          "row": 0,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 605768220546490,
+          "sourceRect": {
+            "left": 913,
+            "top": 30,
+            "width": 174,
+            "height": 191
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Hit_05",
+          "animation": "Hit",
+          "frame": 5,
+          "row": 0,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2568916744670150,
+          "sourceRect": {
+            "left": 1139,
+            "top": 27,
+            "width": 175,
+            "height": 194
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Hit_06",
+          "animation": "Hit",
+          "frame": 6,
+          "row": 0,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2245257476591200,
+          "sourceRect": {
+            "left": 1361,
+            "top": 30,
+            "width": 173,
+            "height": 191
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Hit_07",
+          "animation": "Hit",
+          "frame": 7,
+          "row": 0,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1378860160549465,
+          "sourceRect": {
+            "left": 1583,
+            "top": 27,
+            "width": 173,
+            "height": 194
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Death_00",
+          "animation": "Death",
+          "frame": 0,
+          "row": 1,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1382252836548458,
+          "sourceRect": {
+            "left": 25,
+            "top": 254,
+            "width": 175,
+            "height": 209
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Death_01",
+          "animation": "Death",
+          "frame": 1,
+          "row": 1,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 4133590634105103,
+          "sourceRect": {
+            "left": 248,
+            "top": 269,
+            "width": 177,
+            "height": 194
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Death_02",
+          "animation": "Death",
+          "frame": 2,
+          "row": 1,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 672792497597121,
+          "sourceRect": {
+            "left": 468,
+            "top": 282,
+            "width": 183,
+            "height": 182
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Death_03",
+          "animation": "Death",
+          "frame": 3,
+          "row": 1,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1623109068043231,
+          "sourceRect": {
+            "left": 681,
+            "top": 304,
+            "width": 196,
+            "height": 160
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Death_04",
+          "animation": "Death",
+          "frame": 4,
+          "row": 1,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 3458262377004666,
+          "sourceRect": {
+            "left": 894,
+            "top": 331,
+            "width": 206,
+            "height": 134
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Death_05",
+          "animation": "Death",
+          "frame": 5,
+          "row": 1,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 2483065258593605,
+          "sourceRect": {
+            "left": 1112,
+            "top": 350,
+            "width": 211,
+            "height": 117
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Death_06",
+          "animation": "Death",
+          "frame": 6,
+          "row": 1,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1355735821674572,
+          "sourceRect": {
+            "left": 1334,
+            "top": 364,
+            "width": 212,
+            "height": 104
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_Death_07",
+          "animation": "Death",
+          "frame": 7,
+          "row": 1,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.125
+          },
+          "internalID": 1051984449964485,
+          "sourceRect": {
+            "left": 1557,
+            "top": 369,
+            "width": 211,
+            "height": 99
+          },
+          "sourceScale": 0.934010152284264
+        },
+        {
+          "name": "Boss1_MissileFlight_00",
+          "animation": "MissileFlight",
+          "frame": 0,
+          "row": 2,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 2592639276443581,
+          "sourceRect": {
+            "left": 77,
+            "top": 513,
+            "width": 67,
+            "height": 136
+          },
+          "sourceScale": 0.5
+        },
+        {
+          "name": "Boss1_MissileFlight_01",
+          "animation": "MissileFlight",
+          "frame": 1,
+          "row": 2,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 831292070354111,
+          "sourceRect": {
+            "left": 299,
+            "top": 513,
+            "width": 67,
+            "height": 141
+          },
+          "sourceScale": 0.5
+        },
+        {
+          "name": "Boss1_MissileFlight_02",
+          "animation": "MissileFlight",
+          "frame": 2,
+          "row": 2,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 4306025279315872,
+          "sourceRect": {
+            "left": 521,
+            "top": 513,
+            "width": 67,
+            "height": 142
+          },
+          "sourceScale": 0.5
+        },
+        {
+          "name": "Boss1_MissileFlight_03",
+          "animation": "MissileFlight",
+          "frame": 3,
+          "row": 2,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 3723654067255537,
+          "sourceRect": {
+            "left": 743,
+            "top": 513,
+            "width": 67,
+            "height": 143
+          },
+          "sourceScale": 0.5
+        },
+        {
+          "name": "Boss1_MissileFlight_04",
+          "animation": "MissileFlight",
+          "frame": 4,
+          "row": 2,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 3480017968168793,
+          "sourceRect": {
+            "left": 965,
+            "top": 513,
+            "width": 66,
+            "height": 142
+          },
+          "sourceScale": 0.5
+        },
+        {
+          "name": "Boss1_MissileFlight_05",
+          "animation": "MissileFlight",
+          "frame": 5,
+          "row": 2,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 518375201620841,
+          "sourceRect": {
+            "left": 1187,
+            "top": 513,
+            "width": 66,
+            "height": 138
+          },
+          "sourceScale": 0.5
+        },
+        {
+          "name": "Boss1_MissileFlight_06",
+          "animation": "MissileFlight",
+          "frame": 6,
+          "row": 2,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 2526883897242872,
+          "sourceRect": {
+            "left": 1409,
+            "top": 513,
+            "width": 66,
+            "height": 133
+          },
+          "sourceScale": 0.5
+        },
+        {
+          "name": "Boss1_MissileFlight_07",
+          "animation": "MissileFlight",
+          "frame": 7,
+          "row": 2,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 547661213479380,
+          "sourceRect": {
+            "left": 1631,
+            "top": 513,
+            "width": 66,
+            "height": 133
+          },
+          "sourceScale": 0.5
+        },
+        {
+          "name": "Boss1_MissileExplosion_00",
+          "animation": "MissileExplosion",
+          "frame": 0,
+          "row": 3,
+          "column": 0,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 301141541951495,
+          "sourceRect": {
+            "left": 78,
+            "top": 739,
+            "width": 68,
+            "height": 65
+          },
+          "sourceScale": 0.75
+        },
+        {
+          "name": "Boss1_MissileExplosion_01",
+          "animation": "MissileExplosion",
+          "frame": 1,
+          "row": 3,
+          "column": 1,
+          "rect": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 3820238054976026,
+          "sourceRect": {
+            "left": 272,
+            "top": 721,
+            "width": 114,
+            "height": 109
+          },
+          "sourceScale": 0.75
+        },
+        {
+          "name": "Boss1_MissileExplosion_02",
+          "animation": "MissileExplosion",
+          "frame": 2,
+          "row": 3,
+          "column": 2,
+          "rect": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 1554996868508969,
+          "sourceRect": {
+            "left": 468,
+            "top": 699,
+            "width": 176,
+            "height": 159
+          },
+          "sourceScale": 0.75
+        },
+        {
+          "name": "Boss1_MissileExplosion_03",
+          "animation": "MissileExplosion",
+          "frame": 3,
+          "row": 3,
+          "column": 3,
+          "rect": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 740824109868820,
+          "sourceRect": {
+            "left": 687,
+            "top": 692,
+            "width": 178,
+            "height": 161
+          },
+          "sourceScale": 0.75
+        },
+        {
+          "name": "Boss1_MissileExplosion_04",
+          "animation": "MissileExplosion",
+          "frame": 4,
+          "row": 3,
+          "column": 4,
+          "rect": {
+            "x": 1024,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 3054190018313432,
+          "sourceRect": {
+            "left": 912,
+            "top": 696,
+            "width": 175,
+            "height": 158
+          },
+          "sourceScale": 0.75
+        },
+        {
+          "name": "Boss1_MissileExplosion_05",
+          "animation": "MissileExplosion",
+          "frame": 5,
+          "row": 3,
+          "column": 5,
+          "rect": {
+            "x": 1280,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 2252699405832349,
+          "sourceRect": {
+            "left": 1143,
+            "top": 704,
+            "width": 151,
+            "height": 137
+          },
+          "sourceScale": 0.75
+        },
+        {
+          "name": "Boss1_MissileExplosion_06",
+          "animation": "MissileExplosion",
+          "frame": 6,
+          "row": 3,
+          "column": 6,
+          "rect": {
+            "x": 1536,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 3720981490964623,
+          "sourceRect": {
+            "left": 1364,
+            "top": 707,
+            "width": 152,
+            "height": 125
+          },
+          "sourceScale": 0.75
+        },
+        {
+          "name": "Boss1_MissileExplosion_07",
+          "animation": "MissileExplosion",
+          "frame": 7,
+          "row": 3,
+          "column": 7,
+          "rect": {
+            "x": 1792,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "internalID": 4202913413303777,
+          "sourceRect": {
+            "left": 1601,
+            "top": 721,
+            "width": 117,
+            "height": 104
+          },
+          "sourceScale": 0.75
+        }
+      ],
+      "source": "boss1-support-generated.png",
+      "sourceBodyScale": 0.934010152284264
+    }
+  ],
+  "notes": [
+    "Body frames use one scale per source sheet; all feet aligned at y=224.",
+    "Guided missiles are separate effects so body attacks can keep playing.",
+    "Animation timing, missile period, hitboxes, damage and AI remain governed by the boss design document."
+  ]
+}

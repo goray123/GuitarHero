@@ -1,0 +1,23 @@
+PASS: Arena spawns the wired player and boss prefabs
+PASS: All 12 animations resolve to eight imported sprites each
+PASS: Unity imports all 64 body sprites from the atlas metadata
+PASS: Unity imports all 32 support sprites from the atlas metadata
+PASS: Encounter starts at full health in phase one
+PASS: Boss and player bodies do not block each other
+PASS: Existing AttackHit damage reaches the new boss Damageable
+PASS: Accepted boss damage removes health and one rhythm penalty
+PASS: Invulnerability rejects repeated damage without another rhythm penalty
+PASS: Standing inside the low sweep takes exactly one six-percent hit
+PASS: Slide-height player collider passes below the middle punch
+PASS: Moving behind after slam direction lock evades the third hit
+PASS: Phase entry does not launch an extra barrage
+PASS: Airborne player targeting is projected onto the ground
+PASS: Flying missiles and warning graphics have no contact-damage collider
+PASS: A missile explosion applies six-percent damage once across its active lifetime (actual 94; 100 hp at boss time 3.939996 / ComboRecovery; 94 hp at boss time 4.199996 / ComboRecovery)
+PASS: Binding removes an unfixed guided marker in the live scene
+PASS: Boss death immediately clears gameplay missiles
+PASS: Death animation settles on the last generated sprite
+PASS: Dead boss retains ground support rather than falling through the floor
+PASS: Player death disables movement, melee and chord-strike input
+PASS: Player death also removes outstanding boss warnings
+PASS: Retry creates a clean phase-one encounter

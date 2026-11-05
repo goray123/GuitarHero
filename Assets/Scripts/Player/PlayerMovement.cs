@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     private PlayerChordStrike chordStrike;
 
     public bool IsSliding => isSliding;
+    public float StandingColliderHeight => originalSize.y * Mathf.Abs(transform.lossyScale.y);
+    public float SlidingColliderHeight => Mathf.Min(originalSize.y, slideColliderHeight) * Mathf.Abs(transform.lossyScale.y);
     public bool IsOnGround => rb != null && IsGrounded() && rb.linearVelocity.y <= 0.1f;
     private bool IsAttacking => attack != null && attack.IsAttacking;
     private bool IsUsingSkill => chordStrike != null && chordStrike.BlocksActions;

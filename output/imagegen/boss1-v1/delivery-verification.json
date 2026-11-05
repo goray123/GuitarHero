@@ -1,0 +1,27 @@
+{
+  "verified": true,
+  "totalFrames": 96,
+  "unityEditorRun": false,
+  "sheets": [
+    {
+      "file": "Boss1_Actions_v1.png",
+      "frames": 64,
+      "width": 2048,
+      "height": 2048,
+      "minimumMarginIncludingFaintAlpha": 9,
+      "fullyTransparentRatio": 0.5872876644134521,
+      "pngSha256": "6208ec9957be8b7265a3236c1f7da825743cb12c1c13a00bbb77dfc02c18eddc",
+      "metadataChecked": true
+    },
+    {
+      "file": "Boss1_Support_v1.png",
+      "frames": 32,
+      "width": 2048,
+      "height": 1024,
+      "minimumMarginIncludingFaintAlpha": 27,
+      "fullyTransparentRatio": 0.7974038124084473,
+      "pngSha256": "88c02d2b60784baf32b972d68ffd68b295167c37d04115a44cd38202b298e8bb",
+      "metadataChecked": true
+    }
+  ]
+}

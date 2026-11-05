@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 900100038}
   - component: {fileID: 900100039}
   - component: {fileID: 900100040}
+  - component: {fileID: 114000040001}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -693,3 +694,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRhythmGaugeUI
   screenOffset: {x: 24, y: 24}
   panelSize: {x: 420, y: 102}
+--- !u!114 &114000040001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67fe8eec9e5055953609a2d7ea20717d, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 100
+  invulnerabilityTime: 0.2

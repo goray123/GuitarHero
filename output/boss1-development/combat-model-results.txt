@@ -1,0 +1,50 @@
+PASS: First attack is the three-hit combo even at range
+PASS: Sweep and punch keep the original facing after player crosses behind
+PASS: Slam rechecks facing during its first 0.25 seconds
+PASS: Slam facing stays locked during remaining warning
+PASS: A missed combo still reaches the third hit and recovery
+PASS: Three distinct active windows have three damage identities
+PASS: Recovery carries no melee damage
+PASS: Health above 50 percent stays in phase one
+PASS: Exact 50 percent queues a transition without interrupting an attack
+PASS: Invalid and negative damage cannot corrupt health
+PASS: Transition completes after current combo and recovery
+PASS: Entering phase two does not force missile barrage
+PASS: Phase transition does not reset barrage timer
+PASS: First guided missile waits at least 1.5 seconds after transition
+PASS: Guided missile has 0.9 second tracking plus 0.6 second locked warning
+PASS: Lethal damage immediately clears all missiles and transitions
+PASS: Death cannot spawn a third phase, barrage or late melee hit
+PASS: A corpse rejects later damage
+PASS: Unfixed guided reticle follows the player
+PASS: Bind cancels an unconfirmed guided target
+PASS: Locked target position and impact time remain immutable
+PASS: Bind pauses body progress and the barrage clock
+PASS: Already locked missile finishes at its original time during bind
+PASS: Body hitboxes remain off during bind
+PASS: Bind release includes a warning instead of an instant active hit
+PASS: Barrage never starts before the first 20-second deadline
+PASS: Barrage repeats multiple times entirely within phase one
+PASS: Repeated barrage waits 20 seconds from prior recovery end
+PASS: Every completed barrage fires exactly six missiles
+PASS: Each simultaneous pair leaves player width plus 0.2 H safe space
+PASS: Delayed barrage does not accumulate multiple queued uses
+PASS: Melee and missile explosion windows keep 0.35 seconds separation (step 0.01) (conflicts 0)
+PASS: Phase two manages only one guided missile at a time (step 0.01)
+PASS: Guided launches are at least six seconds apart (step 0.01)
+PASS: Melee and missile explosion windows keep 0.35 seconds separation after repeated binds (step 0.01) (conflicts 0)
+PASS: Phase two manages only one guided missile at a time after repeated binds (step 0.01)
+PASS: Guided launches are at least six seconds apart after repeated binds (step 0.01)
+PASS: Melee and missile explosion windows keep 0.35 seconds separation (step 0.02) (conflicts 0)
+PASS: Phase two manages only one guided missile at a time (step 0.02)
+PASS: Guided launches are at least six seconds apart (step 0.02)
+PASS: Melee and missile explosion windows keep 0.35 seconds separation after repeated binds (step 0.02) (conflicts 0)
+PASS: Phase two manages only one guided missile at a time after repeated binds (step 0.02)
+PASS: Guided launches are at least six seconds apart after repeated binds (step 0.02)
+PASS: Remaining behind for 0.8 seconds triggers rear missiles between patterns
+PASS: Rear attack keeps facing and warns at two fixed behind positions
+PASS: Far target selects a telegraphed booster dash
+PASS: Wall contact stops dash damage and movement immediately
+PASS: Dash is not chosen twice consecutively
+PASS: Losing or killing the target ends attacks and clears warnings
+RESULT: 49/49 passed
