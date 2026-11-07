@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,6 +34,7 @@ public class PlayerChordStrike : MonoBehaviour
     [Tooltip("음표가 부딪힐 적과 지형 레이어")]
     [SerializeField] private LayerMask collisionLayers = ~0;
 
+    private readonly List<ChordNoteProjectile> notes = new List<ChordNoteProjectile>(5);
     private PlayerMovement movement;
     private PlayerAttack attack;
     private SpriteRenderer playerSprite;
@@ -120,6 +122,7 @@ public class PlayerChordStrike : MonoBehaviour
     private void FireNotes()
     {
         Vector2 origin = body.position + new Vector2(muzzleOffset.x * facing, muzzleOffset.y);
+        notes.RemoveAll(note => note == null);
         for (int i = 0; i < 5; i++)
         {
             float lane = (i - 2) / 2f;
@@ -127,7 +130,14 @@ public class PlayerChordStrike : MonoBehaviour
             note.Launch(transform, facing, lane, spreadAngle, curveAmount,
                 noteRange, noteSpeed, noteDamage, collisionLayers,
                 playerSprite.sortingLayerID, playerSprite.sortingOrder + 10);
+            notes.Add(note);
         }
+    }
+
+    internal void DrawAttackRanges(AttackRangeOverlay overlay)
+    {
+        foreach (ChordNoteProjectile note in notes)
+            if (note != null) note.DrawAttackRange(overlay);
     }
 
     public Vector2 GetRecoilVelocity(float currentTime, float dt)

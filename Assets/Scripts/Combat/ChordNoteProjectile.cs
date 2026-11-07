@@ -124,6 +124,12 @@ public class ChordNoteProjectile : MonoBehaviour
         return true;
     }
 
+    internal void DrawAttackRange(AttackRangeOverlay overlay)
+    {
+        if (launched && !spent)
+            overlay.Circle(transform.position, hitRadius, Color.cyan);
+    }
+
     private void Consume()
     {
         spent = true;

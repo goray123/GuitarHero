@@ -13,6 +13,10 @@ public sealed class Boss1Arena : MonoBehaviour
     private GameObject playerObject;
     private PlayerHealth player;
     private Boss1Controller boss;
+    private PlayerAttack playerAttack;
+    private PlayerChordStrike chordStrike;
+    private AttackRangeOverlay attackRanges;
+    private bool showPlayerRange, showBossRange;
     private Sprite white;
     private Material unlit;
     private GUIStyle title, label, small;
@@ -34,7 +38,12 @@ public sealed class Boss1Arena : MonoBehaviour
         }
         white = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f), 1f);
         Shader shader = Shader.Find("Sprites/Default");
-        if (shader != null) unlit = new Material(shader);
+        if (shader == null) shader = Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default");
+        if (shader != null)
+        {
+            unlit = new Material(shader);
+            attackRanges = new AttackRangeOverlay(transform, unlit);
+        }
         Stage();
         RestartEncounter();
     }
@@ -89,6 +98,8 @@ public sealed class Boss1Arena : MonoBehaviour
         playerObject = Instantiate(playerPrefab, new Vector3(-2f, 0.74f, 0f), Quaternion.identity);
         player = playerObject.GetComponent<PlayerHealth>();
         if (player == null) player = playerObject.AddComponent<PlayerHealth>();
+        playerAttack = playerObject.GetComponent<PlayerAttack>();
+        chordStrike = playerObject.GetComponent<PlayerChordStrike>();
         boss = Instantiate(bossPrefab, new Vector3(1f, 0.025f, 0f), Quaternion.identity);
         boss.ConfigureTarget(player, leftEdge, rightEdge);
         boss.BeginEncounter();
@@ -99,17 +110,43 @@ public sealed class Boss1Arena : MonoBehaviour
     {
         Keyboard keys = Keyboard.current;
         if (keys != null && keys.rKey.wasPressedThisFrame) RestartEncounter();
-        if (enableTestKeys && keys != null && boss != null && !boss.IsDead && player != null && !player.IsDead)
+        if (enableTestKeys && keys != null)
         {
-            if (keys.bKey.wasPressedThisFrame) boss.ApplyBind(3f);
-            if (keys.f2Key.wasPressedThisFrame && boss.Model.Phase == 1)
-                boss.TryTakeDamage(Mathf.Max(0f, boss.CurrentHealth - boss.MaxHealth * 0.5f));
+            if (keys.f1Key.wasPressedThisFrame) showPlayerRange = !showPlayerRange;
+            if (keys.f2Key.wasPressedThisFrame) showBossRange = !showBossRange;
+            if (boss != null && !boss.IsDead && player != null && !player.IsDead)
+            {
+                if (keys.bKey.wasPressedThisFrame) boss.ApplyBind(3f);
+                if (keys.f7Key.wasPressedThisFrame && boss.Model.Phase == 1)
+                    boss.TryTakeDamage(Mathf.Max(0f, boss.CurrentHealth - boss.MaxHealth * 0.5f));
+            }
         }
         if (!resultShown && (boss != null && boss.IsDead || player != null && player.IsDead))
         {
             resultShown = true; resultAt = Time.unscaledTime;
         }
         if (playerObject != null && playerObject.transform.position.y < -6f) RestartEncounter();
+    }
+
+    private void LateUpdate()
+    {
+        if (attackRanges == null) return;
+        attackRanges.BeginFrame();
+        if (enableTestKeys && showPlayerRange && player != null && !player.IsDead)
+        {
+            playerAttack?.DrawAttackRanges(attackRanges);
+            chordStrike?.DrawAttackRanges(attackRanges);
+        }
+        if (enableTestKeys && showBossRange && boss != null && !boss.IsDead)
+            boss.DrawAttackRanges(attackRanges);
+        attackRanges.EndFrame();
+    }
+
+    private void OnDisable()
+    {
+        if (attackRanges == null) return;
+        attackRanges.BeginFrame();
+        attackRanges.EndFrame();
     }
 
     private void OnGUI()
@@ -133,12 +170,18 @@ public sealed class Boss1Arena : MonoBehaviour
             "MISSILES  " + boss.Model.BarrageRemaining.ToString("0.0") + "s";
         GUI.Label(new Rect(x + width - 230f, 67f, 230f, 23f), burst, small);
         float helpX = Screen.width * 0.35f;
-        GUI.Label(new Rect(helpX, Screen.height - 72f, Screen.width - helpX - 20f, 22f),
-            "ARROWS MOVE  |  UP JUMP  |  DOWN SLIDE", small);
-        GUI.Label(new Rect(helpX, Screen.height - 50f, Screen.width - helpX - 20f, 22f),
-            "Z ATTACK  |  A CHORD STRIKE  |  R RETRY", small);
+        float helpWidth = Screen.width - helpX - 20f;
+        float helpY = Screen.height - (enableTestKeys ? 94f : 50f);
+        GUI.Label(new Rect(helpX, helpY, helpWidth, 22f), "ARROWS MOVE  |  UP JUMP  |  DOWN SLIDE", small);
+        GUI.Label(new Rect(helpX, helpY + 22f, helpWidth, 22f), "Z ATTACK  |  A CHORD STRIKE  |  R RETRY", small);
         if (enableTestKeys)
-            GUI.Label(new Rect(helpX, Screen.height - 28f, Screen.width - helpX - 20f, 22f), "TEST: B BIND 3s  |  F2 PHASE 2", small);
+        {
+            GUI.Label(new Rect(helpX, helpY + 44f, helpWidth, 22f), "B BIND 3s  |  F7 PHASE 2", small);
+            string playerRange = showPlayerRange ? "ON" : "OFF";
+            string bossRange = showBossRange ? "ON" : "OFF";
+            GUI.Label(new Rect(helpX, helpY + 66f, helpWidth, 22f),
+                $"F1 PLAYER RANGE {playerRange}  |  F2 BOSS RANGE {bossRange}", small);
+        }
         if (resultShown && Time.unscaledTime - resultAt > 0.5f)
         {
             Rect panel = new Rect(Screen.width * 0.5f - 170f, Screen.height * 0.5f - 65f, 340f, 130f);

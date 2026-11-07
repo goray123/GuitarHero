@@ -8,7 +8,7 @@ public static class Boss1Validation
     private static int failures;
     private static Boss1Input Input(float playerX)
     {
-        return new Boss1Input { HasTarget = true, BossX = 0f, PlayerX = playerX, PlayerWidthH = 0.47f,
+        return new Boss1Input { HasTarget = true, BossX = 0f, PlayerX = playerX, PlayerHeight = 1.31f,
             ArenaLeft = -10f, ArenaRight = 10f, ForwardClearanceH = 8f };
     }
     private static void Check(bool condition, string message)
@@ -29,10 +29,10 @@ public static class Boss1Validation
         foreach (var missile in m.Missiles) if (missile.Kind == Boss1MissileKind.Guided) return missile;
         return null;
     }
-    private static Boss1CombatModel PhaseTwo(out Boss1Input input)
+    private static Boss1CombatModel PhaseTwo(out Boss1Input input, Func<Boss1Missile, float, bool> contact = null)
     {
         input = Input(1.2f);
-        var m = new Boss1CombatModel(new Boss1Tuning());
+        var m = new Boss1CombatModel(new Boss1Tuning(), contact);
         m.Begin(); m.TakeDamage(m.MaxHealth * 0.5f);
         for (int i = 0; i < 1000 && m.Phase != 2; i++) m.Tick(0.01f, input);
         return m;
@@ -79,8 +79,8 @@ public static class Boss1Validation
         while (Guided(m) == null && m.Time < transitioned + 15f) m.Tick(0.01f, input);
         Boss1Missile missile = Guided(m);
         Check(missile != null && missile.CreatedAt >= transitioned + 1.49f, "First guided missile waits at least 1.5 seconds after transition");
-        Check(missile != null && Near(missile.ImpactsAt - missile.CreatedAt, 1.5f, 0.002f),
-            "Guided missile has 0.9 second tracking plus 0.6 second locked warning");
+        Check(missile != null && Near(missile.LaunchesAt - missile.CreatedAt, 2f, 0.002f) &&
+            float.IsPositiveInfinity(missile.ImpactsAt), "Guided missile warns for two seconds and has no preset impact");
         int barrageCount = m.BarrageCount;
         Check(m.TakeDamage(m.MaxHealth * 10f) && m.IsDead && m.Health == 0f && m.Missiles.Count == 0,
             "Lethal damage immediately clears all missiles and transitions");
@@ -90,34 +90,41 @@ public static class Boss1Validation
         Check(!m.TakeDamage(1f), "A corpse rejects later damage");
     }
 
-    private static void GuidedLockAndBind()
+    private static void GuidedTimingAndBind()
     {
+        int collisionChecks = 0;
         Boss1Input input;
-        var m = PhaseTwo(out input);
+        var m = PhaseTwo(out input, (missile, elapsed) =>
+        {
+            collisionChecks++;
+            return elapsed >= 0.3f;
+        });
         while (Guided(m) == null && m.Time < 20f) m.Tick(0.01f, input);
-        input.PlayerX = -2f; m.Tick(0.3f, input);
-        Boss1Missile missile = Guided(m);
-        Check(missile != null && !missile.Locked && Near(missile.TargetX, -2f, 0.001f), "Unfixed guided reticle follows the player");
-        m.Bind(0.5f);
-        Check(Guided(m) == null, "Bind cancels an unconfirmed guided target");
-        m.Tick(1f, input);
-        while (Guided(m) == null && m.Time < 30f) m.Tick(0.01f, input);
-        missile = Guided(m);
-        if (missile == null) { Check(false, "Next guided missile eventually starts"); return; }
-        m.Tick(0.92f, input);
-        float lockedX = missile.TargetX, impact = missile.ImpactsAt;
-        input.PlayerX = 3f; m.Tick(0.1f, input);
-        Check(missile.Locked && missile.TargetX == lockedX && missile.ImpactsAt == impact,
-            "Locked target position and impact time remain immutable");
+        Boss1Missile guided = Guided(m);
+        if (guided == null) { Check(false, "Guided missile eventually starts"); return; }
+        float launch = guided.LaunchesAt;
         float remaining = m.BarrageRemaining, stateElapsed = m.StateElapsed;
-        m.Bind(2f); m.Tick(1f, input);
+        m.Bind(3f);
+        m.Tick(1.95f, input);
+        Check(collisionChecks == 0 && m.Missiles.Contains(guided) && guided.LaunchesAt == launch,
+            "A locked warning survives bind and cannot collide before launch");
         Check(Near(m.BarrageRemaining, remaining, 0.001f) && Near(m.StateElapsed, stateElapsed, 0.001f),
             "Bind pauses body progress and the barrage clock");
-        Check(missile.ImpactsAt == impact && !m.Missiles.Contains(missile),
-            "Already locked missile finishes at its original time during bind");
-        Check(!m.IsDamageActive, "Body hitboxes remain off during bind");
-        m.Tick(1.1f, input);
-        Check(!m.IsDamageActive, "Bind release includes a warning instead of an instant active hit");
+        m.Tick(0.4f, input);
+        Check(collisionChecks > 0 && Near(guided.ImpactsAt, launch + 0.3f, 0.02f) &&
+            guided.IsExploding(m.Time, 0.2f), "A guided missile can launch and explode on contact during bind");
+        m.Tick(0.25f, input);
+        Check(!m.Missiles.Contains(guided) && !m.IsDamageActive,
+            "The explosion expires while body hitboxes remain off during bind");
+        m.Tick(0.65f, input);
+        Check(!m.IsDamageActive, "Bind release includes a warning before any body hit resumes");
+
+        m = PhaseTwo(out input);
+        while (Guided(m) == null && m.Time < 20f) m.Tick(0.01f, input);
+        guided = Guided(m);
+        m.Tick(4f, input);
+        Check(guided != null && float.IsPositiveInfinity(guided.ImpactsAt) && !m.Missiles.Contains(guided),
+            "A guided missile that makes no contact expires without an explosion");
     }
 
     private static void PeriodicBarrage()
@@ -126,52 +133,59 @@ public static class Boss1Validation
         var input = Input(1.2f);
         var ids = new HashSet<int>();
         int previousCount = 0, completed = 0;
-        float previousRecoveryEnd = -100f, firstStart = -1f, minimumGap = 100f;
-        bool timing = true, gapSafe = true, sixPerUse = true;
+        float previousRecoveryEnd = -100f, firstStart = -1f, lastShot = -1f, lastBlastEnd = -1f;
+        bool timing = true, shotCadence = true, targetRange = true, fullVolley = true, recovery = true;
         Boss1State previousState = Boss1State.Dormant;
         m.Begin();
         while (m.Time < 105f)
         {
-            m.Tick(0.01f, input);
+            if (m.IsBarrage)
+                input.PlayerX = m.BarrageCount % 2 == 0 ? input.ArenaRight - 0.01f : 1.2f + (float)Math.Sin(m.Time);
+            else
+                input.PlayerX = 1.2f;
+            input.PlayerY = 2.5f + (float)Math.Sin(m.Time * 0.5f);
+            m.Tick(0.013f, input);
             if (m.BarrageCount != previousCount)
             {
                 if (firstStart < 0f) firstStart = m.Time;
                 if (previousCount > 0 && m.Time < previousRecoveryEnd + 19.95f) timing = false;
-                ids.Clear(); previousCount = m.BarrageCount;
+                ids.Clear(); previousCount = m.BarrageCount; lastShot = -1f;
             }
-            for (int i = 0; i < m.Missiles.Count; i++)
+            foreach (Boss1Missile shot in m.Missiles)
             {
-                Boss1Missile a = m.Missiles[i];
-                if (a.Kind != Boss1MissileKind.Barrage) continue;
-                ids.Add(a.Id);
-                for (int j = i + 1; j < m.Missiles.Count; j++)
-                {
-                    Boss1Missile b = m.Missiles[j];
-                    if (!Near(a.CreatedAt, b.CreatedAt, 0.001f)) continue;
-                    float gap = Math.Abs(a.TargetX - b.TargetX) - 0.8f;
-                    minimumGap = Math.Min(minimumGap, gap);
-                    if (gap + 0.001f < input.PlayerWidthH + 0.2f) gapSafe = false;
-                }
+                if (shot.Kind != Boss1MissileKind.Barrage || !ids.Add(shot.Id)) continue;
+                if (lastShot >= 0f && !Near(shot.LaunchesAt - lastShot, 0.2f, 0.003f))
+                    shotCadence = false;
+                float dx = (shot.TargetX - input.PlayerX) * input.PlayerHeight;
+                float dy = (shot.TargetY - input.PlayerY) * input.PlayerHeight;
+                if (dx * dx + dy * dy > 0.2501f * 0.2501f)
+                    targetRange = false;
+                lastShot = shot.LaunchesAt;
+                lastBlastEnd = shot.ImpactsAt + 0.2f;
             }
+            if (previousState == Boss1State.BarrageFiring && m.State == Boss1State.BarrageRecovery)
+                recovery &= m.Time >= lastBlastEnd;
             if (previousState == Boss1State.BarrageRecovery && m.State == Boss1State.Idle)
             {
                 completed++; previousRecoveryEnd = m.Time;
-                if (ids.Count != 6) sixPerUse = false;
+                if (ids.Count != 30) fullVolley = false;
             }
             previousState = m.State;
         }
         Check(firstStart >= 19.99f, "Barrage never starts before the first 20-second deadline");
         Check(completed >= 3 && m.Phase == 1, "Barrage repeats multiple times entirely within phase one");
         Check(timing, "Repeated barrage waits 20 seconds from prior recovery end");
-        Check(sixPerUse, "Every completed barrage fires exactly six missiles");
-        Check(gapSafe && minimumGap >= 0.66f, "Each simultaneous pair leaves player width plus 0.2 H safe space");
+        Check(fullVolley, "Every completed barrage fires exactly 30 missiles");
+        Check(shotCadence, "Barrage launches one missile every 0.2 seconds");
+        Check(targetRange, "Every barrage target is within a diameter-0.5 disk around the player's launch-time X and Y");
+        Check(recovery, "Barrage recovery starts after the final explosion expires");
         Check(m.BarrageCount <= completed + 1, "Delayed barrage does not accumulate multiple queued uses");
     }
 
     private static void ImpactSafety(bool withBindings, float step)
     {
         Boss1Input input;
-        var m = PhaseTwo(out input);
+        var m = PhaseTwo(out input, (missile, elapsed) => elapsed >= (missile.Id % 5) * 0.3f);
         var impactTimes = new Dictionary<int, float>();
         var activeTimes = new List<float>();
         int maxGuided = 0;
@@ -181,7 +195,7 @@ public static class Boss1Validation
         for (int tick = 0; tick < 14000; tick++)
         {
             if (withBindings && tick % 917 == 450) m.Bind(0.58f);
-            if (withBindings && m.IsDamageActive && tick % 17 == 0 && Guided(m) != null && Guided(m).Locked)
+            if (withBindings && m.IsDamageActive && tick % 17 == 0 && Guided(m) != null)
                 m.Bind(0.26f);
             m.Tick(step, input);
             if (m.IsDamageActive) activeTimes.Add(m.Time);
@@ -197,7 +211,7 @@ public static class Boss1Validation
                         previousGuideStart = missile.CreatedAt; guidedId = missile.Id;
                     }
                 }
-                if (missile.Locked) impactTimes[missile.Id] = missile.ImpactsAt;
+                if (!float.IsPositiveInfinity(missile.ImpactsAt)) impactTimes[missile.Id] = missile.ImpactsAt;
             }
             maxGuided = Math.Max(maxGuided, activeGuided);
         }
@@ -237,7 +251,7 @@ public static class Boss1Validation
 
     public static int Main(string[] args)
     {
-        OpeningAndFacing(); PhasesAndDamage(); GuidedLockAndBind(); PeriodicBarrage();
+        OpeningAndFacing(); PhasesAndDamage(); GuidedTimingAndBind(); PeriodicBarrage();
         ImpactSafety(false, 0.01f); ImpactSafety(true, 0.01f);
         ImpactSafety(false, 0.02f); ImpactSafety(true, 0.02f); RearDashAndWalls();
         string summary = "RESULT: " + (results.Count - failures) + "/" + results.Count + " passed";

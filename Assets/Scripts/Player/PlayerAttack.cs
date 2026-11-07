@@ -407,6 +407,20 @@ public class PlayerAttack : MonoBehaviour
         animator.SetFloat("AttackProgress", progress);
     }
 
+    internal void DrawAttackRanges(AttackRangeOverlay overlay)
+    {
+        if (!isActiveAndEnabled) return;
+        if (isAttacking)
+        {
+            BoxCollider2D box = comboStep == 1 ? attack1Hitbox : comboStep == 2 ? attack2Hitbox : attack3Hitbox;
+            overlay.Box(box, isDamageActive ? Color.cyan : new Color(0.2f, 0.85f, 1f, 0.65f));
+            return;
+        }
+        overlay.Box(attack1Hitbox, new Color(0.25f, 0.8f, 1f, 0.65f));
+        overlay.Box(attack2Hitbox, new Color(0.25f, 1f, 0.7f, 0.65f));
+        overlay.Box(attack3Hitbox, new Color(0.55f, 0.7f, 1f, 0.65f));
+    }
+
     private void UpdateHitboxes()
     {
         SetHitbox(attack1Hitbox, isDamageActive && comboStep == 1);

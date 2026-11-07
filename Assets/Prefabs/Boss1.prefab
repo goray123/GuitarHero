@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2001}
@@ -133,11 +133,18 @@ MonoBehaviour:
     ComboRangeH: 1.9
     SweepWindup: 0.65
     SweepActive: 0.15
+    SweepAdvanceH: 0.35
+    SweepRangeH: 1.5
+    SweepHeightH: 1.2
     PunchWindup: 0.75
     PunchActive: 0.15
+    PunchAdvanceH: 0.45
+    PunchRangeH: 2
     SlamWindup: 0.85
     SlamTurnTime: 0.25
     SlamActive: 0.2
+    SlamAdvanceH: 0.6
+    SlamRangeH: 2
     ComboRecovery: 1.3
     ComboCooldown: 2
     DashThresholdH: 2.5
@@ -153,12 +160,16 @@ MonoBehaviour:
     RearRecovery: 1
     RearCooldown: 7
     GuidedInterval: 6
-    GuidedTracking: 0.9
-    GuidedFlight: 0.6
+    GuidedWindup: 2
+    GuidedSpeedH: 20
+    GuidedFlightLimit: 1.25
+    GuidedContactRadiusH: 0.08
     GuidedResumeDelay: 1.5
     BarrageInterval: 20
     BarrageWindup: 1
-    BarrageGroupInterval: 0.6
+    BarrageShotCount: 30
+    BarrageShotInterval: 0.2
+    BarrageSpreadWorld: 0.25
     BarrageFlight: 0.8
     BarrageRecovery: 1.5
     ExplosionDuration: 0.2
@@ -249,7 +260,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: -2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2980949902512844, guid: 61edc5bcefc7a67470532a80c80df772, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

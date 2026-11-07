@@ -6,6 +6,15 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public sealed class Boss1Controller : Damageable
 {
+    private sealed class MissileRuntime
+    {
+        public Vector2 Position;
+        public Vector2 AimOffset;
+        public float Travelled;
+        public bool DamageApplied;
+        public Boss1MissileView View;
+    }
+
     [SerializeField] private Boss1SpriteSet sprites;
     [SerializeField] private SpriteRenderer visual;
     [SerializeField] private PlayerHealth target;
@@ -23,10 +32,11 @@ public sealed class Boss1Controller : Damageable
     private ContactFilter2D solidFilter, hurtFilter;
     private readonly List<RaycastHit2D> castHits = new List<RaycastHit2D>(16);
     private readonly List<RaycastHit2D> floorHits = new List<RaycastHit2D>(16);
+    private readonly List<RaycastHit2D> missileHits = new List<RaycastHit2D>(16);
     private readonly List<Collider2D> overlaps = new List<Collider2D>(16);
-    private readonly Dictionary<int, Boss1MissileView> views = new Dictionary<int, Boss1MissileView>();
+    private readonly Dictionary<int, MissileRuntime> missiles = new Dictionary<int, MissileRuntime>();
     private readonly HashSet<int> liveMissiles = new HashSet<int>();
-    private readonly List<int> expiredViews = new List<int>();
+    private readonly List<int> expiredMissiles = new List<int>();
     private Material effectsMaterial;
     private AudioSource warningSource;
     private AudioClip warningClip;
@@ -43,7 +53,7 @@ public sealed class Boss1Controller : Damageable
     public float CurrentHealth { get { return Model != null ? Model.Health : settings.MaxHealth; } }
     public float MaxHealth { get { return settings.MaxHealth; } }
     public bool IsDead { get { return Model != null && Model.IsDead; } }
-    public Vector3 Muzzle { get { return transform.position + Vector3.up * playerHeight * 1.55f; } }
+    public Vector3 Muzzle { get { return transform.TransformPoint(Vector3.up * playerHeight * 1.55f); } }
 
     private void Awake()
     {
@@ -75,7 +85,7 @@ public sealed class Boss1Controller : Damageable
     private void OnEnable()
     {
         settings.Validate();
-        Model = new Boss1CombatModel(settings);
+        Model = new Boss1CombatModel(settings, ResolveGuidedContact);
         lastDamagedSequence = -1;
         lastState = Boss1State.Dormant;
     }
@@ -120,7 +130,6 @@ public sealed class Boss1Controller : Damageable
         if (Model == null) return;
         Model.Bind(seconds);
         body.linearVelocity = new Vector2(0f, body.linearVelocity.y);
-        SyncMissiles();
     }
 
     public override bool TryTakeDamage(float damage)
@@ -141,26 +150,41 @@ public sealed class Boss1Controller : Damageable
         if (Model == null) return;
         IgnorePlayerCollision();
         bool hasTarget = target != null && target.isActiveAndEnabled && !target.IsDead && targetShape != null;
+        Vector2 playerPosition = Vector2.zero;
+        if (hasTarget)
+        {
+            Rigidbody2D playerBody = targetShape.attachedRigidbody;
+            playerPosition = playerBody != null ? playerBody.position : (Vector2)target.transform.position;
+        }
         float direction = Model.Facing;
         if (hasTarget && (Model.State == Boss1State.Idle || Model.State == Boss1State.Approach))
-            direction = targetShape.bounds.center.x < body.position.x ? -1f : 1f;
+            direction = playerPosition.x < body.position.x ? -1f : 1f;
         Boss1Input input = new Boss1Input
         {
             HasTarget = hasTarget,
             BossX = body.position.x / playerHeight,
-            PlayerX = hasTarget ? targetShape.bounds.center.x / playerHeight : 0f,
-            PlayerWidthH = hasTarget ? targetShape.bounds.size.x / playerHeight : 0.5f,
+            PlayerX = playerPosition.x / playerHeight,
+            PlayerY = playerPosition.y / playerHeight,
+            PlayerHeight = playerHeight,
             ArenaLeft = arenaLeft / playerHeight,
             ArenaRight = arenaRight / playerHeight,
             ForwardClearanceH = ForwardClearance(direction) / playerHeight
         };
         Model.Tick(Time.fixedDeltaTime, input);
-        float vx = Model.DesiredSpeedH * playerHeight;
-        float minX = arenaLeft + bodyShape.size.x * 0.5f;
-        float maxX = arenaRight - bodyShape.size.x * 0.5f;
-        float nextX = Mathf.Clamp(body.position.x + vx * Time.fixedDeltaTime, minX, maxX);
-        body.linearVelocity = new Vector2((nextX - body.position.x) / Time.fixedDeltaTime, body.linearVelocity.y);
-        if (hasTarget && Model.IsDamageActive) DamageMelee();
+        float step = Model.DesiredSpeedH * playerHeight * Time.fixedDeltaTime;
+        bool dashing = Model.State == Boss1State.DashActive;
+        float clearanceH = input.ForwardClearanceH;
+        if (dashing)
+            clearanceH = Mathf.Min(clearanceH, Model.DashDistanceRemainingH(input.BossX));
+        float clearance = clearanceH * playerHeight;
+        step = Mathf.Clamp(step, -clearance, clearance);
+        float halfWidth = bodyShape.bounds.extents.x;
+        float minX = arenaLeft + halfWidth;
+        float maxX = arenaRight - halfWidth;
+        float nextX = Mathf.Clamp(body.position.x + step, minX, maxX);
+        float movement = nextX - body.position.x;
+        body.linearVelocity = new Vector2(movement / Time.fixedDeltaTime, body.linearVelocity.y);
+        if (hasTarget && Model.IsDamageActive && (!dashing || !Mathf.Approximately(movement, 0f))) DamageMelee();
         SyncMissiles();
         if (lastState != Model.State)
         {
@@ -187,8 +211,7 @@ public sealed class Boss1Controller : Damageable
     private void DamageMelee()
     {
         if (lastDamagedSequence == Model.AttackSequence || target == null || target.IsDead) return;
-        Vector2 center, size;
-        DamageBox(out center, out size);
+        if (!TryGetDamageBox(out Vector2 center, out Vector2 size)) return;
         Physics2D.OverlapBox(center, size, 0f, hurtFilter, overlaps);
         if (!overlaps.Contains(targetShape)) return;
         Vector2 point = targetShape.ClosestPoint(center);
@@ -196,29 +219,95 @@ public sealed class Boss1Controller : Damageable
             lastDamagedSequence = Model.AttackSequence;
     }
 
-    private void DamageBox(out Vector2 center, out Vector2 size)
+    private bool TryGetDamageBox(out Vector2 center, out Vector2 size)
     {
-        float range = 1.3f * playerHeight, bottom = 0f, top = 0.65f * playerHeight;
-        if (Model.State == Boss1State.PunchActive)
+        float range, top, bottom = 0f;
+        switch (Model.State)
         {
-            range = 1.6f * playerHeight;
-            bottom = (targetMovement != null ? targetMovement.SlidingColliderHeight : playerHeight * 0.46f) + playerHeight * 0.1f;
-            top = Mathf.Max(bottom + playerHeight * 0.3f, playerHeight * 1.1f);
-        }
-        else if (Model.State == Boss1State.SlamActive)
-        {
-            range = 1.4f * playerHeight;
-            top = playerHeight * 2.2f;
-        }
-        if (Model.State == Boss1State.DashActive)
-        {
-            size = new Vector2(1.6f, 0.7f) * playerHeight;
-            center = body.position + new Vector2(Model.Facing * 0.25f, 0.35f) * playerHeight;
-            return;
+            case Boss1State.SweepWindup:
+            case Boss1State.SweepActive:
+                range = settings.SweepRangeH * playerHeight;
+                top = settings.SweepHeightH * playerHeight;
+                break;
+            case Boss1State.PunchWindup:
+            case Boss1State.PunchActive:
+                range = settings.PunchRangeH * playerHeight;
+                bottom = (targetMovement != null ? targetMovement.SlidingColliderHeight : playerHeight * 0.46f) + playerHeight * 0.1f;
+                top = Mathf.Max(bottom + playerHeight * 0.3f, playerHeight * 1.1f);
+                break;
+            case Boss1State.SlamWindup:
+            case Boss1State.SlamActive:
+                range = settings.SlamRangeH * playerHeight;
+                top = playerHeight * 2.2f;
+                break;
+            case Boss1State.DashWindup:
+            case Boss1State.DashActive:
+                size = new Vector2(bodyShape.bounds.size.x + 0.5f * playerHeight, 0.7f * playerHeight);
+                center = new Vector2(body.position.x + Model.Facing * 0.25f * playerHeight,
+                    bodyShape.bounds.min.y + size.y * 0.5f);
+                return true;
+            default:
+                center = size = Vector2.zero;
+                return false;
         }
         size = new Vector2(range, top - bottom);
         center = new Vector2(body.position.x + Model.Facing * (bodyShape.bounds.extents.x + range * 0.5f),
             bodyShape.bounds.min.y + (top + bottom) * 0.5f);
+        return true;
+    }
+
+    internal void DrawAttackRanges(AttackRangeOverlay overlay)
+    {
+        if (TryGetDamageBox(out Vector2 center, out Vector2 size))
+            overlay.Box(center, size, Model.IsDamageActive ? Color.red : new Color(1f, 0.5f, 0.2f, 0.65f));
+        foreach (Boss1Missile missile in Model.Missiles)
+            if (missile.IsExploding(Model.Time, settings.ExplosionDuration) &&
+                missiles.TryGetValue(missile.Id, out MissileRuntime runtime))
+                overlay.Circle(runtime.Position, settings.ExplosionRadiusH * playerHeight, Color.red);
+    }
+
+    private MissileRuntime GetMissile(Boss1Missile missile)
+    {
+        if (missiles.TryGetValue(missile.Id, out MissileRuntime runtime)) return runtime;
+        runtime = new MissileRuntime();
+        if (missile.Kind == Boss1MissileKind.Guided)
+        {
+            Vector2 headOffset = new Vector2(-Model.Facing * 0.38f, 1.8f) * playerHeight;
+            runtime.Position = body.position + (Vector2)transform.TransformVector(headOffset);
+            runtime.AimOffset = (Vector2)targetShape.bounds.center - runtime.Position;
+            if (runtime.AimOffset.sqrMagnitude < 0.0001f)
+                runtime.AimOffset = Vector2.right * Model.Facing * playerHeight;
+        }
+        else if (missile.Kind == Boss1MissileKind.Barrage)
+            runtime.Position = new Vector2(missile.TargetX, missile.TargetY) * playerHeight;
+        else
+            runtime.Position = ProjectGround(missile.TargetX * playerHeight);
+        if (sprites != null && effectsMaterial != null)
+            runtime.View = new Boss1MissileView(missile, this, effectsMaterial, runtime.AimOffset);
+        missiles.Add(missile.Id, runtime);
+        if (missile.Kind != Boss1MissileKind.Rear) PlayWarning();
+        return runtime;
+    }
+
+    private bool ResolveGuidedContact(Boss1Missile missile, float flightTime)
+    {
+        MissileRuntime runtime = GetMissile(missile);
+        Vector2 direction = runtime.AimOffset.normalized;
+        float travelled = flightTime * settings.GuidedSpeedH * playerHeight;
+        float step = travelled - runtime.Travelled;
+        if (step <= 0f) return false;
+        Physics2D.CircleCast(runtime.Position, settings.GuidedContactRadiusH * playerHeight,
+            direction, solidFilter, missileHits, step);
+        foreach (RaycastHit2D hit in missileHits)
+        {
+            if (hit.collider == null ||
+                (hit.collider != targetShape && hit.collider.GetComponentInParent<Damageable>() != null)) continue;
+            runtime.Position = hit.centroid;
+            return true;
+        }
+        runtime.Position += direction * step;
+        runtime.Travelled = travelled;
+        return false;
     }
 
     private void SyncMissiles()
@@ -227,26 +316,24 @@ public sealed class Boss1Controller : Damageable
         foreach (Boss1Missile missile in Model.Missiles)
         {
             liveMissiles.Add(missile.Id);
-            Boss1MissileView view;
-            if (!views.TryGetValue(missile.Id, out view))
-            {
-                if (sprites == null || effectsMaterial == null) continue;
-                view = new Boss1MissileView(missile, this, effectsMaterial);
-                views.Add(missile.Id, view);
-            }
-            view.Render(missile, this);
-            if (!view.DamageApplied && target != null && !target.IsDead &&
+            MissileRuntime runtime = GetMissile(missile);
+            runtime.View?.Render(missile, this, runtime.Position);
+            if (!runtime.DamageApplied && target != null && !target.IsDead &&
                 missile.IsExploding(Model.Time, settings.ExplosionDuration))
             {
-                Physics2D.OverlapCircle(view.Ground, settings.ExplosionRadiusH * playerHeight, hurtFilter, overlaps);
+                Physics2D.OverlapCircle(runtime.Position, settings.ExplosionRadiusH * playerHeight, hurtFilter, overlaps);
                 if (overlaps.Contains(targetShape) &&
-                    target.TryTakeDamage(new AttackHit(target.MaxHealth * 0.06f, view.Ground, Vector2.up, 0)))
-                    view.DamageApplied = true;
+                    target.TryTakeDamage(new AttackHit(target.MaxHealth * 0.06f, runtime.Position, Vector2.up, 0)))
+                    runtime.DamageApplied = true;
             }
         }
-        expiredViews.Clear();
-        foreach (var entry in views) if (!liveMissiles.Contains(entry.Key)) expiredViews.Add(entry.Key);
-        foreach (int id in expiredViews) { views[id].Dispose(); views.Remove(id); }
+        expiredMissiles.Clear();
+        foreach (var entry in missiles) if (!liveMissiles.Contains(entry.Key)) expiredMissiles.Add(entry.Key);
+        foreach (int id in expiredMissiles)
+        {
+            missiles[id].View?.Dispose();
+            missiles.Remove(id);
+        }
     }
 
     public Vector3 ProjectGround(float worldX)
@@ -282,7 +369,7 @@ public sealed class Boss1Controller : Damageable
             case Boss1State.RearWindup: pose = Boss1Pose.RearMissile; last = 2; break;
             case Boss1State.RearRecovery: pose = Boss1Pose.RearMissile; first = 3; break;
             case Boss1State.BarrageWindup: pose = Boss1Pose.MissileBarrage; last = 2; break;
-            case Boss1State.BarrageFiring: pose = Boss1Pose.MissileBarrage; first = 3; last = 5; progress = Mathf.Repeat(Model.StateElapsed / settings.BarrageGroupInterval, 1f); break;
+            case Boss1State.BarrageFiring: pose = Boss1Pose.MissileBarrage; first = 3; last = 5; progress = Mathf.Repeat(Model.StateElapsed / settings.BarrageShotInterval, 1f); break;
             case Boss1State.BarrageRecovery: pose = Boss1Pose.MissileBarrage; first = 6; break;
             case Boss1State.Dead: pose = Boss1Pose.Death; break;
             default: progress = Mathf.Repeat(Model.StateElapsed, 1f); break;
@@ -331,8 +418,8 @@ public sealed class Boss1Controller : Damageable
 
     private void ClearMissiles()
     {
-        foreach (var view in views.Values) view.Dispose();
-        views.Clear();
+        foreach (MissileRuntime runtime in missiles.Values) runtime.View?.Dispose();
+        missiles.Clear();
     }
 
     private void OnDisable()
@@ -357,9 +444,8 @@ public sealed class Boss1Controller : Damageable
 
     private void OnDrawGizmosSelected()
     {
-        if (!drawAttackGizmos || Model == null || !Model.IsDamageActive) return;
-        Vector2 center, size;
-        DamageBox(out center, out size);
+        if (!drawAttackGizmos || Model == null || !Model.IsDamageActive ||
+            !TryGetDamageBox(out Vector2 center, out Vector2 size)) return;
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(center, size);
     }

@@ -19,11 +19,18 @@ public sealed class Boss1Tuning
     public float ComboRangeH = 1.9f;
     public float SweepWindup = 0.65f;
     public float SweepActive = 0.15f;
+    public float SweepAdvanceH = 0.35f;
+    public float SweepRangeH = 1.5f;
+    public float SweepHeightH = 1.2f;
     public float PunchWindup = 0.75f;
     public float PunchActive = 0.15f;
+    public float PunchAdvanceH = 0.45f;
+    public float PunchRangeH = 2f;
     public float SlamWindup = 0.85f;
     public float SlamTurnTime = 0.25f;
     public float SlamActive = 0.2f;
+    public float SlamAdvanceH = 0.6f;
+    public float SlamRangeH = 2f;
     public float ComboRecovery = 1.3f;
     public float ComboCooldown = 2f;
     public float DashThresholdH = 2.5f;
@@ -39,12 +46,16 @@ public sealed class Boss1Tuning
     public float RearRecovery = 1f;
     public float RearCooldown = 7f;
     public float GuidedInterval = 6f;
-    public float GuidedTracking = 0.9f;
-    public float GuidedFlight = 0.6f;
+    public float GuidedWindup = 2f;
+    public float GuidedSpeedH = 20f;
+    public float GuidedFlightLimit = 1.25f;
+    public float GuidedContactRadiusH = 0.08f;
     public float GuidedResumeDelay = 1.5f;
     public float BarrageInterval = 20f;
     public float BarrageWindup = 1f;
-    public float BarrageGroupInterval = 0.6f;
+    public int BarrageShotCount = 30;
+    public float BarrageShotInterval = 0.2f;
+    public float BarrageSpreadWorld = 0.25f;
     public float BarrageFlight = 0.8f;
     public float BarrageRecovery = 1.5f;
     public float ExplosionDuration = 0.2f;
@@ -61,8 +72,14 @@ public sealed class Boss1Tuning
         WalkSpeedH = Positive(WalkSpeedH, 1.5f);
         ComboRangeH = Positive(ComboRangeH, 1.9f);
         SweepWindup = Positive(SweepWindup, 0.65f); SweepActive = Positive(SweepActive, 0.15f);
+        SweepAdvanceH = Nonnegative(SweepAdvanceH);
+        SweepRangeH = Positive(SweepRangeH, 1.5f); SweepHeightH = Positive(SweepHeightH, 1.2f);
         PunchWindup = Positive(PunchWindup, 0.75f); PunchActive = Positive(PunchActive, 0.15f);
+        PunchAdvanceH = Nonnegative(PunchAdvanceH);
+        PunchRangeH = Positive(PunchRangeH, 2f);
         SlamWindup = Positive(SlamWindup, 0.85f); SlamActive = Positive(SlamActive, 0.2f);
+        SlamAdvanceH = Nonnegative(SlamAdvanceH);
+        SlamRangeH = Positive(SlamRangeH, 2f);
         SlamTurnTime = Math.Max(0f, Math.Min(SlamWindup, Nonnegative(SlamTurnTime)));
         ComboRecovery = Positive(ComboRecovery, 1.3f); ComboCooldown = Nonnegative(ComboCooldown);
         DashThresholdH = Positive(DashThresholdH, 2.5f); DashDistanceH = Positive(DashDistanceH, 4f);
@@ -71,10 +88,13 @@ public sealed class Boss1Tuning
         RearDistanceH = Positive(RearDistanceH, 2f); RearResidence = Positive(RearResidence, 0.8f);
         RearWindup = Positive(RearWindup, 0.8f); RearFlight = Positive(RearFlight, 0.6f);
         RearRecovery = Positive(RearRecovery, 1f); RearCooldown = Nonnegative(RearCooldown);
-        GuidedInterval = Positive(GuidedInterval, 6f); GuidedTracking = Positive(GuidedTracking, 0.9f);
-        GuidedFlight = Positive(GuidedFlight, 0.6f); GuidedResumeDelay = Nonnegative(GuidedResumeDelay);
+        GuidedInterval = Positive(GuidedInterval, 6f); GuidedWindup = Positive(GuidedWindup, 2f);
+        GuidedSpeedH = Positive(GuidedSpeedH, 20f); GuidedFlightLimit = Positive(GuidedFlightLimit, 1.25f);
+        GuidedContactRadiusH = Positive(GuidedContactRadiusH, 0.08f); GuidedResumeDelay = Nonnegative(GuidedResumeDelay);
         BarrageInterval = Positive(BarrageInterval, 20f); BarrageWindup = Positive(BarrageWindup, 1f);
-        BarrageGroupInterval = Positive(BarrageGroupInterval, 0.6f); BarrageFlight = Positive(BarrageFlight, 0.8f);
+        if (BarrageShotCount <= 0) BarrageShotCount = 30;
+        BarrageShotInterval = Positive(BarrageShotInterval, 0.2f); BarrageSpreadWorld = Nonnegative(BarrageSpreadWorld);
+        BarrageFlight = Positive(BarrageFlight, 0.8f);
         BarrageRecovery = Positive(BarrageRecovery, 1.5f); ExplosionDuration = Positive(ExplosionDuration, 0.2f);
         ExplosionRadiusH = Positive(ExplosionRadiusH, 0.4f); ImpactSeparation = Nonnegative(ImpactSeparation);
         PhaseTransitionTime = Positive(PhaseTransitionTime, 0.4f); BindReleaseWarning = Positive(BindReleaseWarning, 0.35f);
@@ -85,13 +105,15 @@ public sealed class Boss1Tuning
     public static bool Finite(float v) { return !float.IsNaN(v) && !float.IsInfinity(v); }
 }
 
-// Coordinates and speeds are in units of the standing player collider height H.
+// Coordinates are in units of the standing player collider height H.
+// PlayerHeight converts between world units and H.
 public struct Boss1Input
 {
     public bool HasTarget;
     public float BossX;
     public float PlayerX;
-    public float PlayerWidthH;
+    public float PlayerY;
+    public float PlayerHeight;
     public float ArenaLeft;
     public float ArenaRight;
     public float ForwardClearanceH;
@@ -104,11 +126,11 @@ public sealed class Boss1Missile
     public int Id { get; internal set; }
     public Boss1MissileKind Kind { get; internal set; }
     public float TargetX { get; internal set; }
+    public float TargetY { get; internal set; }
     public float CreatedAt { get; internal set; }
-    public float LocksAt { get; internal set; }
     public float LaunchesAt { get; internal set; }
+    public float FlightEndsAt { get; internal set; }
     public float ImpactsAt { get; internal set; }
-    public bool Locked { get; internal set; }
     public bool IsExploding(float time, float duration) { return time >= ImpactsAt && time < ImpactsAt + duration; }
 }
 
@@ -123,6 +145,8 @@ public sealed class Boss1CombatModel
     }
 
     private readonly Boss1Tuning tuning;
+    private readonly Func<Boss1Missile, float, bool> guidedContact;
+    private readonly Random random = new Random();
     private readonly List<Boss1Missile> missiles = new List<Boss1Missile>();
     private readonly List<Window> bodyWindows = new List<Window>();
     private readonly List<float> recentImpacts = new List<float>();
@@ -131,7 +155,7 @@ public sealed class Boss1CombatModel
     private float rearElapsed, bindRemaining, releaseRemaining, dashStartX;
     private Boss1State lastPattern = Boss1State.Dormant;
     private bool firstCombo = true, dashShown, resumeReservations;
-    private int nextMissileId, barrageGroup;
+    private int nextMissileId, barrageShots;
 
     public Boss1State State { get; private set; }
     public float StateElapsed { get; private set; }
@@ -162,17 +186,24 @@ public sealed class Boss1CombatModel
         get
         {
             if (IsSuspended || IsDead || (PhasePending || BarragePending) && (State == Boss1State.Idle || State == Boss1State.Approach)) return 0f;
-            if (State == Boss1State.Approach) return Facing * tuning.WalkSpeedH;
-            if (State == Boss1State.DashActive) return Facing * tuning.DashDistanceH / tuning.DashDuration;
-            return 0f;
+            switch (State)
+            {
+                case Boss1State.Approach: return Facing * tuning.WalkSpeedH;
+                case Boss1State.SweepActive: return Facing * tuning.SweepAdvanceH / tuning.SweepActive;
+                case Boss1State.PunchActive: return Facing * tuning.PunchAdvanceH / tuning.PunchActive;
+                case Boss1State.SlamActive: return Facing * tuning.SlamAdvanceH / tuning.SlamActive;
+                case Boss1State.DashActive: return Facing * tuning.DashDistanceH / tuning.DashDuration;
+                default: return 0f;
+            }
         }
     }
     public IList<Boss1Missile> Missiles { get { return readOnlyMissiles; } }
 
-    public Boss1CombatModel(Boss1Tuning settings)
+    public Boss1CombatModel(Boss1Tuning settings, Func<Boss1Missile, float, bool> guidedContact = null)
     {
         tuning = settings ?? new Boss1Tuning();
         tuning.Validate();
+        this.guidedContact = guidedContact;
         readOnlyMissiles = missiles.AsReadOnly();
         State = Boss1State.Dormant; Phase = 1; Facing = 1;
         Health = tuning.MaxHealth; BarrageRemaining = tuning.BarrageInterval;
@@ -208,8 +239,8 @@ public sealed class Boss1CombatModel
         if (IsDead || State == Boss1State.Dormant || !Boss1Tuning.Finite(seconds) || seconds <= 0f) return;
         bindRemaining = Math.Max(bindRemaining, seconds);
         releaseRemaining = tuning.BindReleaseWarning;
+        // Missile targets and aim lines are locked when their warning appears.
         resumeReservations = true;
-        missiles.RemoveAll(m => m.Kind == Boss1MissileKind.Guided && !m.Locked);
     }
 
     public void Tick(float seconds, Boss1Input input)
@@ -229,11 +260,11 @@ public sealed class Boss1CombatModel
         if (State == Boss1State.Dormant) return;
         Time += dt;
         if (IsDead) { StateElapsed += dt; return; }
-        UpdateMissiles(input);
         if (!input.HasTarget)
         {
             Stop(); return;
         }
+        UpdateMissiles();
         bool frozen = bindRemaining > 0f || releaseRemaining > 0f;
         if (bindRemaining > 0f) bindRemaining = Math.Max(0f, bindRemaining - dt);
         else if (releaseRemaining > 0f) releaseRemaining = Math.Max(0f, releaseRemaining - dt);
@@ -265,10 +296,17 @@ public sealed class Boss1CombatModel
             State != Boss1State.PhaseTransition && State != Boss1State.RearWindup &&
             State != Boss1State.RearRecovery && Time >= nextGuidedAt && !HasGuided())
         {
-            float impact = Time + tuning.GuidedTracking + tuning.GuidedFlight;
-            if (!ConflictsWithBody(impact))
+            float launch = Time + tuning.GuidedWindup;
+            float flightEnd = launch + tuning.GuidedFlightLimit;
+            // A player can intercept the ray anywhere after launch. Reserve
+            // the whole possible impact window until the actual contact.
+            if (!ConflictsWithBody(launch, flightEnd))
             {
-                AddMissile(Boss1MissileKind.Guided, ClampTarget(input.PlayerX, input), tuning.GuidedTracking, tuning.GuidedTracking, impact);
+                missiles.Add(new Boss1Missile
+                {
+                    Id = ++nextMissileId, Kind = Boss1MissileKind.Guided, CreatedAt = Time,
+                    LaunchesAt = launch, FlightEndsAt = flightEnd, ImpactsAt = float.PositiveInfinity
+                });
                 nextGuidedAt = Time + tuning.GuidedInterval;
                 GuidedCount++;
             }
@@ -286,7 +324,7 @@ public sealed class Boss1CombatModel
         {
             if (missiles.Count == 0)
             {
-                BarragePending = false; BarrageCount++; barrageGroup = 0;
+                BarragePending = false; BarrageCount++; barrageShots = 0;
                 bodyWindows.Clear(); Enter(Boss1State.BarrageWindup, tuning.BarrageWindup);
             }
             return;
@@ -305,10 +343,9 @@ public sealed class Boss1CombatModel
             // Allow the documented 0.8 s residence even though normal idle is 0.6 s.
             if (rearElapsed < tuning.RearResidence || missiles.Count > 0) return;
             bodyWindows.Clear();
-            AddMissile(Boss1MissileKind.Rear, ClampTarget(input.BossX - Facing, input), 0f, tuning.RearWindup,
-                Time + tuning.RearWindup + tuning.RearFlight);
-            AddMissile(Boss1MissileKind.Rear, ClampTarget(input.BossX - Facing * 2.5f, input), 0f, tuning.RearWindup,
-                Time + tuning.RearWindup + tuning.RearFlight);
+            float launch = Time + tuning.RearWindup;
+            AddTimedMissile(Boss1MissileKind.Rear, ClampTarget(input.BossX - Facing, input), 0f, Time, launch, tuning.RearFlight);
+            AddTimedMissile(Boss1MissileKind.Rear, ClampTarget(input.BossX - Facing * 2.5f, input), 0f, Time, launch, tuning.RearFlight);
             Enter(Boss1State.RearWindup, tuning.RearWindup);
             return;
         }
@@ -332,18 +369,25 @@ public sealed class Boss1CombatModel
         else if (State != Boss1State.Approach) Enter(Boss1State.Approach, 0f);
     }
 
+    public float DashDistanceRemainingH(float bossX)
+    {
+        return Math.Max(0f, tuning.DashDistanceH - Math.Abs(bossX - dashStartX));
+    }
+
     private void AdvancePattern(Boss1Input input)
     {
         if (State == Boss1State.DashActive &&
-            (Math.Abs(input.BossX - dashStartX) >= tuning.DashDistanceH || input.ForwardClearanceH <= 0.04f))
+            (DashDistanceRemainingH(input.BossX) <= 0.001f || input.ForwardClearanceH <= 0.04f))
         {
             bodyWindows.Clear(); Enter(Boss1State.DashRecovery, tuning.DashRecovery); return;
         }
         if (State == Boss1State.BarrageFiring)
         {
-            while (barrageGroup < 3 && StateElapsed + 0.0001f >= barrageGroup * tuning.BarrageGroupInterval)
-                FireBarragePair(input);
-            if (barrageGroup == 3 && missiles.Count == 0) Enter(Boss1State.BarrageRecovery, tuning.BarrageRecovery);
+            while (barrageShots < tuning.BarrageShotCount &&
+                StateElapsed + 0.0001f >= barrageShots * tuning.BarrageShotInterval)
+                FireBarrageShot(input);
+            if (barrageShots >= tuning.BarrageShotCount && missiles.Count == 0)
+                Enter(Boss1State.BarrageRecovery, tuning.BarrageRecovery);
             return;
         }
         if (StateElapsed + 0.00001f < stateDuration) return;
@@ -366,7 +410,7 @@ public sealed class Boss1CombatModel
             case Boss1State.RearRecovery:
                 nextRearAt = Time + tuning.RearCooldown; Finish(Boss1State.RearWindup); break;
             case Boss1State.BarrageWindup:
-                Enter(Boss1State.BarrageFiring, 0f); FireBarragePair(input); break;
+                Enter(Boss1State.BarrageFiring, 0f); FireBarrageShot(input); break;
             case Boss1State.BarrageRecovery:
                 BarrageRemaining = tuning.BarrageInterval;
                 nextGuidedAt = Math.Max(nextGuidedAt, Time + tuning.GuidedResumeDelay);
@@ -388,49 +432,45 @@ public sealed class Boss1CombatModel
         return true;
     }
 
-    private void FireBarragePair(Boss1Input input)
+    private void FireBarrageShot(Boss1Input input)
     {
-        float width = Math.Max(0f, input.ArenaRight - input.ArenaLeft);
-        float gap = Math.Max(0.1f, input.PlayerWidthH) + 0.2f;
-        float separation = 2f * tuning.ExplosionRadiusH + gap + 0.1f;
-        float min = input.ArenaLeft + tuning.ExplosionRadiusH;
-        float max = input.ArenaRight - tuning.ExplosionRadiusH;
-        // A physically too-narrow arena cannot contain two safe blast zones.
-        // Keep this group harmless instead of generating an unavoidable overlap.
-        if (max - min >= separation)
+        float height = input.PlayerHeight > 0f ? input.PlayerHeight : 1f;
+        double angle = random.NextDouble() * 2.0 * Math.PI;
+        float radius = (float)Math.Sqrt(random.NextDouble()) * tuning.BarrageSpreadWorld / height;
+        float x = input.PlayerX + radius * (float)Math.Cos(angle);
+        float y = input.PlayerY + radius * (float)Math.Sin(angle);
+        float overdue = Math.Max(0f, StateElapsed - barrageShots * tuning.BarrageShotInterval);
+        float launch = Time - overdue;
+        AddTimedMissile(Boss1MissileKind.Barrage, x, y, launch, launch, tuning.BarrageFlight);
+        barrageShots++;
+    }
+
+    private void AddTimedMissile(Boss1MissileKind kind, float x, float y, float created, float launch, float flight)
+    {
+        missiles.Add(new Boss1Missile
         {
-            float center = (input.ArenaLeft + input.ArenaRight) * 0.5f;
-            float left = barrageGroup == 0 ? input.ArenaLeft + width * 0.2f :
-                barrageGroup == 1 ? center - 1.6f : input.PlayerX - separation * 0.5f;
-            float right = barrageGroup == 0 ? input.ArenaRight - width * 0.2f :
-                barrageGroup == 1 ? center + 1.6f : input.PlayerX + separation * 0.5f;
-            left = Clamp(left, min, max - separation);
-            right = Clamp(right, left + separation, max);
-            AddMissile(Boss1MissileKind.Barrage, left, 0f, 0f, Time + tuning.BarrageFlight);
-            AddMissile(Boss1MissileKind.Barrage, right, 0f, 0f, Time + tuning.BarrageFlight);
-        }
-        barrageGroup++;
+            Id = ++nextMissileId, Kind = kind, TargetX = x, TargetY = y,
+            CreatedAt = created, LaunchesAt = launch, ImpactsAt = launch + flight
+        });
     }
 
-    private void AddMissile(Boss1MissileKind kind, float x, float tracking, float launchDelay, float impact)
+    private void UpdateMissiles()
     {
-        missiles.Add(new Boss1Missile { Id = ++nextMissileId, Kind = kind, TargetX = x,
-            CreatedAt = Time, LocksAt = Time + tracking, LaunchesAt = Time + launchDelay,
-            ImpactsAt = impact, Locked = tracking <= 0f });
-    }
-
-    private void UpdateMissiles(Boss1Input input)
-    {
-        // An explosion's visual may be gone while its separation margin is
-        // still required, especially when a bound active hit resumes.
+        // Keep the separation margin even after the explosion disappears.
         recentImpacts.RemoveAll(t => Time > t + tuning.ExplosionDuration + tuning.ImpactSeparation + 0.025f);
         for (int i = missiles.Count - 1; i >= 0; i--)
         {
             Boss1Missile missile = missiles[i];
-            if (!missile.Locked)
+            if (float.IsPositiveInfinity(missile.ImpactsAt) && Time >= missile.LaunchesAt)
             {
-                missile.TargetX = ClampTarget(input.PlayerX, input);
-                if (Time >= missile.LocksAt) missile.Locked = true;
+                float flightTime = Math.Min(Time, missile.FlightEndsAt) - missile.LaunchesAt;
+                if (guidedContact != null && guidedContact(missile, flightTime))
+                    missile.ImpactsAt = Time;
+                else if (Time >= missile.FlightEndsAt)
+                {
+                    missiles.RemoveAt(i);
+                    continue;
+                }
             }
             if (Time >= missile.ImpactsAt + tuning.ExplosionDuration)
             {
@@ -451,24 +491,33 @@ public sealed class Boss1CombatModel
         for (int i = 0; i < plan.Count; i++)
         {
             for (int j = 0; j < missiles.Count; j++)
-                if (Overlaps(plan[i], missiles[j].ImpactsAt)) return true;
+            {
+                Boss1Missile missile = missiles[j];
+                if (float.IsPositiveInfinity(missile.ImpactsAt))
+                {
+                    if (Overlaps(plan[i], Math.Max(Time, missile.LaunchesAt), missile.FlightEndsAt)) return true;
+                }
+                else if (Overlaps(plan[i], missile.ImpactsAt, missile.ImpactsAt)) return true;
+            }
             for (int j = 0; j < recentImpacts.Count; j++)
-                if (Overlaps(plan[i], recentImpacts[j])) return true;
+                if (Overlaps(plan[i], recentImpacts[j], recentImpacts[j])) return true;
         }
         return false;
     }
 
-    private bool ConflictsWithBody(float impact)
+    private bool ConflictsWithBody(float firstImpact, float lastImpact)
     {
-        for (int i = 0; i < bodyWindows.Count; i++) if (Overlaps(bodyWindows[i], impact)) return true;
+        for (int i = 0; i < bodyWindows.Count; i++)
+            if (Overlaps(bodyWindows[i], firstImpact, lastImpact)) return true;
         return false;
     }
 
-    private bool Overlaps(Window window, float impact)
+    private bool Overlaps(Window window, float firstImpact, float lastImpact)
     {
         // Reserve one fixed-step of tolerance around logical hit windows.
-        return window.End + 0.025f >= Time && window.Start - 0.025f < impact + tuning.ExplosionDuration + tuning.ImpactSeparation &&
-            window.End + 0.025f > impact - tuning.ImpactSeparation;
+        return window.End + 0.025f >= Time &&
+            window.Start - 0.025f < lastImpact + tuning.ExplosionDuration + tuning.ImpactSeparation &&
+            window.End + 0.025f > firstImpact - tuning.ImpactSeparation;
     }
 
     private void SetWindows(List<Window> plan) { bodyWindows.Clear(); bodyWindows.AddRange(plan); }
