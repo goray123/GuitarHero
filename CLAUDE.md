@@ -52,7 +52,10 @@
 
 - **Unity 6000.3.25f1**, URP 2D, **새 Input System** (`Assets/InputSystem_Actions.inputactions`)
 - 2D Animation / Aseprite / PSD Importer / Tilemap / SpriteShape
-- `com.unity.ai.assistant` (Unity MCP 서버 포함 — 아래 참고)
+- **Unity CLI**(`unity`) + `com.unity.pipeline` 패키지 — 에디터 조작·검증은 CLI로 한다 (아래 참고)
+  - CLI 설치: `irm https://unity.com/install.ps1 | iex` (설치 위치 `%LOCALAPPDATA%\Unity\bin`)
+  - Claude용 사용법은 `unity-cli` 스킬에 있다.
+- `com.unity.ai.assistant` (Unity MCP 서버 포함 — CLI를 쓸 수 없을 때만 대안으로 쓴다)
 
 ## 폴더 구조
 
@@ -86,15 +89,17 @@ Tools/            에디터 밖에서 돌리는 검증·생성 스크립트 (Pow
 
 - **`.meta` 파일은 에셋과 함께** 추가·이동·삭제한다. 에셋을 옮길 때 GUID가 깨지지 않게 한다.
 - `Library/`, `Temp/`, `Logs/`, `UserSettings/`, 루트의 `*.csproj`·`*.slnx`는 Unity가 자동으로 생성한다. 수정하거나 커밋하지 않는다.
-- `.unity`, `.prefab`, `.asset` YAML을 직접 편집하는 건 위험하다. 가능하면 Unity MCP로 에디터에서 조작하고,
+- `.unity`, `.prefab`, `.asset` YAML을 직접 편집하는 건 위험하다. 가능하면 Unity CLI(`unity command`, `unity command script eval`)로 에디터에서 조작하고,
   YAML을 손대야 하면 먼저 사용자에게 알린다. 씬은 여러 사람이 동시에 수정하면 충돌이 잦다.
 - 수치를 튜닝하면 `Docs/위키/`의 해당 문서(예: `타격감 튜닝.md`) 표도 함께 갱신한다.
 - 외부 에셋이나 음원은 출처·라이선스를 확인한다. `Tools/GenerateCombatAudio.ps1`은 직접 합성한 사운드만 만든다.
 
 ## 검증
 
-- **Unity MCP**(연결돼 있을 때): 코드 수정 후 콘솔 컴파일 에러와 경고를 확인한다 (`Unity_ReadConsole` 등).
-  Unity 에디터가 켜져 있고 `Project Settings > AI > Unity MCP Server`에서 Bridge가 Running이어야 한다.
+- **Unity CLI**: 코드 수정 후 `unity recompile`로 컴파일 에러를 확인하고, `unity command console get -- --tail 50 --level error`로
+  콘솔 에러를 본다. 먼저 `unity status`로 에디터가 연결됐는지(state `ready`) 확인한다.
+  - 연결이 안 되면 컴파일 에러로 인한 Safe Mode인지 `unity status`로 먼저 확인한다.
+  - CLI를 쓸 수 없을 때만 Unity MCP(`Project Settings > AI > Unity MCP Server`에서 Bridge Running)로 대신 확인한다.
 - **타격감 자동 검증**: `Tools/ValidateCombatFeel.ps1` — `Temp/CombatFeelValidation`에 격리 프로젝트를 복사해서 검사한다
   (열려 있는 에디터에는 영향 없음).
 - **리듬 게이지 검증**: `Tools/ValidateRhythmGauge.ps1`. 수급 계산은 `Tools/CalculateRhythmGauge.mjs`로 한다

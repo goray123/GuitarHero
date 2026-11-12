@@ -1,0 +1,674 @@
+{
+  "schema_version": 1,
+  "art_direction_brief": "Docs/위키/보스 1 아트 디렉션.md",
+  "assets": [
+    {
+      "id": "boss1-melee-spritesheet",
+      "role": "대기와 근접 3타 프레임 스프라이트 시트",
+      "path": "Assets/Characters/Boss1/Sprites/Boss1_MeleeSheet.png",
+      "status": "prototype",
+      "technical": {
+        "dimensions": "4000x1792",
+        "alpha": true,
+        "anchor": "발밑 가운데",
+        "frames": 32,
+        "cell_dimensions": "400x448",
+        "grid": "10x4",
+        "normalized_pivot": {
+          "x": 0.5,
+          "y": 0.0625
+        },
+        "pixels_per_unit": 70,
+        "filtering": "bilinear",
+        "rows_top_to_bottom": [
+          {
+            "clip": "Idle",
+            "frames": 6
+          },
+          {
+            "clip": "Combo1_Sweep",
+            "frames": 8
+          },
+          {
+            "clip": "Combo2_Punch",
+            "frames": 8
+          },
+          {
+            "clip": "Combo3_Slam",
+            "frames": 10
+          }
+        ]
+      },
+      "source": {
+        "kind": "ai-generated",
+        "url_or_tool": "OpenAI ImageGen (built-in)",
+        "creator": "Codex",
+        "created_at": "2026-11-12",
+        "license": "",
+        "attribution": "사용자가 첨부한 보스 1 중장갑 메카 콘셉트",
+        "prompt_or_source_record": "기준 자세 — Use case: game-asset. Convert the large mech in the supplied concept painting into one faithful production-ready 2D side-scroller sprite. The attached illustration is the source for both the design and the painting style. Repaint its exact main robot in a full-body standing heavy idle, at nearly orthographic right-facing side view (slight depth separation so both fists, legs and pods are legible). It is the same robot, with massive segmented metal gauntlets, dark weathered graphite and grey-purple armor, two large muted burgundy-red six-tube launcher boxes mounted behind and above its shoulders, black ribbed hoses with red collars, visible worn copper actuator pistons in the arms, sparse turquoise status lights and a small hot pink-red horizontal visor. Keep the large chest, compact head, massive hands low, and weight planted on both chunky boots. Keep the illustration's richly worked mechanical anime concept-art treatment: hand-painted chipped chamfer edges, worn brush marks and fine ink hatching, warm scuff highlights, matte texture, graphite violet values, cool teal accents and wine-red panels, shaded mechanical depth. Use top-left lighting and the attached art's dark palette and detail level. The image is a single crisp isolated sprite, all extremities completely visible, room around every edge, on a true transparent RGBA background with empty alpha beyond the contour. No background, no floor, no shadow beneath the feet, no character sheet inserts, no sketched lines in the negative space, no missiles, no exhaust, no text, no numbers.\n\n시트 공통 — Use case: game-asset. Draw a frame-by-frame 2D sprite sheet for an action platformer. The attached isolated robot is the EXACT design and painting reference. Repeat that SAME mech in every cell, with its two tall burgundy-red six-tube missile pods on the back, two huge segmented gauntlets, pink-red slit visor, scratched charcoal-grey violet armor, cream edge chips, thick black ribbed cables with wine-red collars, exposed worn brass pistons, and sparse teal indicators. Match the reference's richly painted anime mecha concept-art style: subtle fine black hatching and brush marks, hand-painted worn edge wear, pronounced shaded mechanical volume, and hard matte armor plates. Keep an equivalent amount of material detail in every pose. This is a locked right-facing orthographic game camera, slightly opened up like the reference so you can see both fists and both boots; every mech looks toward the RIGHT, same character, same unit scale and constant lighting in every frame. Keep the feet over the same invisible ground in all frames. The invisible cell centers align approximately under the hips. Each cell shows one whole robot with empty space around its full silhouette. Make each figure large enough to show the artwork with alpha gutters wide enough to slice without touching adjacent figures. Genuine transparent background and gutters. No color background, checkerboard, floor, ground shadow, smear, motion marks, debris, animation labels, numbers, panel boxes, missiles, sparks, flames, detached shapes, or VFX.\n\nIdle — Exactly 3 columns and 2 rows, six distinct full-body frames, one per cell. Read left to right on the top row, then left to right on the bottom row. Use a wide landscape contact sheet. All six frames depict a very small idle breathing motion, with the feet completely fixed and arms hanging near the knees. Frame 1 is the reference standing pose, frame 2 the chest lowers a few pixels and wrists settle, frame 3 the torso and fists are lowest, frame 4 the torso rises through neutral, frame 5 the shoulders and fists are slightly higher, frame 6 the torso settles toward frame 1. Keep the feet, fists, helmet and pods in proportion with exact consistent drawing and only subtle movement.\n\nCombo1_Sweep — Exactly 4 columns and 2 rows, eight distinct full-body frames, one per cell. Wide landscape sheet. Read left to right on the top row, then left to right on the bottom row. This is a LOW mechanical sweep with the near-side arm. Top row is the anticipation: (1) reference heavy stance beginning to bend both knees, (2) lower into a squat and pull the near-side fist back to screen LEFT, (3) coil further with near gauntlet farther back and close to the ground, (4) deepest low wind-up, enormous active fist visibly pulled to the left of its hip at ankle height, right side clear. Bottom row: (5) the same huge fist sweeps suddenly horizontally out toward screen RIGHT, knuckles very low, knees deeply bent, (6) the low fist sweeps all the way through and remains low, (7) recoil, the active elbow begins to retract, (8) settle with both fists closer in and torso low. The near fist in frames 5 and 6 ends at the height of the soles or the ankles. Other arm remains tucked and pods retain their structural proportions. Keep frame 5 visibly distinct from frame 4.\n\nCombo2_Punch — Exactly 4 columns and 2 rows, eight distinct full-body frames, one per cell. Wide landscape sheet. Read left to right on the top row, then left to right on the bottom row. This is a piston-like MID-HEIGHT punch with the far-side arm. Top row: (1) tucked low rest with fists in; (2) raise chest and fold the far elbow; (3) pull far gauntlet back to its shoulder on the right side of the image, with other fist down near the hip; (4) furthest-loaded punch pose with far arm bent back, fist close to shoulder like a compressed piston. Bottom row: (5) snap the far arm straight horizontally toward screen RIGHT, knuckles held well up off the ground with a large clear transparent gap below the entire extended forearm and fist; (6) arm still extended at mid-height, torso follows; (7) far arm retracts with visible bent elbow; (8) both fists tuck and shoulders settle. In frames 5 and 6 the extended fist is close to the same height as its elbow, NOT an upswing or a low sweep. Keep the giant gauntlets, both pods and both feet fully visible.\n\nCombo3_Slam — Exactly 5 columns and 2 rows, ten distinct full-body frames, one per cell. Extra-wide landscape sheet. Read left to right on top row, then left to right on bottom row. Double-fist ground slam. Top row, anticipation: (1) low rest, shift weight to brace; (2) bend knees and start to raise both elbows; (3) both fists at head level on either side of visor; (4) both huge fists visibly up above the head; (5) maximum overhead reach with the two distinct raised fists above the visor and both boots planted. Keep the arms and pods separate silhouettes; do not cut off fists or pods. Bottom row, slam and recovery: (6) snap BOTH fists all the way down to visibly touch the floor directly in front of the boots, deep crouch; (7) fists remain pressed down, shoulders compressed; (8) begin prying the fists off the ground, still stooped; (9) arms recoil toward hips and torso rises; (10) steady standing pose with arms low. All ten mechs face screen RIGHT. The shift from frame 5 to frame 6 should be unmistakable.\n\n대기 알파 보정 — Use case: background-extraction. Preserve the exact six idle animation sprites in the attached 3-column by 2-row sprite sheet, all in their original poses, positions and scale. Change only the background: completely remove every pixel of the murky red-purple studio gradient, the black shading behind the characters and any backdrop between the legs and arms. Replace the removed background with real zero-alpha transparency. Keep every robot's weathered graphite armor, scarlet launcher pods, dark fine outlines, fine scuffs, metal finishes and feet intact. Keep all six individual full-body robots in their exact existing layout. Transparent canvas and gutters, no checkerboard pattern, no matte haze, no vignette, no ground, no added marks, no elements beyond the contour of the six figures."
+      },
+      "verification": {
+        "native_scale_reviewed": true,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": true,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-seed",
+      "role": "승인용 시드 콘셉트 (측면 대기 자세)",
+      "path": "Assets/Characters/Boss1/Concept/Boss1_Seed.png",
+      "status": "planned",
+      "technical": {
+        "dimensions": "1024x1024",
+        "alpha": true,
+        "anchor": "bottom-center",
+        "frames": 1,
+        "filtering": "bilinear"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-ai-generated",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-rig-psb",
+      "role": "컷아웃 리그용 부위 레이어",
+      "path": "Assets/Characters/Boss1/Rig/Boss1_Rig.psb",
+      "status": "planned",
+      "technical": {
+        "dimensions": "<=2048x2048",
+        "alpha": true,
+        "anchor": "bottom-center",
+        "frames": 1,
+        "filtering": "bilinear"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-ai-assisted-edit",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-idle",
+      "role": "대기 루프",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_Idle.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-booststep",
+      "role": "부스트 스텝 이동",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_BoostStep.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-combo1_sweep",
+      "role": "3타 1타 휘두르기",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_Combo1_Sweep.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-combo2_punch",
+      "role": "3타 2타 펀치",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_Combo2_Punch.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-combo3_slam",
+      "role": "3타 내려찍기",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_Combo3_Slam.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-dash",
+      "role": "부스터 돌진",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_Dash.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-leap",
+      "role": "도약 내려찍기",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_Leap.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-backstep",
+      "role": "부스터 백스텝",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_Backstep.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-rearmissile",
+      "role": "후방 미사일",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_RearMissile.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-barrage",
+      "role": "미사일 난사",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_Barrage.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-anim-death",
+      "role": "사망",
+      "path": "Assets/Characters/Boss1/Animations/Boss1_Death.anim",
+      "status": "planned",
+      "technical": {
+        "type": "2D Animation clip",
+        "rig": "boss1-rig-psb"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-authored",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-fx-boosterflame",
+      "role": "부스터 불꽃 (예열·분사·지속)",
+      "path": "Assets/Characters/Boss1/Effects/Boss1_FX_BoosterFlame.png",
+      "status": "planned",
+      "technical": {
+        "dimensions": "512x512",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "bilinear"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-ai-generated",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-fx-missile",
+      "role": "미사일 본체",
+      "path": "Assets/Characters/Boss1/Effects/Boss1_FX_Missile.png",
+      "status": "planned",
+      "technical": {
+        "dimensions": "256x128",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "bilinear"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-ai-generated",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-fx-explosion",
+      "role": "미사일 폭발 (반경 0.4H)",
+      "path": "Assets/Characters/Boss1/Effects/Boss1_FX_Explosion.png",
+      "status": "planned",
+      "technical": {
+        "dimensions": "512x512",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "bilinear"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-ai-generated",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-fx-shockwave",
+      "role": "도약 착지 충격파 (높이 0.5H)",
+      "path": "Assets/Characters/Boss1/Effects/Boss1_FX_Shockwave.png",
+      "status": "planned",
+      "technical": {
+        "dimensions": "1024x256",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "bilinear"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-ai-generated",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    },
+    {
+      "id": "boss1-fx-impactdust",
+      "role": "주먹 착지 먼지",
+      "path": "Assets/Characters/Boss1/Effects/Boss1_FX_ImpactDust.png",
+      "status": "planned",
+      "technical": {
+        "dimensions": "512x256",
+        "alpha": true,
+        "anchor": "center",
+        "frames": 1,
+        "filtering": "bilinear"
+      },
+      "visual_locks": [
+        "palette",
+        "silhouette",
+        "proportions",
+        "facing-right",
+        "light-direction-top-left",
+        "outline-weight"
+      ],
+      "source": {
+        "kind": "planned-ai-generated",
+        "url_or_tool": "",
+        "creator": "",
+        "created_at": "",
+        "license": "",
+        "attribution": "",
+        "prompt_or_source_record": ""
+      },
+      "verification": {
+        "native_scale_reviewed": false,
+        "in_engine_reviewed": false,
+        "technical_checks_passed": false,
+        "approved_by": ""
+      }
+    }
+  ]
+}
