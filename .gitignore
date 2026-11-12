@@ -6,6 +6,11 @@
 # See: https://github.com/github/gitignore/tree/main/Global
 #
 .utmp/
+
+# Claude Code 개인 설정 (CLAUDE.md는 공유)
+.claude/
+.mcp.json
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
