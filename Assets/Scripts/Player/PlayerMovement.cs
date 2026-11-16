@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions;
-    [SerializeField] private float moveSpeed = 8f;
+    [SerializeField] private float moveSpeed = 4.8f;
     [SerializeField] private float jumpSpeed = 10f;
     [SerializeField] private float coyoteTime = 0.1f;
 
@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 originalSize;
     private Vector2 originalOffset;
+    public float StandingColliderHeight => (originalSize.y > 0f ? originalSize.y : GetComponent<BoxCollider2D>().size.y) * Mathf.Abs(transform.lossyScale.y);
+    public float SlideColliderHeight => Mathf.Min(slideColliderHeight * Mathf.Abs(transform.lossyScale.y), StandingColliderHeight);
 
 
     private float moveInput;

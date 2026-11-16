@@ -75,6 +75,26 @@ public class HealthBarUI : MonoBehaviour
     {
         if (amount <= 0f || float.IsNaN(amount) || float.IsInfinity(amount)) return;
 
+        // 월드 좌표를 그대로 UI 로컬 좌표로 쓰면 화면 HUD에서 타격 위치와 어긋난다.
+        Vector3 startPosition;
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas != null && canvas.renderMode != RenderMode.WorldSpace)
+        {
+            Camera worldCamera = Camera.main;
+            if (worldCamera == null) return;
+            Vector3 screenPosition = worldCamera.WorldToScreenPoint(worldPosition);
+            if (screenPosition.z <= 0f) return;
+            Camera uiCamera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+            if (!(transform is RectTransform parentRect) ||
+                !RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, screenPosition, uiCamera, out Vector2 localPoint)) return;
+            startPosition = new Vector3(localPoint.x, localPoint.y, 0f);
+        }
+        else
+        {
+            startPosition = transform.InverseTransformPoint(worldPosition);
+            startPosition.z = 0f;
+        }
+
         Text popupText = damagePopupTemplate != null
             ? Instantiate(damagePopupTemplate, transform, false)
             : CreateDamagePopup();
@@ -83,10 +103,6 @@ public class HealthBarUI : MonoBehaviour
         color.a = 1f;
         popupText.color = color;
 
-        Vector3 startPosition = new Vector3(
-            worldPosition.x * 1f,
-            worldPosition.y * 1f,
-            worldPosition.z * 1f);
         Vector3 riseVector = Vector3.up * damagePopupRise;
         popupText.rectTransform.localPosition = startPosition;
         popupText.gameObject.SetActive(true);
