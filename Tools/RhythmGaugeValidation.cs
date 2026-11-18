@@ -98,7 +98,7 @@ public static class RhythmGaugeValidation
             Call(gauge, "SetGauge", points[i]);
             Check(gauge.Stage == stages[i], "Exact stage boundary G=" + points[i]);
         }
-        float[] speeds = { 1f, 1.25f, 1.5f, 2f };
+        float[] speeds = { 0.75f, 1.25f, 1.5f, 2f };
         float[] damages = { 1f, 1f, 1.25f, 1.5f };
         float[] decays = { 12.5f, 25f, 50f, 100f };
         for (int i = 0; i < 4; i++)
@@ -111,18 +111,19 @@ public static class RhythmGaugeValidation
 
         gauge.ResetGauge();
         gauge.RecordConfirmedDamage(RhythmHitKind.Basic, 8f);
-        Near(gauge.CurrentGauge, 30f, "Basic accepted damage awards 30");
+        Near(gauge.CurrentGauge, 75f, "Basic accepted damage awards 75");
         gauge.RecordConfirmedDamage(RhythmHitKind.Enhanced, 1f);
-        Near(gauge.CurrentGauge, 90f, "Enhanced accepted damage awards 60 independently of damage amount");
+        Near(gauge.CurrentGauge, 225f, "Enhanced accepted damage awards 150 independently of damage amount");
         gauge.RecordConfirmedDamage(RhythmHitKind.Note, 5f);
-        Near(gauge.CurrentGauge, 105f, "One note awards 15");
+        Near(gauge.CurrentGauge, 262.5f, "One note awards 37.5");
         foreach (float invalid in new[] { 0f, -1f, float.NaN, float.PositiveInfinity })
             gauge.RecordConfirmedDamage(RhythmHitKind.Basic, invalid);
-        Near(gauge.CurrentGauge, 105f, "Rejected or non-finite damage awards nothing");
+        Near(gauge.CurrentGauge, 262.5f, "Rejected or non-finite damage awards nothing");
         gauge.NotifyBossDamageTaken(0f);
-        Near(gauge.CurrentGauge, 105f, "Rejected boss damage does not reduce rhythm");
+        Near(gauge.CurrentGauge, 262.5f, "Rejected boss damage does not reduce rhythm");
         gauge.NotifyBossDamageTaken(1f);
-        Near(gauge.CurrentGauge, 5f, "One accepted boss hit removes 100");
+        Near(gauge.CurrentGauge, 162.5f, "One accepted boss hit removes 100");
+        gauge.NotifyBossDamageTaken(1f);
         gauge.NotifyBossDamageTaken(999f);
         Near(gauge.CurrentGauge, 0f, "Boss damage clamps to zero independently of damage amount");
         Call(gauge, "SetGauge", 995f);
@@ -152,6 +153,16 @@ public static class RhythmGaugeValidation
         Near(gauge.CurrentGauge, 0f, "Re-enabled player starts at zero");
     }
 
+    private static void StartBasicContact(PlayerAttack attack, float speed)
+    {
+        float windup = Get<float>(attack, "basicWindupTime");
+        float active = Get<float>(attack, "basicActiveTime");
+        Set(attack, "comboStep", 0);
+        // Contact delay is capped at half the active window.
+        Call(attack, "StartAttack", Time.time - (windup + 0.75f * active) / speed, 0f);
+        Call(attack, "UpdateAttack", Time.time);
+    }
+
     private static void AttackRules(GameObject player, TrainingDummy dummy, TrainingDummy second)
     {
         var gauge = player.GetComponent<PlayerRhythmGauge>();
@@ -165,41 +176,39 @@ public static class RhythmGaugeValidation
         Time.timeScale = 0f;
 
         Call(gauge, "SetGauge", 740f);
-        Set(attack, "comboStep", 0);
-        Call(attack, "StartAttack", Time.time - 0.13f, 0f);
-        Call(attack, "UpdateAttack", Time.time);
+        StartBasicContact(attack, 1.5f);
         Near(attack.CurrentAttackSpeedMultiplier, 1.5f, "Attack snapshots High speed");
-        Near(Get<float>(attack, "windupDuration"), 0.125f / 1.5f, "Windup is divided by speed");
+        Near(Get<float>(attack, "windupDuration"), Get<float>(attack, "basicWindupTime") / 1.5f,
+            "Windup is divided by speed");
         float health = dummy.CurrentHealth;
         attack.TryHit(hitbox, target);
         Near(dummy.CurrentHealth, health - 10f, "High attack applies 8 x 1.25 damage");
-        Near(gauge.CurrentGauge, 770f, "A real hit crosses into FEVER with +30");
+        Near(gauge.CurrentGauge, 815f, "A real hit crosses into FEVER with +75");
         attack.TryHit(hitbox, target);
-        Near(gauge.CurrentGauge, 770f, "Duplicate target collider does not award rhythm twice");
+        Near(gauge.CurrentGauge, 815f, "Duplicate target collider does not award rhythm twice");
         Near(attack.CurrentAttackSpeedMultiplier, 1.5f, "FEVER gained mid-attack does not change its speed");
         Near(attack.CurrentAttackDamageMultiplier, 1.25f, "FEVER gained mid-attack does not change its damage");
 
         Call(attack, "StopAttack");
-        Set(attack, "comboStep", 0);
-        Call(attack, "StartAttack", Time.time - 0.09f, 0f);
-        Call(attack, "UpdateAttack", Time.time);
+        StartBasicContact(attack, 2f);
         Near(attack.CurrentAttackSpeedMultiplier, 2f, "Next attack uses FEVER speed");
         Call(gauge, "SetGauge", 0f);
         health = dummy.CurrentHealth;
         attack.TryHit(hitbox, target);
         Near(dummy.CurrentHealth, health - 12f, "Started FEVER attack keeps 8 x 1.5 damage after downgrade");
-        Near(Get<float>(attack, "attackEndTime") - Get<float>(attack, "attackStartTime"), 0.1875f,
-            "FEVER shortens the complete basic attack to 187.5 ms");
+        float basicDuration = Get<float>(attack, "basicWindupTime") + Get<float>(attack, "basicActiveTime") +
+            Get<float>(attack, "basicRecoveryTime");
+        Near(Get<float>(attack, "attackEndTime") - Get<float>(attack, "attackStartTime"), basicDuration / 2f,
+            "FEVER halves the complete basic attack time");
 
         Call(attack, "StopAttack");
         gauge.ResetGauge();
-        Set(attack, "comboStep", 0);
-        Call(attack, "StartAttack", Time.time - 0.16f, 0f);
-        Call(attack, "UpdateAttack", Time.time);
+        StartBasicContact(attack, 0.75f);
+        Near(attack.CurrentAttackSpeedMultiplier, 0.75f, "Basic attack snapshots Low speed");
         attack.TryHit(hitbox, target);
         attack.TryHit(hitbox, second.GetComponent<BoxCollider2D>());
         attack.TryHit(hitbox, second.GetComponent<BoxCollider2D>());
-        Near(gauge.CurrentGauge, 60f, "Two distinct enemies award 60, repeated contact awards nothing");
+        Near(gauge.CurrentGauge, 150f, "Two distinct enemies award 150, repeated contact awards nothing");
 
         Call(attack, "StopAttack");
         gauge.ResetGauge();
@@ -210,9 +219,7 @@ public static class RhythmGaugeValidation
 
         Call(dummy, "Respawn");
         dummy.TryTakeDamage(2000f);
-        Set(attack, "comboStep", 0);
-        Call(attack, "StartAttack", Time.time - 0.16f, 0f);
-        Call(attack, "UpdateAttack", Time.time);
+        StartBasicContact(attack, 0.75f);
         attack.TryHit(hitbox, target);
         Near(gauge.CurrentGauge, 0f, "Dead targets do not award rhythm");
         Call(attack, "StopAttack");
@@ -237,17 +244,17 @@ public static class RhythmGaugeValidation
         var note = LaunchNote(player);
         Call(note, "TryContact", target, Vector2.zero, Vector2.right);
         Call(note, "TryContact", target, Vector2.zero, Vector2.right);
-        Near(gauge.CurrentGauge, 15f, "One projectile only awards 15 once");
+        Near(gauge.CurrentGauge, 37.5f, "One projectile only awards 37.5 once");
         gauge.ResetGauge();
         for (int i = 0; i < 5; i++)
         {
             var item = LaunchNote(player);
             Call(item, "TryContact", target, Vector2.zero, Vector2.right);
         }
-        Near(gauge.CurrentGauge, 75f, "All five accepted notes award 75");
+        Near(gauge.CurrentGauge, 187.5f, "All five accepted notes award 187.5");
         note = LaunchNote(player, 0f);
         Call(note, "TryContact", target, Vector2.zero, Vector2.right);
-        Near(gauge.CurrentGauge, 75f, "Rejected projectile damage awards nothing");
+        Near(gauge.CurrentGauge, 187.5f, "Rejected projectile damage awards nothing");
         note = LaunchNote(player);
         gauge.ResetGauge();
         Call(note, "TryContact", target, Vector2.zero, Vector2.right);
@@ -280,6 +287,8 @@ public static class RhythmGaugeValidation
         var gauge = player.GetComponent<PlayerRhythmGauge>();
         var attack = player.GetComponent<PlayerAttack>();
         var stop = player.GetComponent<PlayerHitStop>();
+        float basicHitStop = Get<float>(stop, "basicDuration");
+        float thirdHitStop = Get<float>(stop, "thirdDuration");
         Call(gauge, "SetGauge", 300f);
         Time.timeScale = 0f;
         await WaitReal(0.08f);
@@ -315,14 +324,14 @@ public static class RhythmGaugeValidation
         Near(attack.CurrentAttackSpeedMultiplier, 2f, "Third attack snapshots FEVER speed");
         Call(gauge, "SetGauge", 0f);
         await WaitUntil(() => landings > 0);
-        Near(Get<float>(attack, "activeEndTime") - landedAt, 0.0625f,
+        Near(Get<float>(attack, "activeEndTime") - landedAt, Get<float>(attack, "thirdLandingActiveTime") / 2f,
             "Landing active time retains the starting FEVER speed after gauge drops");
-        Near(Get<float>(attack, "attackEndTime") - Get<float>(attack, "activeEndTime"), 0.0625f,
+        Near(Get<float>(attack, "attackEndTime") - Get<float>(attack, "activeEndTime"), Get<float>(attack, "thirdRecoveryTime") / 2f,
             "Landing recovery retains the starting FEVER speed");
         await WaitUntil(() => !attack.IsAttacking);
         Check(landings == 1, "Faster third attack lands once without getting stuck");
-        Near(Get<float>(stop, "basicDuration"), 0.035f, "Attack speed leaves basic hitstop unchanged");
-        Near(Get<float>(stop, "thirdDuration"), 0.085f, "Attack speed leaves heavy hitstop unchanged");
+        Near(Get<float>(stop, "basicDuration"), basicHitStop, "Attack speed leaves basic hitstop unchanged");
+        Near(Get<float>(stop, "thirdDuration"), thirdHitStop, "Attack speed leaves heavy hitstop unchanged");
         Near(gauge.CurrentGauge, 0f, "Air attack without damage awards nothing");
     }
 

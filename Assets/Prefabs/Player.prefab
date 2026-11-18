@@ -380,7 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRhythmGauge
   low:
-    attackSpeed: 1
+    attackSpeed: 0.75
     attackDamage: 1
     decayPerSecond: 12.5
   normal:
@@ -395,7 +395,7 @@ MonoBehaviour:
     attackSpeed: 2
     attackDamage: 1.5
     decayPerSecond: 100
-  basicHitGain: 30
+  basicHitGain: 75
   enhancedHitMultiplier: 2
   noteHitMultiplier: 0.5
   bossHitLoss: 100

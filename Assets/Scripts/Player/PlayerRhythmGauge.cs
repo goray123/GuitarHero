@@ -28,13 +28,13 @@ public class PlayerRhythmGauge : MonoBehaviour
     public const float StageWidth = 250f;
 
     [Header("Stage Settings")]
-    [SerializeField] private StageSettings low = new StageSettings(1f, 1f, 12.5f);
+    [SerializeField] private StageSettings low = new StageSettings(0.75f, 1f, 12.5f);
     [SerializeField] private StageSettings normal = new StageSettings(1.25f, 1f, 25f);
     [SerializeField] private StageSettings high = new StageSettings(1.5f, 1.25f, 50f);
     [SerializeField] private StageSettings fever = new StageSettings(2f, 1.5f, 100f);
 
     [Header("Confirmed Damage Rewards")]
-    [SerializeField, Min(0f)] private float basicHitGain = 30f;
+    [SerializeField, Min(0f)] private float basicHitGain = 75f;
     [SerializeField, Min(0f)] private float enhancedHitMultiplier = 2f;
     [SerializeField, Min(0f)] private float noteHitMultiplier = 0.5f;
     [SerializeField, Min(0f)] private float bossHitLoss = 100f;

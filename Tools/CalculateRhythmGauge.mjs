@@ -5,12 +5,12 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 const rules = [
-  { name: 'Low', min: 0, speed: 1, damage: 1, decay: 12.5 },
+  { name: 'Low', min: 0, speed: 0.75, damage: 1, decay: 12.5 },
   { name: 'Normal', min: 250, speed: 1.25, damage: 1, decay: 25 },
   { name: 'High', min: 500, speed: 1.5, damage: 1.25, decay: 50 },
   { name: 'FEVER', min: 750, speed: 2, damage: 1.5, decay: 100 },
 ];
-const parameters = { baseGain: 30, enhancedGainMultiplier: 2, noteGainMultiplier: 0.5, maximum: 1000 };
+const parameters = { baseGain: 75, enhancedGainMultiplier: 2, noteGainMultiplier: 0.5, maximum: 1000 };
 const prefabText = read('Assets/Prefabs/Player.prefab');
 const prefabGuid = read('Assets/Prefabs/Player.prefab.meta').match(/^guid:\s*(\S+)/m)[1];
 const attackFields = [
