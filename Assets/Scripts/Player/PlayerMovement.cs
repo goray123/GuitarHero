@@ -7,6 +7,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private float moveSpeed = 4.8f;
     [SerializeField] private float jumpSpeed = 10f;
+    [Tooltip("상승 중 점프 버튼을 놓았을 때 남길 상승 속도 비율")]
+    [SerializeField, Range(0f, 1f)] private float jumpCutMultiplier = 0.5f;
+    [Tooltip("자유 낙하 중 적용할 중력 배율")]
+    [SerializeField, Min(1f)] private float fallGravityMultiplier = 1.3f;
     [SerializeField] private float coyoteTime = 0.1f;
 
     [Tooltip("슬라이드 한 번에 이동할 거리. 벽에 막히면 실제 이동 거리는 줄어듦")]
@@ -49,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float moveInput;
     private bool jumpRequested;
+    private bool jumpCutRequested;
+    private bool isJumping;
     private bool slideRequested;
     private float lastGroundedTime = float.NegativeInfinity;
 
@@ -96,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         jumpAction.performed += OnJump;
+        jumpAction.canceled += OnJumpReleased;
         slideAction.performed += OnSlide;
         slideAction.canceled += OnSlideReleased;
 
@@ -110,6 +117,7 @@ public class PlayerMovement : MonoBehaviour
         if (playerActions != null)
         {
             jumpAction.performed -= OnJump;
+            jumpAction.canceled -= OnJumpReleased;
             slideAction.performed -= OnSlide;
             slideAction.canceled -= OnSlideReleased;
             playerActions.Disable();
@@ -117,6 +125,8 @@ public class PlayerMovement : MonoBehaviour
 
         moveInput = 0f;
         jumpRequested = false;
+        jumpCutRequested = false;
+        isJumping = false;
         slideRequested = false;
         lastGroundedTime = float.NegativeInfinity;
 
@@ -153,6 +163,11 @@ public class PlayerMovement : MonoBehaviour
         // 공중에서 누른 입력은 키를 누르고 있는 동안만 보관
         if (!isSliding && !IsUsingSkill)
             slideRequested = true;
+    }
+
+    private void OnJumpReleased(InputAction.CallbackContext context)
+    {
+        jumpCutRequested = true;
     }
 
     private void OnSlideReleased(InputAction.CallbackContext context)
@@ -216,6 +231,8 @@ public class PlayerMovement : MonoBehaviour
         }
         Vector2 velocity = rb.linearVelocity;
         bool isGrounded = IsGrounded() && velocity.y <= 0.1f;
+        if (isGrounded || velocity.y <= 0f)
+            isJumping = false;
 
         // 마지막 접지 시각으로 절벽 이탈 후 0.1초 판정
         if (isGrounded)
@@ -242,6 +259,7 @@ public class PlayerMovement : MonoBehaviour
             if (!IsAttacking && jumpRequested)
             {
                 velocity.y = jumpSpeed;
+                isJumping = true;
                 isGrounded = false;
 
                 // 점프에 사용한 코요테 타임과 동시 슬라이드 입력 소모
@@ -256,6 +274,16 @@ public class PlayerMovement : MonoBehaviour
                 StartSlide(currentTime);
             }
         }
+
+        if (isJumping && (jumpCutRequested || !jumpAction.IsPressed()))
+        {
+            velocity.y *= jumpCutMultiplier;
+            isJumping = false;
+        }
+
+        if (!isGrounded && velocity.y < 0f)
+            velocity.y += Physics2D.gravity.y * rb.gravityScale *
+                (fallGravityMultiplier - 1f) * Time.fixedDeltaTime;
 
         UpdateCrouch(isGrounded && !isSliding && !IsAttacking && crouchAction.IsPressed());
 
@@ -283,6 +311,7 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = velocity;
 
         jumpRequested = false;
+        jumpCutRequested = false;
 
         // 공격 준비 중 누르고 있는 슬라이드는 후딜레이까지 대기
         if (isSliding || (isGrounded && (!IsAttacking || attack.CanCancelWithSlide(currentTime))))
@@ -303,6 +332,8 @@ public class PlayerMovement : MonoBehaviour
     public void ClearActionRequests()
     {
         jumpRequested = false;
+        jumpCutRequested = false;
+        isJumping = false;
         slideRequested = false;
     }
 

@@ -1,5 +1,38 @@
 {
-  "generated_at": "2026-11-19T10:03:54.064040+00:00",
-  "nodes": {},
+  "generated_at": "2026-11-19T10:45:35.378011+00:00",
+  "nodes": {
+    "claude_게임_디자인_핵심_구현_판단의_기준": {
+      "code_fingerprint": "75b8319fa6b31441f96ae851186411e63f9697678b2e82e5c8bbfdf9762e3da7",
+      "label": "게임 디자인 핵심 (구현 판단의 기준)",
+      "last": "2026-11-19T10:04:50.721052+00:00",
+      "provenance": [
+        {
+          "date": "2026-11-19T10:04:50.721052+00:00",
+          "outcome": "useful",
+          "q": "이펙터 시스템 우리 설계된게 뭐가 잇었지"
+        }
+      ],
+      "score": 0.999346469,
+      "source_file": "CLAUDE.md",
+      "status": "tentative",
+      "uses": 1
+    },
+    "docs_기획문서_게임의_정체성_v20261110_게임의_정체성_v20261110": {
+      "code_fingerprint": "429d8117bda2aa9a6387ba8691514bcd2fdeab457b45cdda6ac2cad5a6ee6bb7",
+      "label": "게임의 정체성 v20261110",
+      "last": "2026-11-19T10:04:50.721052+00:00",
+      "provenance": [
+        {
+          "date": "2026-11-19T10:04:50.721052+00:00",
+          "outcome": "useful",
+          "q": "이펙터 시스템 우리 설계된게 뭐가 잇었지"
+        }
+      ],
+      "score": 0.999346469,
+      "source_file": "Docs/기획문서/게임의 정체성 v20261110.md",
+      "status": "tentative",
+      "uses": 1
+    }
+  },
   "version": 1
 }

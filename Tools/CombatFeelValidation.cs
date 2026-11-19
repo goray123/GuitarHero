@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -86,6 +87,94 @@ public static class CombatFeelValidation
         await WaitUntil(() => Time.realtimeSinceStartupAsDouble >= deadline, seconds + 1f);
     }
 
+    private static void CheckJumping(PlayerMovement movement, Rigidbody2D body)
+    {
+        SimulationMode2D simulationMode = Physics2D.simulationMode;
+        Keyboard keyboard = InputSystem.AddDevice<Keyboard>();
+        float dt = Time.fixedDeltaTime;
+        float gravityStep = Physics2D.gravity.y * body.gravityScale * dt;
+        void JumpButton(bool pressed)
+        {
+            InputSystem.QueueStateEvent(keyboard, pressed ? new KeyboardState(Key.Space) : new KeyboardState());
+            InputSystem.Update();
+        }
+        void Reset()
+        {
+            JumpButton(false);
+            movement.enabled = false;
+            movement.enabled = true;
+            body.position = new Vector2(0f, 10f);
+            body.linearVelocity = Vector2.zero;
+            // Start inside the existing coyote window without needing a settling frame.
+            Set(movement, "lastGroundedTime", Time.time);
+        }
+        float JumpHeight(int heldSteps)
+        {
+            Reset();
+            JumpButton(true);
+            float peak = body.position.y;
+            for (int i = 0; i < 100; i++)
+            {
+                if (i == heldSteps) JumpButton(false);
+                Call(movement, "UpdateMovement", Time.time + i * dt);
+                Physics2D.Simulate(dt);
+                peak = Mathf.Max(peak, body.position.y);
+                if (body.linearVelocity.y <= 0f) break;
+            }
+            return peak - 10f;
+        }
+        try
+        {
+            Physics2D.simulationMode = SimulationMode2D.Script;
+            float tap = JumpHeight(0);
+            float shortHold = JumpHeight(4);
+            float mediumHold = JumpHeight(10);
+            float fullHold = JumpHeight(int.MaxValue);
+            Check(tap > 0f && tap < shortHold && shortHold < mediumHold && mediumHold < fullHold,
+                $"Jump height grows with hold duration: {tap:F3} < {shortHold:F3} < {mediumHold:F3} < {fullHold:F3}");
+            float speed = Get<float>(movement, "jumpSpeed");
+            float expectedHeight = 0f;
+            for (float v = speed + gravityStep; v > 0f; v += gravityStep)
+                expectedHeight += v * dt;
+            Check(Mathf.Abs(fullHold - expectedHeight) < 0.001f, "Holding jump preserves the original full jump height");
+
+            Reset();
+            JumpButton(true);
+            Call(movement, "UpdateMovement", Time.time);
+            JumpButton(false);
+            JumpButton(true);
+            Call(movement, "UpdateMovement", Time.time + dt);
+            float cutSpeed = body.linearVelocity.y;
+            Check(Mathf.Abs(cutSpeed - speed * 0.5f) < 0.001f,
+                "A release and re-press between physics ticks still cuts ascent and cannot double jump");
+            JumpButton(false);
+            Call(movement, "UpdateMovement", Time.time + 2f * dt);
+            Check(Mathf.Abs(body.linearVelocity.y - cutSpeed) < 0.001f, "Releasing again does not cut the same jump twice");
+
+            Reset();
+            Set(movement, "lastGroundedTime", float.NegativeInfinity);
+            body.linearVelocity = new Vector2(0f, -3f);
+            Call(movement, "UpdateMovement", Time.time);
+            Physics2D.Simulate(dt);
+            Check(Mathf.Abs(body.linearVelocity.y - (-3f + gravityStep * 1.3f)) < 0.001f,
+                "Falling off a ledge applies exactly 1.3 times base gravity");
+            Reset();
+            body.linearVelocity = new Vector2(0f, 6f);
+            Call(movement, "UpdateMovement", Time.time);
+            Physics2D.Simulate(dt);
+            Check(Mathf.Abs(body.linearVelocity.y - (6f + gravityStep)) < 0.001f,
+                "Non-jump upward motion keeps base gravity and is not cut by jump release");
+        }
+        finally
+        {
+            JumpButton(false);
+            movement.enabled = false;
+            body.linearVelocity = Vector2.zero;
+            Physics2D.simulationMode = simulationMode;
+            InputSystem.RemoveDevice(keyboard);
+        }
+    }
+
     private static async void CheckInPlayMode()
     {
         int exitCode = 0;
@@ -113,6 +202,7 @@ public static class CombatFeelValidation
             TrainingDummy dummy = target.GetComponent<TrainingDummy>();
             Transform pivot = Get<Transform>(dummy, "reactionPivot");
             Transform healthBar = Get<GameObject>(dummy, "healthBar").transform;
+            CheckJumping(movement, body);
             movement.enabled = false;
             body.simulated = false;
             player.transform.position = new Vector3(0f, 1f, 0f);
