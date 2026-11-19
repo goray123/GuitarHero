@@ -40,6 +40,9 @@ $manifestText = @{ dependencies = $cachedDependencies } | ConvertTo-Json -Depth 
 $versionLine = Get-Content -LiteralPath (Join-Path $projectFolder 'ProjectSettings/ProjectVersion.txt') | Select-Object -First 1
 $version = $versionLine.Split(' ')[1]
 $unityExe = "C:/Program Files/Unity/Hub/Editor/$version/Editor/Unity.exe"
+if (-not (Test-Path -LiteralPath $unityExe)) {
+    $unityExe = "C:/Program Files/Unity/$version/Editor/Unity.exe"
+}
 $logFile = Join-Path $validationFolder 'validation.log'
 if ($PrepareOnly) {
     Write-Output "Prepared validation project: $validationFolder"

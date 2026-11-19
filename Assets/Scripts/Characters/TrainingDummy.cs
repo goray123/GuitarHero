@@ -138,7 +138,7 @@ public class TrainingDummy : Damageable
         // 첫 자세에서 최대 충격, 이후 작은 반동을 거쳐 원위치로 감쇠.
         float recoil = Mathf.Cos(t * Mathf.PI * 2.5f) * (1f - t) * (1f - t);
         bool downward = reactionDirection.y < -0.5f;
-        float horizontal = downward ? 0f : Mathf.Sign(reactionDirection.x);
+        float horizontal = Mathf.Abs(reactionDirection.y) > 0.5f ? 0f : Mathf.Sign(reactionDirection.x);
         reactionPivot.localPosition = restPivotPosition + Vector3.right * (horizontal * recoilDistance * recoil);
         reactionPivot.localRotation = restPivotRotation * Quaternion.Euler(0f, 0f, -horizontal * bendAngle * recoil);
         float compression = downward ? recoilDistance * recoil : 0f;

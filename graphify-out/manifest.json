@@ -1,0 +1,1052 @@
+{
+  ".vscode/extensions.json": {
+    "mtime": 1789634586.1582952,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a9819ba4d76ccd81cf1f7b18e06c77d0",
+    "semantic_hash": ""
+  },
+  ".vscode/launch.json": {
+    "mtime": 1789634586.1624231,
+    "seen": 1795082554.4715788,
+    "ast_hash": "b939dea735cf9d32842d6a2c44474427",
+    "semantic_hash": ""
+  },
+  ".vscode/settings.json": {
+    "mtime": 1789634586.1582952,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a811b89a9287072cb43fe630e4f6c7b2",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1AimedMissile.cs": {
+    "mtime": 1794918091.12243,
+    "seen": 1795082554.4715788,
+    "ast_hash": "efb9b6fa45fd156d1cfaa4461d771020",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1AttackHitboxes.cs": {
+    "mtime": 1794918091.1267757,
+    "seen": 1795082554.4715788,
+    "ast_hash": "e3b939ad5a5ee302f3cd4dc3ee8555f6",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1Backstep.cs": {
+    "mtime": 1794918091.127791,
+    "seen": 1795082554.4715788,
+    "ast_hash": "63a5bbfa1fafa8943a95a019b4e1967b",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1BoostRush.cs": {
+    "mtime": 1794918091.127791,
+    "seen": 1795082554.4715788,
+    "ast_hash": "c92a9f8e36141a1908053a915dc80640",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1BoostRushVisual.cs": {
+    "mtime": 1794918091.1316168,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a974c73d3a2b1eb900fad1f40be7f22e",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1BoostStep.cs": {
+    "mtime": 1794918091.1321337,
+    "seen": 1795082554.4715788,
+    "ast_hash": "ba6ba32a9b9a000fdd5d790091d57dc2",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1BoosterFlameVisual.cs": {
+    "mtime": 1794918091.1338837,
+    "seen": 1795082554.4715788,
+    "ast_hash": "962c6dec378d6fe2587f6dca8a967fe5",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1Health.cs": {
+    "mtime": 1794918091.1364543,
+    "seen": 1795082554.4715788,
+    "ast_hash": "31bb4bf7b9ac3577575e0e8bb0c38cfb",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1LeapSlam.cs": {
+    "mtime": 1794918091.137475,
+    "seen": 1795082554.4715788,
+    "ast_hash": "965a77ed1bbf2e860f97346e1e6badcf",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1MissileArt.cs": {
+    "mtime": 1794918091.137475,
+    "seen": 1795082554.4715788,
+    "ast_hash": "0d3ba3149d3476c733fc128773b0156c",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1MissileBarrage.cs": {
+    "mtime": 1794918091.1414175,
+    "seen": 1795082554.4715788,
+    "ast_hash": "cc14f3b464b3d01d4eae967f31894fb2",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1PrototypeModel.cs": {
+    "mtime": 1794918091.1419332,
+    "seen": 1795082554.4715788,
+    "ast_hash": "f48d13400852724af7a4d29c9007c9a2",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1ProximityAttack.cs": {
+    "mtime": 1794918091.1419332,
+    "seen": 1795082554.4715788,
+    "ast_hash": "5f8fb4194f2236ff40a54de4f3633ca1",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1RearMissiles.cs": {
+    "mtime": 1794918091.1473968,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a6ba25afb9f0866b012e0fda57e0330b",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/Boss1SlamSpriteVisual.cs": {
+    "mtime": 1794918091.1473968,
+    "seen": 1795082554.4715788,
+    "ast_hash": "5d53255bdc948feb23cf737f449e0b80",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/BossMeleeTimeline.cs": {
+    "mtime": 1794918091.1511273,
+    "seen": 1795082554.4715788,
+    "ast_hash": "488b19a507aace6dc61710f3240d6c18",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/HealthBarUI.cs": {
+    "mtime": 1794918091.1557255,
+    "seen": 1795082554.4715788,
+    "ast_hash": "8954d774777493f8bff5f6bb2148ebc2",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/TrainingDummy.cs": {
+    "mtime": 1795082482.3839085,
+    "seen": 1795082554.4715788,
+    "ast_hash": "707104810f55c28087a361bba458a7e3",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/ZombieMovement.cs": {
+    "mtime": 1793095096.5527732,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a230fc086eb1fcb343c095fcb42f3e2e",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Combat/AttackHit.cs": {
+    "mtime": 1793095096.5590358,
+    "seen": 1795082554.4715788,
+    "ast_hash": "c5badb63b8f3b0cf35f52440f836c99f",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Combat/BluntHitBurst.cs": {
+    "mtime": 1792850987.900785,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a1b3f688c91bf66fd59764b1e76bd8d0",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Combat/ChordNoteProjectile.cs": {
+    "mtime": 1794445905.5902753,
+    "seen": 1795082554.4715788,
+    "ast_hash": "2704a40f201645fe4ef37e665bb453f2",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Combat/Damageable.cs": {
+    "mtime": 1792850987.9073787,
+    "seen": 1795082554.4715788,
+    "ast_hash": "f76822a594182460180ea727f663a7f0",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Environment/CityCameraFollow.cs": {
+    "mtime": 1793095096.5627263,
+    "seen": 1795082554.4715788,
+    "ast_hash": "262aa0a427026117a3a56f9b7b1f13a6",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Environment/CityParallax.cs": {
+    "mtime": 1793095096.5681388,
+    "seen": 1795082554.4715788,
+    "ast_hash": "7e6cadd6551e4ae46081545d1614e249",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Environment/CityStageFlow.cs": {
+    "mtime": 1793095096.5681388,
+    "seen": 1795082554.4715788,
+    "ast_hash": "b5c133a29439d0b887588e63dfa45ce4",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerAttack.cs": {
+    "mtime": 1795082314.0210137,
+    "seen": 1795082554.4715788,
+    "ast_hash": "c142b2520dd5e227b71f11d6d01a0e5b",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerAttackHitbox.cs": {
+    "mtime": 1791280148.5611162,
+    "seen": 1795082554.4715788,
+    "ast_hash": "63ad947673f7cd30e72e007d399837ce",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerChordStrike.cs": {
+    "mtime": 1793095096.5762794,
+    "seen": 1795082554.4715788,
+    "ast_hash": "17dc200c0d55d410fa622e7cee1fbdbe",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerHealth.cs": {
+    "mtime": 1794918091.1557255,
+    "seen": 1795082554.4715788,
+    "ast_hash": "1355091e8b0e95aceca7afa1b6ec4a66",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerHitAudio.cs": {
+    "mtime": 1792850987.9138515,
+    "seen": 1795082554.4715788,
+    "ast_hash": "45a37520a9311de065040795d6a96b64",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerHitCameraShake.cs": {
+    "mtime": 1792850987.915379,
+    "seen": 1795082554.4715788,
+    "ast_hash": "67f2f7e103f9b068a3f1a0847527ba49",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerHitEffects.cs": {
+    "mtime": 1792850987.918515,
+    "seen": 1795082554.4715788,
+    "ast_hash": "f966dcf68615fed8c03061a37ba27ebc",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerHitStop.cs": {
+    "mtime": 1792850987.9225717,
+    "seen": 1795082554.4715788,
+    "ast_hash": "fa42554627c6dd30b4f81fd585f99d89",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerMovement.cs": {
+    "mtime": 1795082985.268919,
+    "seen": 1795083058.3068092,
+    "ast_hash": "6885c85c6d5a618cbed55d74c0feef18",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerRhythmGauge.cs": {
+    "mtime": 1795004406.0084763,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a0c3c0ac4f74207ba8ff68f4fae511a6",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Player/PlayerRhythmGaugeUI.cs": {
+    "mtime": 1794445905.6010451,
+    "seen": 1795082554.4715788,
+    "ast_hash": "226dddcf889fb082dfcb19ccf74493a7",
+    "semantic_hash": ""
+  },
+  "Docs/\uae30\ud68d\ubb38\uc11c/assets/\ub9ac\ub4ec\uac8c\uc774\uc9c0/\uacc4\uc0b0\uacb0\uacfc.json": {
+    "mtime": 1794445905.6153119,
+    "seen": 1795082554.4715788,
+    "ast_hash": "ac93ab89a4d9df058f268f89910bef84",
+    "semantic_hash": ""
+  },
+  "Docs/\uc704\ud0a4/\ubcf4\uc2a4 1 \uc5d0\uc14b \ubaa9\ub85d.json": {
+    "mtime": 1794491331.775441,
+    "seen": 1795082554.4715788,
+    "ast_hash": "b8d4cdefa698b9b119c49c6dce5ca73c",
+    "semantic_hash": ""
+  },
+  "Packages/manifest.json": {
+    "mtime": 1794453356.1024058,
+    "seen": 1795082554.4715788,
+    "ast_hash": "74860b4c736db1f7bb0b00ae3f7d9599",
+    "semantic_hash": ""
+  },
+  "Packages/packages-lock.json": {
+    "mtime": 1794453507.7451863,
+    "seen": 1795082554.4715788,
+    "ast_hash": "8f7fe76f1aa571d91db83e0fe01cbb1c",
+    "semantic_hash": ""
+  },
+  "ProjectSettings/Packages/com.unity.ai.assistant/Settings.json": {
+    "mtime": 1793084512.4568555,
+    "seen": 1795082554.4715788,
+    "ast_hash": "2dc210bf5fc9b80056b174019ed9c66c",
+    "semantic_hash": ""
+  },
+  "ProjectSettings/SceneTemplateSettings.json": {
+    "mtime": 1790744978.5300117,
+    "seen": 1795082554.4715788,
+    "ast_hash": "3620a2b0a1c79cc4ae4b6b6ad599ff4d",
+    "semantic_hash": ""
+  },
+  "Tools/CalculateRhythmGauge.mjs": {
+    "mtime": 1795004407.0539165,
+    "seen": 1795082554.4715788,
+    "ast_hash": "7020fa95fa930859689a09329f61b922",
+    "semantic_hash": ""
+  },
+  "Tools/CombatFeelValidation.cs": {
+    "mtime": 1795004954.0918517,
+    "seen": 1795082554.4715788,
+    "ast_hash": "465f501b0512b3aa580b230666f84626",
+    "semantic_hash": ""
+  },
+  "Tools/GenerateCombatAudio.ps1": {
+    "mtime": 1792850987.9309924,
+    "seen": 1795082554.4715788,
+    "ast_hash": "e8a61139e85fead3ff7c5d7a70ffc235",
+    "semantic_hash": ""
+  },
+  "Tools/RhythmGaugeValidation.cs": {
+    "mtime": 1795082483.1973825,
+    "seen": 1795082554.4715788,
+    "ast_hash": "8b40979d7da58c9ff63fc92b78578226",
+    "semantic_hash": ""
+  },
+  "Tools/ValidateCombatFeel.ps1": {
+    "mtime": 1795082481.7143688,
+    "seen": 1795082554.4715788,
+    "ast_hash": "4978e38c0ba3512ce40e69946fc04fb8",
+    "semantic_hash": ""
+  },
+  "Tools/ValidateRhythmGauge.ps1": {
+    "mtime": 1794445905.6321404,
+    "seen": 1795082554.4715788,
+    "ast_hash": "556ec336dd249e7f75d8c78e529ea025",
+    "semantic_hash": ""
+  },
+  "Assets/Audio/Combat/Credits.txt": {
+    "mtime": 1792850987.8123431,
+    "seen": 1795082554.4715788,
+    "ast_hash": "445c3253393037e7a0a94ba70e574555",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/TrainingDummy/README.txt": {
+    "mtime": 1791280148.5093992,
+    "seen": 1795082554.4715788,
+    "ast_hash": "9af43285af4ad483dfc22fef5e6402d9",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/ChordStrike/ArtSource.txt": {
+    "mtime": 1793095096.2346911,
+    "seen": 1795082554.4715788,
+    "ast_hash": "df4ccc2b87b0a3aa04b78b0be5e4ff14",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/City01/ArtSources.txt": {
+    "mtime": 1793095096.243774,
+    "seen": 1795082554.4715788,
+    "ast_hash": "5f3668208ad9f2e5e9b251216ecb6045",
+    "semantic_hash": ""
+  },
+  "CLAUDE.md": {
+    "mtime": 1794453375.0706067,
+    "seen": 1795082554.4715788,
+    "ast_hash": "4b76a38e24e67a68e7d982d5c585d7c6",
+    "semantic_hash": ""
+  },
+  "Docs/\uae30\ud68d\ubb38\uc11c/\uac8c\uc784\uc758 \uc815\uccb4\uc131 v20261110.md": {
+    "mtime": 1794445906.3850942,
+    "seen": 1795082554.4715788,
+    "ast_hash": "1747a61d909506505d2fa8f5c09bdff4",
+    "semantic_hash": ""
+  },
+  "Docs/\uae30\ud68d\ubb38\uc11c/\ub9ac\ub4ec\uac8c\uc774\uc9c0.md": {
+    "mtime": 1794445942.9505668,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a848c95e97b1bd77b127d1193c7d6d92",
+    "semantic_hash": ""
+  },
+  "Docs/\uae30\ud68d\ubb38\uc11c/\ubcf4\uc2a4 1 \uae30\ud68d\uc11c.md": {
+    "mtime": 1794450117.857684,
+    "seen": 1795082554.4715788,
+    "ast_hash": "4bd5679f9ce3e5b68c74b5d2d8e80d91",
+    "semantic_hash": ""
+  },
+  "Docs/\uc704\ud0a4/\ub9ac\ub4ec \uac8c\uc774\uc9c0 \uad6c\ud604.md": {
+    "mtime": 1795004408.5749643,
+    "seen": 1795082554.4715788,
+    "ast_hash": "9b21e5d3ca49369575f7ddf9f8ef38a3",
+    "semantic_hash": ""
+  },
+  "Docs/\uc704\ud0a4/\ubcf4\uc2a4 1 GPT \ud504\ub86c\ud504\ud2b8.md": {
+    "mtime": 1794918091.1619046,
+    "seen": 1795082554.4715788,
+    "ast_hash": "910a32c399f5f7d5cf11e989c1c5bdb0",
+    "semantic_hash": ""
+  },
+  "Docs/\uc704\ud0a4/\ubcf4\uc2a4 1 \uad6c\ud604 \uc2a4\ud399.md": {
+    "mtime": 1794918091.1629138,
+    "seen": 1795082554.4715788,
+    "ast_hash": "30a6c515cce2dd56b587ac9ee375d63a",
+    "semantic_hash": ""
+  },
+  "Docs/\uc704\ud0a4/\ubcf4\uc2a4 1 \uc544\ud2b8 \ub514\ub809\uc158.md": {
+    "mtime": 1794454491.4097898,
+    "seen": 1795082554.4715788,
+    "ast_hash": "5e4cc556b933c0eb4db84e0bef11fe57",
+    "semantic_hash": ""
+  },
+  "Docs/\uc704\ud0a4/\uccb4\ub825\ubc14 UI.md": {
+    "mtime": 1793095096.589199,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a621b2892a8e9be0b9770676350b66d2",
+    "semantic_hash": ""
+  },
+  "Docs/\uc704\ud0a4/\ud0c0\uaca9\uac10 \ud29c\ub2dd.md": {
+    "mtime": 1795082575.7027397,
+    "seen": 1795083058.3068092,
+    "ast_hash": "4dad5a19d374c71c5698b95b7487a7e9",
+    "semantic_hash": ""
+  },
+  "ProjectSettings/ProjectVersion.txt": {
+    "mtime": 1790744978.5292885,
+    "seen": 1795082554.4715788,
+    "ast_hash": "70f1293c6722b689560fa4cceb0ef1de",
+    "semantic_hash": ""
+  },
+  "Art/Boss1/Boss1_MeleeSheet.png": {
+    "mtime": 1794491158.955736,
+    "seen": 1795082554.4715788,
+    "ast_hash": "721980e0b1fb80a3cbb23e8151168962",
+    "semantic_hash": ""
+  },
+  "Art/Lobby/Lobby_Background.png": {
+    "mtime": 1795075884.5978897,
+    "seen": 1795082554.4715788,
+    "ast_hash": "ed6e22d83225b67968d472119b80d6e6",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Backstep/Backstep_moving.png": {
+    "mtime": 1794918090.8451755,
+    "seen": 1795082554.4715788,
+    "ast_hash": "90d40f6178ec6dbdfa3b88fda9130db2",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Backstep/Backstep_prepare.png": {
+    "mtime": 1794918090.858954,
+    "seen": 1795082554.4715788,
+    "ast_hash": "d724f492689f369fea3ec5ae7d5225be",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Barrage/Boss1_BarragePrepare.png": {
+    "mtime": 1794918090.8744512,
+    "seen": 1795082554.4715788,
+    "ast_hash": "926fd9e38959ca263943a1d3d81298df",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/BoosterFlames/rush.png": {
+    "mtime": 1794918090.8860528,
+    "seen": 1795082554.4715788,
+    "ast_hash": "fa88e577142991ff1d7c1f2b3677f7ab",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/BoosterFlames/small.png": {
+    "mtime": 1794918090.8961167,
+    "seen": 1795082554.4715788,
+    "ast_hash": "14be024d5edb03e1c37936cad893c0c2",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Idle/Idle.png": {
+    "mtime": 1794918090.9115949,
+    "seen": 1795082554.4715788,
+    "ast_hash": "c3ac5745419685349745b39507110e36",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Leap/Leap_contact.png": {
+    "mtime": 1794918090.9286845,
+    "seen": 1795082554.4715788,
+    "ast_hash": "95ac6d4147b772638a74bbc7c1649c7b",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Leap/Leap_prepare.png": {
+    "mtime": 1794918090.94461,
+    "seen": 1795082554.4715788,
+    "ast_hash": "fd2a907721c83da5a2a0129c20edbd82",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Punch/Punch_prepare.png": {
+    "mtime": 1794918090.9586182,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a898c858374048222c693e0e34d67ac0",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Punch/Punch_punch.png": {
+    "mtime": 1794918090.9709983,
+    "seen": 1795082554.4715788,
+    "ast_hash": "1afe4d5a988d6e1d0ecf2bd4b2efc9cb",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Rush/Rush_contact.png": {
+    "mtime": 1794918090.9860609,
+    "seen": 1795082554.4715788,
+    "ast_hash": "9565d7dd2074dd9973d4e0e44a056a72",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Rush/Rush_prepare.png": {
+    "mtime": 1794918091.00023,
+    "seen": 1795082554.4715788,
+    "ast_hash": "de24b0764d96af685b286a94e8155127",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Slam/Slam_contact.png": {
+    "mtime": 1794918091.0164256,
+    "seen": 1795082554.4715788,
+    "ast_hash": "4282756d7488ba8c7147acc7884e796f",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Slam/Slam_prepare.png": {
+    "mtime": 1794918091.0300808,
+    "seen": 1795082554.4715788,
+    "ast_hash": "b46f5bcd910ad2d6e8d3c550fccf9e9a",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Sweep/Sweep_contact.png": {
+    "mtime": 1794918091.0442493,
+    "seen": 1795082554.4715788,
+    "ast_hash": "704d33c103880211a48ef13d7851b9f7",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Sweep/Sweep_prepare.png": {
+    "mtime": 1794918091.0556138,
+    "seen": 1795082554.4715788,
+    "ast_hash": "7a9482ea61124e9d7d3976151efbce13",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Animations/Sprites/Walk/Boss1_Walk_v1.png": {
+    "mtime": 1794918091.071422,
+    "seen": 1795082554.4715788,
+    "ast_hash": "2f6399ac00faa89efb17fe8a1ed23b5f",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Concept/Boss1_Seed_A_gpt.png": {
+    "mtime": 1794453991.732992,
+    "seen": 1795082554.4715788,
+    "ast_hash": "818ec0c22ffd57862a6a8f0f49fc0221",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Concept/Boss1_Seed_B_gemini.png": {
+    "mtime": 1794454000.0862246,
+    "seen": 1795082554.4715788,
+    "ast_hash": "818ec0c22ffd57862a6a8f0f49fc0221",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Concept/Boss1_Seed_C_flux.png": {
+    "mtime": 1794454003.2655945,
+    "seen": 1795082554.4715788,
+    "ast_hash": "818ec0c22ffd57862a6a8f0f49fc0221",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Effects/MissileFXV1/ExplosionPeak.png": {
+    "mtime": 1794918091.0931847,
+    "seen": 1795082554.4715788,
+    "ast_hash": "2c9f80ce5ac2a04eab51b3f4f4f20b45",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Effects/MissileFXV1/ExplosionSheet.png": {
+    "mtime": 1794918091.1027834,
+    "seen": 1795082554.4715788,
+    "ast_hash": "670153d530a5bed5808e54512436d7d4",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Boss1/Effects/MissileFXV1/Missile.png": {
+    "mtime": 1794918091.1121347,
+    "seen": 1795082554.4715788,
+    "ast_hash": "cd03aa8d3ab4f3e2ff72c3b9f17380f0",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_AttackSwing1.png": {
+    "mtime": 1790744976.0440328,
+    "seen": 1795082554.4715788,
+    "ast_hash": "72d7d5c8cb92f59ee718dda2f24c500c",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_AttackSwing2.png": {
+    "mtime": 1790744976.047506,
+    "seen": 1795082554.4715788,
+    "ast_hash": "1deb99808b7a9d29804e6f37266218bb",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_AttackSwing3.png": {
+    "mtime": 1790744976.0523245,
+    "seen": 1795082554.4715788,
+    "ast_hash": "e34606050184e8ca0e18d61ec6228f20",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_Death.png": {
+    "mtime": 1790744976.0554528,
+    "seen": 1795082554.4715788,
+    "ast_hash": "dbeaa4bc0e2bc2f7e754be183a3d0d87",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_Idle.png": {
+    "mtime": 1790744976.0554528,
+    "seen": 1795082554.4715788,
+    "ast_hash": "8df51ceb450d5302ae0e86b67dc6edc9",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_Jump.png": {
+    "mtime": 1790744976.0554528,
+    "seen": 1795082554.4715788,
+    "ast_hash": "1ab11834af6ded5193341734b4f5f094",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_Kneel.png": {
+    "mtime": 1790744976.0554528,
+    "seen": 1795082554.4715788,
+    "ast_hash": "d9cd33fef5ccf4691f99ffe9f4d09d75",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_Landing.png": {
+    "mtime": 1790744976.0631988,
+    "seen": 1795082554.4715788,
+    "ast_hash": "34f9d817c38a668c827c0e8c87772f46",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_MainSheet.png": {
+    "mtime": 1795076099.0055497,
+    "seen": 1795082554.4715788,
+    "ast_hash": "30a579b787c9b83d394a388e91a5f649",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_Run.png": {
+    "mtime": 1790744976.0660167,
+    "seen": 1795082554.4715788,
+    "ast_hash": "35f7c4004a8f19132c1097202c2f4e8e",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_Sheathing.png": {
+    "mtime": 1790744976.0660167,
+    "seen": 1795082554.4715788,
+    "ast_hash": "60246e969b912ba035c43b0487d53eff",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_Slide.png": {
+    "mtime": 1790744976.0713868,
+    "seen": 1795082554.4715788,
+    "ast_hash": "feaf9b9434ce666da6abd53829b73a18",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/PC_WallJump.png": {
+    "mtime": 1790744976.0713868,
+    "seen": 1795082554.4715788,
+    "ast_hash": "7852fe01128ca260d220fa404e4d0705",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/TrainingDummy/Gameplay/HealthBar.png": {
+    "mtime": 1791280148.4910967,
+    "seen": 1795082554.4715788,
+    "ast_hash": "6fd6693d347e9c50802218d4d40f8f2c",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/TrainingDummy/Sprites/Death/Sprite Sheet 3 - Death.png": {
+    "mtime": 1791280148.5220776,
+    "seen": 1795082554.4715788,
+    "ast_hash": "e903fc67d04e73fc8e15458d6aa518aa",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/TrainingDummy/Sprites/Hit/Sprite Sheet 2 - Hit.png": {
+    "mtime": 1791280148.5220776,
+    "seen": 1795082554.4715788,
+    "ast_hash": "925e2fb820f3cbaf17e527364e4306fa",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/TrainingDummy/Sprites/Idle/Sprite Sheet 1 - Idle.png": {
+    "mtime": 1791280148.5303023,
+    "seen": 1795082554.4715788,
+    "ast_hash": "65da191e5a90afcd4bf00e1b0dce3d98",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/TrainingDummy/Sprites/Sprite Sheet - Straw Training Dummy.png": {
+    "mtime": 1791280148.533231,
+    "seen": 1795082554.4715788,
+    "ast_hash": "58216d6cac2eabe23872175e1224643f",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_00.png": {
+    "mtime": 1793095096.0593517,
+    "seen": 1795082554.4715788,
+    "ast_hash": "73b76187f55bed0992a05eea630be5e8",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_01.png": {
+    "mtime": 1793095096.0678153,
+    "seen": 1795082554.4715788,
+    "ast_hash": "382ae4ac7582dc241d29ad10856e3edd",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_02.png": {
+    "mtime": 1793095096.0678153,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a46717dc4237be58514ad16188cbb480",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_03.png": {
+    "mtime": 1793095096.0762272,
+    "seen": 1795082554.4715788,
+    "ast_hash": "4c6664fc289bb1bd8e38a9f0f709d237",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_04.png": {
+    "mtime": 1793095096.0762272,
+    "seen": 1795082554.4715788,
+    "ast_hash": "5dc51b1c86559c1893f637617324f2ea",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_05.png": {
+    "mtime": 1793095096.0846052,
+    "seen": 1795082554.4715788,
+    "ast_hash": "d9eaab500fedef69fb8e2a259429aa08",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_06.png": {
+    "mtime": 1793095096.089385,
+    "seen": 1795082554.4715788,
+    "ast_hash": "e7b31b3708ac3026f1668d44ce58e16c",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_07.png": {
+    "mtime": 1793095096.0955603,
+    "seen": 1795082554.4715788,
+    "ast_hash": "534aa85c2c28affcbee04ed2fe752b9f",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_08.png": {
+    "mtime": 1793095096.10066,
+    "seen": 1795082554.4715788,
+    "ast_hash": "96de60adb94954b1881cb08bfa5bc27e",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_09.png": {
+    "mtime": 1793095096.1031363,
+    "seen": 1795082554.4715788,
+    "ast_hash": "6b9578650db5ef70575cdc12376be263",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_10.png": {
+    "mtime": 1793095096.1089675,
+    "seen": 1795082554.4715788,
+    "ast_hash": "fcf1fde5e34703101f9c88ad2e5d6a1c",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_11.png": {
+    "mtime": 1793095096.1094067,
+    "seen": 1795082554.4715788,
+    "ast_hash": "56051286c54b549fea750c306616639c",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_12.png": {
+    "mtime": 1793095096.1179397,
+    "seen": 1795082554.4715788,
+    "ast_hash": "e7250fb71cca612dfca68dbdf297f26d",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_13.png": {
+    "mtime": 1793095096.1179397,
+    "seen": 1795082554.4715788,
+    "ast_hash": "6025635731113c9c6c05b0b0de9bd164",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_14.png": {
+    "mtime": 1793095096.1260614,
+    "seen": 1795082554.4715788,
+    "ast_hash": "2c278ae717a0397349ae6df6e7016052",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_15.png": {
+    "mtime": 1793095096.1296542,
+    "seen": 1795082554.4715788,
+    "ast_hash": "722fe4949454dde907847c8f85b986d3",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Death/Death_16.png": {
+    "mtime": 1793095096.1347468,
+    "seen": 1795082554.4715788,
+    "ast_hash": "7517f7c2a89b6f8ae3d981893c2ed038",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_00.png": {
+    "mtime": 1793095096.1413536,
+    "seen": 1795082554.4715788,
+    "ast_hash": "645ce16c4f86bd3bd5226b979f94232c",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_01.png": {
+    "mtime": 1793095096.1428087,
+    "seen": 1795082554.4715788,
+    "ast_hash": "7a3c777e5f62f98d98d2125fd0d8c9e6",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_02.png": {
+    "mtime": 1793095096.1512718,
+    "seen": 1795082554.4715788,
+    "ast_hash": "eac705d6390d669752922775fa75bb21",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_03.png": {
+    "mtime": 1793095096.1532788,
+    "seen": 1795082554.4715788,
+    "ast_hash": "8356773338b13df9807e4769286be1cb",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_04.png": {
+    "mtime": 1793095096.1622622,
+    "seen": 1795082554.4715788,
+    "ast_hash": "b176ac569a2b0bfb54d4af0a5bbc3cb3",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_05.png": {
+    "mtime": 1793095096.1622622,
+    "seen": 1795082554.4715788,
+    "ast_hash": "a89ec0dd2a17ee8da6507bfc44678c6a",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_06.png": {
+    "mtime": 1793095096.170192,
+    "seen": 1795082554.4715788,
+    "ast_hash": "f55b9b8650697b6364b3a441eec46d45",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_07.png": {
+    "mtime": 1793095096.176527,
+    "seen": 1795082554.4715788,
+    "ast_hash": "7a1fe9d06f87f62174f42244bf96ec4b",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_08.png": {
+    "mtime": 1793095096.1788101,
+    "seen": 1795082554.4715788,
+    "ast_hash": "46c16a2e34bb9f410ea0f171de87ed5d",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_09.png": {
+    "mtime": 1793095096.1851296,
+    "seen": 1795082554.4715788,
+    "ast_hash": "914217b90accd574c4d8499d005fb7d5",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Idle/Idle_10.png": {
+    "mtime": 1793095096.1891203,
+    "seen": 1795082554.4715788,
+    "ast_hash": "c20c177f1f0ef7fd53979a179a532679",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Walk/Walk_00.png": {
+    "mtime": 1793095096.1928446,
+    "seen": 1795082554.4715788,
+    "ast_hash": "9d70bb02fc8dda20e065a19ac73de3b2",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Walk/Walk_01.png": {
+    "mtime": 1793095096.2012317,
+    "seen": 1795082554.4715788,
+    "ast_hash": "187fa2ad3f16b842bc749c5043330727",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Walk/Walk_02.png": {
+    "mtime": 1793095096.203242,
+    "seen": 1795082554.4715788,
+    "ast_hash": "0df751052b7b2f3ec2c4e8636323d06b",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Walk/Walk_03.png": {
+    "mtime": 1793095096.2094586,
+    "seen": 1795082554.4715788,
+    "ast_hash": "bd172081d6bb8ec38827e03e7e7afb22",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Walk/Walk_04.png": {
+    "mtime": 1793095096.2139242,
+    "seen": 1795082554.4715788,
+    "ast_hash": "f7ee51402197034b8766535d4efd6722",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Walk/Walk_05.png": {
+    "mtime": 1793095096.2201807,
+    "seen": 1795082554.4715788,
+    "ast_hash": "85678ad0ff942050aaa6c4cad91c2d2e",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Walk/Walk_06.png": {
+    "mtime": 1793095096.2261693,
+    "seen": 1795082554.4715788,
+    "ast_hash": "ba9e730c16427ee247788be0c3fbfc06",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Zombie/Sprites/Walk/Walk_07.png": {
+    "mtime": 1793095096.2261693,
+    "seen": 1795082554.4715788,
+    "ast_hash": "cee1894e7ab6ef64a9d2223a7b62c246",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/BluntHit/CrushFrames/Crush_00.png": {
+    "mtime": 1792850987.8386204,
+    "seen": 1795082554.4715788,
+    "ast_hash": "5082692a518dc6e99eb6b3d0fba9eecf",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/BluntHit/CrushFrames/Crush_01.png": {
+    "mtime": 1792850987.840638,
+    "seen": 1795082554.4715788,
+    "ast_hash": "c7cb751aefb33101a9b482ff64cddd2b",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/BluntHit/CrushFrames/Crush_02.png": {
+    "mtime": 1792850987.8485935,
+    "seen": 1795082554.4715788,
+    "ast_hash": "34e45aa1347c45ceae60d795414a361b",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/BluntHit/CrushFrames/Crush_03.png": {
+    "mtime": 1792850987.8508556,
+    "seen": 1795082554.4715788,
+    "ast_hash": "7dbdecbfa25e02fb0b52609f0c8d68a3",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/BluntHit/CrushFrames/Crush_04.png": {
+    "mtime": 1792850987.853238,
+    "seen": 1795082554.4715788,
+    "ast_hash": "df16c5d8153e2344256b30289d637267",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/BluntHit/CrushFrames/Crush_05.png": {
+    "mtime": 1792850987.856324,
+    "seen": 1795082554.4715788,
+    "ast_hash": "57e82d1d06adac74b4c16e084fc92865",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/BluntHit/CrushFrames/Crush_06.png": {
+    "mtime": 1792850987.8602798,
+    "seen": 1795082554.4715788,
+    "ast_hash": "2bea97dd30d15bcf1a8c5041cd55ebb6",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/BluntHit/CrushFrames/Crush_07.png": {
+    "mtime": 1792850987.8622959,
+    "seen": 1795082554.4715788,
+    "ast_hash": "0244145114c3157b640d0dffb7767cbf",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/BluntHit/ImpactPixel.png": {
+    "mtime": 1792850987.8643134,
+    "seen": 1795082554.4715788,
+    "ast_hash": "6fd6693d347e9c50802218d4d40f8f2c",
+    "semantic_hash": ""
+  },
+  "Assets/Effects/ChordStrike/ChordNote.png": {
+    "mtime": 1793095096.24281,
+    "seen": 1795082554.4715788,
+    "ast_hash": "14da9bd85fa532685e84bbbed9fa9bbf",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/City01/CityProps.png": {
+    "mtime": 1793095096.259875,
+    "seen": 1795082554.4715788,
+    "ast_hash": "8e857f6cde7b800b47f39c4b2b13336b",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/City01/CityShops.png": {
+    "mtime": 1793095096.2893596,
+    "seen": 1795082554.4715788,
+    "ast_hash": "8253a23c7b2bb66703e74a77d6e9c05a",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/City01/CitySkyline.png": {
+    "mtime": 1793095096.3198538,
+    "seen": 1795082554.4715788,
+    "ast_hash": "c434615113eae6d8cbb35f45deef569a",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Lobby/LobbyBackdrop.png": {
+    "mtime": 1795015259.219381,
+    "seen": 1795082554.4715788,
+    "ast_hash": "993b9d60641103f9ff7e9a1206419bbe",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Map/Stone64/Stone64.png": {
+    "mtime": 1793095096.3393767,
+    "seen": 1795082554.4715788,
+    "ast_hash": "497ad04b77d7797a5734f7a7451113dc",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Map/background1.png": {
+    "mtime": 1790744978.476412,
+    "seen": 1795082554.4715788,
+    "ast_hash": "266e7ffb6bd86e68e7fb7d6c2fde56bd",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Map/background2.png": {
+    "mtime": 1790744978.476412,
+    "seen": 1795082554.4715788,
+    "ast_hash": "b883d718fd4fb4620f1319980b560ca0",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Map/background3.png": {
+    "mtime": 1790744978.476412,
+    "seen": 1795082554.4715788,
+    "ast_hash": "da221e97fad3af65763ee254d228b7bb",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Map/background4a.png": {
+    "mtime": 1790744978.476412,
+    "seen": 1795082554.4715788,
+    "ast_hash": "382c08b9b2c57b64662dca02603b89e1",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Map/background4b.png": {
+    "mtime": 1790744978.4865396,
+    "seen": 1795082554.4715788,
+    "ast_hash": "99b848fd777079a186742e3626c16841",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Map/mainlev_build.png": {
+    "mtime": 1790744978.489896,
+    "seen": 1795082554.4715788,
+    "ast_hash": "c1288472e6d4f81368a2fe41e489587b",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Map/props1.png": {
+    "mtime": 1790744978.4980261,
+    "seen": 1795082554.4715788,
+    "ast_hash": "864f4bcef19baa65b8a294abf8635fba",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Map/props2.png": {
+    "mtime": 1790744978.502993,
+    "seen": 1795082554.4715788,
+    "ast_hash": "78b16f93fae09b9736a5eece1f56a635",
+    "semantic_hash": ""
+  },
+  "Assets/Audio/Combat/AttackWhoosh.wav": {
+    "mtime": 1792850987.8052773,
+    "seen": 1795082554.4715788,
+    "ast_hash": "b4aa8e2c8bea7a98aec70234ddc042d9",
+    "semantic_hash": ""
+  },
+  "Assets/Audio/Combat/BasicHit.mp3": {
+    "mtime": 1792850987.8095772,
+    "seen": 1795082554.4715788,
+    "ast_hash": "f1e07558f1edcb0c4db427b39539a8ba",
+    "semantic_hash": ""
+  },
+  "Assets/Audio/Combat/GuitarResonance.wav": {
+    "mtime": 1792850987.8174746,
+    "seen": 1795082554.4715788,
+    "ast_hash": "ad623f2a91626f114d5998efa5b1eb08",
+    "semantic_hash": ""
+  },
+  "Assets/Audio/Combat/LandingThump.wav": {
+    "mtime": 1792850987.819948,
+    "seen": 1795082554.4715788,
+    "ast_hash": "fc8f4004c10b65a0208338d3049e8753",
+    "semantic_hash": ""
+  },
+  "Assets/Audio/Combat/ThirdHitHeavy.wav": {
+    "mtime": 1792850987.824014,
+    "seen": 1795082554.4715788,
+    "ast_hash": "2733a8fde36817e488865bb75d3f037a",
+    "semantic_hash": ""
+  },
+  "graphify-out/memory/query_20261119_100450_80847428_\uc774\ud399\ud130_\uc2dc\uc2a4\ud15c_\uc6b0\ub9ac_\uc124\uacc4\ub41c\uac8c_\ubb50\uac00_\uc787\uc5c8\uc9c0.md": {
+    "mtime": 1795082690.7210522,
+    "seen": 1795083058.3068092,
+    "ast_hash": "64cc84f9bc2e77d60b4c93929738c975",
+    "semantic_hash": ""
+  }
+}

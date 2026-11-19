@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -335,6 +337,186 @@ public static class RhythmGaugeValidation
         Near(gauge.CurrentGauge, 0f, "Air attack without damage awards nothing");
     }
 
+    private static async Task DirectionalAttackRules(GameObject player, TrainingDummy dummy)
+    {
+        var attack = player.GetComponent<PlayerAttack>();
+        var movement = player.GetComponent<PlayerMovement>();
+        var body = player.GetComponent<Rigidbody2D>();
+        var animator = player.GetComponent<Animator>();
+        var collider = player.GetComponent<BoxCollider2D>();
+        player.GetComponent<PlayerHitStop>().enabled = false;
+        var keyboard = InputSystem.AddDevice<Keyboard>();
+        void Keys(params Key[] keys)
+        {
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(keys));
+            InputSystem.Update();
+            Call(movement, "Update");
+        }
+        void Start(float vertical = 0f)
+        {
+            Call(attack, "StopAttack");
+            Set(attack, "requestedVerticalDirection", vertical);
+            Call(attack, "StartAttack", Time.time, 0f);
+        }
+        void ResolveInput()
+        {
+            Call(attack, "UpdateAttack", Time.time);
+            Call(movement, "UpdateMovement", Time.time);
+        }
+        try
+        {
+            dummy.transform.position = new Vector3(12f, 1f, 0f);
+            Call(attack, "StopAttack");
+            await WaitUntil(() => movement.IsOnGround);
+            Vector2 groundedPosition = body.position;
+            float gravity = body.gravityScale;
+            Set(attack, "comboStep", 0);
+            Start();
+            Check(Get<int>(attack, "comboStep") == 1, "Ground combo starts at one");
+            Start();
+            Check(Get<int>(attack, "comboStep") == 2, "Ground combo advances to two");
+            Call(attack, "StopAttack");
+            body.position = new Vector2(0f, 4f);
+            body.linearVelocity = Vector2.zero;
+            body.gravityScale = 0f;
+            Physics2D.SyncTransforms();
+            await WaitUntil(() => !movement.IsOnGround);
+            foreach (int expected in new[] { 1, 2, 1, 2 })
+            {
+                Start();
+                Check(Get<int>(attack, "comboStep") == expected, "Air combo loops one/two: " + expected);
+                Check(attack.GetAttackVelocity(new Vector2(4f, -2f), false, Time.time, 0.02f, gravity) == new Vector2(4f, -2f),
+                    "Air basic attack preserves horizontal and vertical velocity");
+            }
+            Keys(Key.LeftArrow);
+            ResolveInput();
+            Near(body.linearVelocity.x, -Get<float>(movement, "moveSpeed"), "Air attack can move left");
+            Keys(Key.RightArrow);
+            ResolveInput();
+            Near(body.linearVelocity.x, Get<float>(movement, "moveSpeed"), "Air attack can change movement direction");
+            Keys();
+            Call(attack, "StopAttack");
+            body.position = groundedPosition;
+            body.linearVelocity = Vector2.zero;
+            body.gravityScale = gravity;
+            Physics2D.SyncTransforms();
+            await WaitUntil(() => movement.IsOnGround);
+            Start();
+            Check(Get<int>(attack, "comboStep") == 3, "Air second attack continues into grounded third attack");
+            Start(1f);
+            Check(Get<int>(attack, "comboStep") == 0 && Get<float>(attack, "verticalAttackDirection") == 1f,
+                "Ground upper attack resets the basic combo");
+            Check(attack.GetAttackVelocity(new Vector2(4f, 2f), true, Time.time, 0.02f, gravity) == new Vector2(0f, 2f),
+                "Ground upper attack neither lunges nor adds vertical movement");
+            animator.Update(0f);
+            Check(animator.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.PlayerUpperAttack"), "Upper attack uses the supplied animation");
+            float activeAt = Get<float>(attack, "windupEndTime") + Get<float>(attack, "contactDelayDuration") + 0.001f;
+            Call(attack, "UpdateAttack", activeAt);
+            BoxCollider2D upper = Get<BoxCollider2D>(attack, "upperAttackHitbox");
+            BoxCollider2D down = Get<BoxCollider2D>(attack, "downAttackHitbox");
+            Check(upper != null && upper.enabled && down != null && !down.enabled && !Get<BoxCollider2D>(attack, "attack1Hitbox").enabled,
+                "Directional hitboxes are connected and mutually exclusive");
+            Call(dummy, "Respawn");
+            Physics2D.SyncTransforms();
+            Vector2 hitDirection = Vector2.zero;
+            int hitCombo = -1;
+            void OnHit(Vector2 point, Vector2 direction, int combo) { hitDirection = direction; hitCombo = combo; }
+            attack.HitConfirmed += OnHit;
+            attack.TryHit(upper, dummy.GetComponent<BoxCollider2D>());
+            attack.TryHit(upper, dummy.GetComponent<BoxCollider2D>());
+            Near(dummy.MaxHealth - dummy.CurrentHealth, Get<float>(attack, "upperAttackDamage"), "Upper attack damages each target once");
+            Check(hitDirection == Vector2.up && hitCombo == 0, "Upper hit reports upward direction outside the combo");
+            Transform pivot = Get<Transform>(dummy, "reactionPivot");
+            Near(pivot.localPosition.x, Get<Vector3>(dummy, "restPivotPosition").x, "Upper hit does not invent horizontal recoil");
+            attack.HitConfirmed -= OnHit;
+            Call(attack, "UpdateAttack", Get<float>(attack, "attackEndTime") + 0.01f);
+            animator.Update(0f);
+            Check(!animator.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.PlayerUpperAttack"), "Upper animation exits after recovery");
+            Start();
+            Check(Get<int>(attack, "comboStep") == 1, "Basic attack restarts at one after upper attack");
+            Start(-1f);
+            Check(Get<float>(attack, "verticalAttackDirection") == 0f && Get<int>(attack, "comboStep") == 2,
+                "Down attack cannot start on the ground");
+            Call(attack, "StopAttack");
+            body.position = new Vector2(0f, 4f);
+            body.linearVelocity = Vector2.zero;
+            body.gravityScale = 0f;
+            Physics2D.SyncTransforms();
+            await WaitUntil(() => !movement.IsOnGround);
+            Set(attack, "comboStep", 1);
+            Start();
+            Check(Get<int>(attack, "comboStep") == 2, "Ground first attack continues into air second attack");
+            foreach (float vertical in new[] { 1f, -1f })
+            {
+                Start(vertical);
+                Check(Get<int>(attack, "comboStep") == 0 && Get<float>(attack, "verticalAttackDirection") == vertical,
+                    "Air directional attack resets combo: " + vertical);
+                Check(attack.GetAttackVelocity(new Vector2(-4f, -2f), false, Time.time, 0.02f, gravity) == new Vector2(-4f, -2f),
+                    "Directional air attack does not rise, dive, or bounce");
+                activeAt = Get<float>(attack, "windupEndTime") + Get<float>(attack, "contactDelayDuration") + 0.001f;
+                Call(attack, "UpdateAttack", activeAt);
+                Check(upper.enabled == (vertical > 0f) && down.enabled == (vertical < 0f), "Only the requested vertical hitbox activates");
+                if (vertical < 0f)
+                {
+                    animator.Update(0f);
+                    Check(animator.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.PlayerDownAttack"), "Down attack uses the supplied animation");
+                    Call(dummy, "Respawn");
+                    attack.TryHit(down, dummy.GetComponent<BoxCollider2D>());
+                    Near(dummy.MaxHealth - dummy.CurrentHealth, Get<float>(attack, "downAttackDamage"), "Down attack uses its own damage");
+                }
+                Call(attack, "UpdateAttack", Get<float>(attack, "attackEndTime") + 0.01f);
+                Check(!attack.IsAttacking && !Get<bool>(attack, "waitingForLanding"), "Directional attack finishes in the air without waiting for landing");
+                Start();
+                Check(Get<int>(attack, "comboStep") == 1, "Basic attack restarts at one after directional air attack");
+            }
+            Call(attack, "StopAttack");
+            Keys(Key.UpArrow, Key.RightArrow, Key.X);
+            ResolveInput();
+            Check(Get<float>(attack, "verticalAttackDirection") == 1f && !Get<bool>(movement, "jumpRequested"),
+                "Up plus X attacks upward without requesting a jump");
+            Near(body.linearVelocity.x, Get<float>(movement, "moveSpeed"), "Diagonal input preserves full horizontal speed");
+            Keys();
+            Set(attack, "activeEndTime", Time.time - 0.01f);
+            Set(attack, "attackEndTime", Time.time + 0.05f);
+            Keys(Key.DownArrow, Key.X);
+            Check(Get<bool>(attack, "attackRequested"), "Down plus X can queue in recovery");
+            Keys();
+            Call(attack, "UpdateAttack", Get<float>(attack, "attackEndTime") + 0.001f);
+            Check(Get<float>(attack, "verticalAttackDirection") == -1f, "Buffered attack preserves direction after releasing the keys");
+            Call(attack, "StopAttack");
+            body.position = groundedPosition;
+            body.linearVelocity = Vector2.zero;
+            body.gravityScale = gravity;
+            Physics2D.SyncTransforms();
+            await WaitUntil(() => movement.IsOnGround);
+            Vector2 standingSize = collider.size;
+            float footY = collider.bounds.min.y;
+            Keys(Key.DownArrow);
+            ResolveInput();
+            Check(movement.IsCrouching && !movement.IsSliding && collider.size.y < standingSize.y, "Down arrow crouches with a shorter collider");
+            Near(collider.bounds.min.y, footY, "Crouching keeps the feet fixed");
+            animator.Update(0f);
+            Check(animator.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.PlayerSit"), "Crouching uses the supplied sit animation");
+            Keys();
+            ResolveInput();
+            Check(!movement.IsCrouching && collider.size == standingSize, "Releasing down restores the standing collider");
+            Keys(Key.C);
+            ResolveInput();
+            Check(movement.IsSliding && !attack.IsAttacking, "C starts slide rather than crouch or attack");
+            Keys();
+            Set(movement, "slideEndTime", Time.time - 0.01f);
+            ResolveInput();
+            Keys(Key.Z);
+            ResolveInput();
+            Check(body.linearVelocity.y > 0f && !attack.IsAttacking, "Z jumps rather than attacks");
+            Keys();
+        }
+        finally
+        {
+            InputSystem.RemoveDevice(keyboard);
+        }
+    }
+
     private static async void CheckInPlayMode()
     {
         int exitCode = 0;
@@ -364,6 +546,7 @@ public static class RhythmGaugeValidation
             NoteRules(player, dummy);
             UIRules(player);
             await TimeAndLandingRules(player, dummy, second);
+            await DirectionalAttackRules(player, dummy);
             GameObject ownedHUD = Get<GameObject>(player.GetComponent<PlayerRhythmGaugeUI>(), "hudRoot");
             Object.Destroy(player);
             Object.Destroy(dummy.gameObject);

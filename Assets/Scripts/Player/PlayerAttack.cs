@@ -35,6 +35,14 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField, Min(0f)] private float thirdRecoveryTime = 0.125f;
     [SerializeField, Min(0f)] private float thirdContactDelay = 0.02f;
 
+    [Header("Up / Down Attack Timing (Seconds)")]
+    [Tooltip("윗공격과 아랫공격의 공통 선딜레이")]
+    [SerializeField, Min(0.01f)] private float directionalWindupTime = 0.15f;
+    [Tooltip("윗공격과 아랫공격의 공통 판정 시간")]
+    [SerializeField, Min(0.01f)] private float directionalActiveTime = 0.15f;
+    [Tooltip("윗공격과 아랫공격의 공통 후딜레이")]
+    [SerializeField, Min(0f)] private float directionalRecoveryTime = 0.15f;
+
     [Header("Attack 3 Movement")]
     [Tooltip("방향키와 함께 3타를 시작할 때 정점까지 이동할 가로 거리")]
     [SerializeField, Min(0f)] private float thirdAdvanceDistance = 1.2f;
@@ -55,6 +63,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private BoxCollider2D attack1Hitbox;
     [SerializeField] private BoxCollider2D attack2Hitbox;
     [SerializeField] private BoxCollider2D attack3Hitbox;
+    [SerializeField] private BoxCollider2D upperAttackHitbox;
+    [SerializeField] private BoxCollider2D downAttackHitbox;
 
     [Header("Attack Damage")]
     [Tooltip("1타 데미지")]
@@ -63,6 +73,10 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField, Min(0f)] private float attack2Damage = 8f;
     [Tooltip("3타 데미지")]
     [SerializeField, Min(0f)] private float attack3Damage = 25f;
+    [Tooltip("윗공격 데미지")]
+    [SerializeField, Min(0f)] private float upperAttackDamage = 8f;
+    [Tooltip("아랫공격 데미지")]
+    [SerializeField, Min(0f)] private float downAttackDamage = 8f;
 
     private readonly HashSet<Damageable> hitTargets = new HashSet<Damageable>();
 
@@ -78,7 +92,10 @@ public class PlayerAttack : MonoBehaviour
     private InputAction moveAction;
     private bool attackRequested;
     private float requestedDirection;
+    private float requestedVerticalDirection;
     private float attackDirection;
+    private float verticalAttackDirection;
+    private bool attackStartedInAir;
     private bool isAttacking;
     private int comboStep;
     private float attackStartTime;
@@ -177,9 +194,10 @@ public class PlayerAttack : MonoBehaviour
             return;
 
         // 입력 순간의 방향을 저장해 시전 중 방향 변경 방지
-        float input = moveAction.ReadValue<Vector2>().x;
+        Vector2 input = moveAction.ReadValue<Vector2>();
         attackRequested = true;
-        requestedDirection = Mathf.Abs(input) > 0.01f ? Mathf.Sign(input) : 0f;
+        requestedDirection = Mathf.Abs(input.x) > 0.01f ? Mathf.Sign(input.x) : 0f;
+        requestedVerticalDirection = Mathf.Abs(input.y) > 0.01f ? Mathf.Sign(input.y) : 0f;
     }
 
     private void FixedUpdate()
@@ -307,6 +325,7 @@ public class PlayerAttack : MonoBehaviour
         thirdActiveStarted = false;
         isDiveAttack = false;
         attackRequested = false;
+        requestedVerticalDirection = 0f;
         UpdateHitboxes();
         if (animator != null)
             animator.SetBool("IsAttacking", false);
@@ -316,10 +335,12 @@ public class PlayerAttack : MonoBehaviour
     public Vector2 GetAttackVelocity(Vector2 velocity, bool isGrounded, float currentTime,
         float fixedDeltaTime, float gravityScale)
     {
-        if (!isAttacking)
+        if (!isAttacking || (comboStep != 3 && (attackStartedInAir || !isGrounded)))
             return velocity;
 
         velocity.x = 0f;
+        if (verticalAttackDirection != 0f)
+            return velocity;
         float dt = Mathf.Max(0.0001f, fixedDeltaTime);
         float advanceStart = comboStep == 3 ? attackStartTime : attackStartTime + windupDuration * 0.25f;
         float advanceEnd = comboStep == 3 ? windupEndTime : windupEndTime + activeDuration * 0.45f;
@@ -354,7 +375,13 @@ public class PlayerAttack : MonoBehaviour
         isDiveAttack = false;
         swingStarted = false;
         slamPresented = false;
-        comboStep = comboStep >= 3 ? 1 : comboStep + 1;
+        attackStartedInAir = movement != null && !movement.IsOnGround;
+        verticalAttackDirection = requestedVerticalDirection > 0f ? 1f :
+            requestedVerticalDirection < 0f && attackStartedInAir ? -1f : 0f;
+        requestedVerticalDirection = 0f;
+        // 방향 공격은 콤보를 끊고, 공중의 다음 일반 공격은 최대 2타까지만 진행.
+        comboStep = verticalAttackDirection != 0f ? 0 :
+            comboStep >= (attackStartedInAir ? 2 : 3) ? 1 : comboStep + 1;
         comboTimerPaused = false;
         isAttacking = true;
         isDamageActive = false;
@@ -364,13 +391,14 @@ public class PlayerAttack : MonoBehaviour
             spriteRenderer.flipX = direction < 0f;
 
         bool third = comboStep == 3;
+        bool directional = verticalAttackDirection != 0f;
         // 이 공격의 모든 구간과 피해는 시작 시점의 리듬 배율로 고정.
         attackSpeedMultiplier = rhythm != null && rhythm.isActiveAndEnabled ? rhythm.AttackSpeedMultiplier : 1f;
         attackDamageMultiplier = rhythm != null && rhythm.isActiveAndEnabled ? rhythm.AttackDamageMultiplier : 1f;
-        windupDuration = Mathf.Max(0.01f, third ? thirdWindupTime : basicWindupTime) / attackSpeedMultiplier;
-        float active = Mathf.Max(0.01f, third ? thirdActiveTime : basicActiveTime) / attackSpeedMultiplier;
+        windupDuration = Mathf.Max(0.01f, directional ? directionalWindupTime : third ? thirdWindupTime : basicWindupTime) / attackSpeedMultiplier;
+        float active = Mathf.Max(0.01f, directional ? directionalActiveTime : third ? thirdActiveTime : basicActiveTime) / attackSpeedMultiplier;
         activeDuration = active;
-        recoveryDuration = Mathf.Max(0f, third ? thirdRecoveryTime : basicRecoveryTime) / attackSpeedMultiplier;
+        recoveryDuration = Mathf.Max(0f, directional ? directionalRecoveryTime : third ? thirdRecoveryTime : basicRecoveryTime) / attackSpeedMultiplier;
         landingActiveDuration = Mathf.Max(0f, thirdLandingActiveTime) / attackSpeedMultiplier;
         contactDelayDuration = Mathf.Max(0f, third ? thirdContactDelay : basicContactDelay) / attackSpeedMultiplier;
         advanceDistance = Mathf.Max(0f, third ? thirdAdvanceDistance : basicAdvanceDistance);
@@ -382,7 +410,9 @@ public class PlayerAttack : MonoBehaviour
 
         animator.SetBool("IsAttacking", true);
         animator.SetFloat("AttackProgress", 0f);
-        animator.Play("Base Layer.PlayerAttack" + comboStep, 0, 0f);
+        string animation = verticalAttackDirection > 0f ? "PlayerUpperAttack" :
+            verticalAttackDirection < 0f ? "PlayerDownAttack" : "PlayerAttack" + comboStep;
+        animator.Play("Base Layer." + animation, 0, 0f);
         UpdateHitboxes();
     }
 
@@ -390,8 +420,8 @@ public class PlayerAttack : MonoBehaviour
     {
         if (!isAttacking || animator == null)
             return;
-        float swingStart = SwingStarts[comboStep - 1];
-        float swingEnd = SwingEnds[comboStep - 1];
+        float swingStart = verticalAttackDirection != 0f ? 2f / 6f : SwingStarts[comboStep - 1];
+        float swingEnd = verticalAttackDirection != 0f ? 4f / 6f : SwingEnds[comboStep - 1];
         float progress;
         if (currentTime < windupEndTime)
             progress = Mathf.Lerp(0f, swingStart, Mathf.InverseLerp(attackStartTime, windupEndTime, currentTime));
@@ -412,6 +442,8 @@ public class PlayerAttack : MonoBehaviour
         SetHitbox(attack1Hitbox, isDamageActive && comboStep == 1);
         SetHitbox(attack2Hitbox, isDamageActive && comboStep == 2);
         SetHitbox(attack3Hitbox, isDamageActive && comboStep == 3);
+        SetHitbox(upperAttackHitbox, isDamageActive && verticalAttackDirection > 0f);
+        SetHitbox(downAttackHitbox, isDamageActive && verticalAttackDirection < 0f);
         UpdateHitboxDirection();
     }
 
@@ -420,7 +452,8 @@ public class PlayerAttack : MonoBehaviour
     {
         if (!isActiveAndEnabled || !isDamageActive || !isAttacking)
             return;
-        Collider2D activeHitbox = comboStep == 1 ? attack1Hitbox :
+        Collider2D activeHitbox = verticalAttackDirection > 0f ? upperAttackHitbox :
+            verticalAttackDirection < 0f ? downAttackHitbox : comboStep == 1 ? attack1Hitbox :
             comboStep == 2 ? attack2Hitbox : attack3Hitbox;
         if (hitbox == null || hitbox != activeHitbox || !hitbox.enabled || other == null)
             return;
@@ -428,18 +461,21 @@ public class PlayerAttack : MonoBehaviour
         if (target == null || !target.isActiveAndEnabled ||
             target.transform.root == transform.root || hitTargets.Contains(target))
             return;
-        float damage = comboStep == 1 ? attack1Damage : comboStep == 2 ? attack2Damage : attack3Damage;
+        float damage = verticalAttackDirection > 0f ? upperAttackDamage :
+            verticalAttackDirection < 0f ? downAttackDamage :
+            comboStep == 1 ? attack1Damage : comboStep == 2 ? attack2Damage : attack3Damage;
         damage *= attackDamageMultiplier;
-        Vector2 direction = isDiveAttack ? Vector2.down :
+        Vector2 direction = verticalAttackDirection != 0f ? Vector2.up * verticalAttackDirection : isDiveAttack ? Vector2.down :
             (spriteRenderer != null && spriteRenderer.flipX ? Vector2.left : Vector2.right);
         // 판정 중심이 적 내부에 들어가도 표면에 접촉 이펙트를 표시.
-        Vector2 probe = isDiveAttack ?
-            new Vector2(hitbox.bounds.center.x, other.bounds.max.y + 1f) :
+        Vector2 probe = direction.y != 0f ?
+            new Vector2(Mathf.Clamp(hitbox.bounds.center.x, other.bounds.min.x, other.bounds.max.x),
+                direction.y > 0f ? other.bounds.min.y - 1f : other.bounds.max.y + 1f) :
             new Vector2(direction.x > 0f ? other.bounds.min.x - 1f : other.bounds.max.x + 1f,
                 Mathf.Clamp(hitbox.bounds.center.y, other.bounds.min.y, other.bounds.max.y));
         Vector2 point = other.ClosestPoint(probe);
         Vector2 displayPoint = hitbox.bounds.center;
-        if (isDiveAttack)
+        if (direction.y != 0f)
             displayPoint.y += direction.y * (hitbox.bounds.extents.y + 0.05f);
         else
             displayPoint.x += direction.x * (hitbox.bounds.extents.x + 0.05f);

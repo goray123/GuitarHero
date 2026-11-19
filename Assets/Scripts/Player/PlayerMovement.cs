@@ -17,6 +17,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float slideColliderHeight = 0.6f;
     [SerializeField] private bool showSlideCooldown = true;
 
+    [Tooltip("앉았을 때 몸체 콜라이더 높이")]
+    [SerializeField, Min(0.01f)] private float crouchColliderHeight = 0.8f;
+
     private GUIStyle cooldownLabelStyle;
     
     private Rigidbody2D rb;
@@ -28,10 +31,12 @@ public class PlayerMovement : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction slideAction;
+    private InputAction crouchAction;
     private PlayerAttack attack;
     private PlayerChordStrike chordStrike;
 
     public bool IsSliding => isSliding;
+    public bool IsCrouching => isCrouching;
     public bool IsOnGround => rb != null && IsGrounded() && rb.linearVelocity.y <= 0.1f;
     private bool IsAttacking => attack != null && attack.IsAttacking;
     private bool IsUsingSkill => chordStrike != null && chordStrike.BlocksActions;
@@ -48,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
     private float lastGroundedTime = float.NegativeInfinity;
 
     private bool isSliding;
+    private bool isCrouching;
+    private readonly RaycastHit2D[] standingHits = new RaycastHit2D[8];
     private float slideDirection;
     private float currentSlideSpeed;
     private float slideEndTime;
@@ -80,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
         moveAction = playerActions.FindAction("Move", true);
         jumpAction = playerActions.FindAction("Jump", true);
         slideAction = playerActions.FindAction("Slide", true);
+        crouchAction = playerActions.FindAction("Crouch", true);
     }
 
     private void OnEnable()
@@ -94,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
         moveAction.Enable();
         jumpAction.Enable();
         slideAction.Enable();
+        crouchAction.Enable();
     }
 
     private void OnDisable()
@@ -110,6 +119,13 @@ public class PlayerMovement : MonoBehaviour
         jumpRequested = false;
         slideRequested = false;
         lastGroundedTime = float.NegativeInfinity;
+
+        if (isCrouching)
+        {
+            isCrouching = false;
+            RestoreCollider();
+            animator.SetBool("IsCrouching", false);
+        }
 
         if (isSliding)
         {
@@ -190,6 +206,7 @@ public class PlayerMovement : MonoBehaviour
         if (IsUsingSkill)
         {
             ClearActionRequests();
+            UpdateCrouch(false);
             lastGroundedTime = float.NegativeInfinity;
             rb.linearVelocity = chordStrike.GetRecoilVelocity(currentTime, Time.fixedDeltaTime);
             animator.SetBool("IsMoving", false);
@@ -221,7 +238,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isSliding && !slideEnded && canUseGroundAction)
         {
-            // 위와 아래 방향키를 동시에 누르면 점프를 우선
+            // 점프와 슬라이드가 동시에 들어오면 점프를 우선
             if (!IsAttacking && jumpRequested)
             {
                 velocity.y = jumpSpeed;
@@ -240,12 +257,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        UpdateCrouch(isGrounded && !isSliding && !IsAttacking && crouchAction.IsPressed());
+
         if (isSliding)
             // 마지막 물리 프레임에서는 남은 시간만큼만 이동
             velocity.x = slideDirection * currentSlideSpeed *
                 Mathf.Clamp01((slideEndTime - currentTime) / Time.fixedDeltaTime);
-        else if (slideEnded || IsAttacking)
-            // 공격 중과 슬라이드 종료 순간에는 가로 이동 정지
+        else if (slideEnded || isCrouching || (IsAttacking && isGrounded))
+            // 공중 공격은 일반 좌우 조작을 유지.
             velocity.x = 0f;
         else
             velocity.x = moveInput * moveSpeed;
@@ -293,15 +312,43 @@ public class PlayerMovement : MonoBehaviour
         slideRequested = false;
         lastGroundedTime = float.NegativeInfinity;
 
-        // 아래 방향키만 눌러도 바라보는 방향으로 슬라이드
+        // 슬라이드 키를 누르면 바라보는 방향으로 이동
         slideDirection = spriteRenderer.flipX ? -1f : 1f;
         float duration = Mathf.Max(0.01f, slideDuration);
         // 시작 시 거리와 시간을 기준으로 이번 슬라이드 속도 확정
         currentSlideSpeed = Mathf.Max(0f, slideDistance) / duration;
         slideEndTime = currentTime + duration;
 
+        isCrouching = false;
+        animator.SetBool("IsCrouching", false);
+        SetColliderHeight(slideColliderHeight);
+    }
+
+    private void UpdateCrouch(bool crouching)
+    {
+        if (isCrouching == crouching)
+            return;
+        if (!crouching && !isSliding)
+        {
+            float distance = (originalSize.y - bodyCollider.size.y) * Mathf.Abs(transform.lossyScale.y);
+            int count = bodyCollider.Cast(Vector2.up, standingHits, distance);
+            for (int i = 0; i < count; i++)
+                if (!standingHits[i].collider.isTrigger && standingHits[i].normal.y < -0.1f &&
+                    standingHits[i].collider.bounds.max.y > bodyCollider.bounds.center.y)
+                    return;
+        }
+        isCrouching = crouching;
+        if (crouching)
+            SetColliderHeight(crouchColliderHeight);
+        else if (!isSliding)
+            RestoreCollider();
+        animator.SetBool("IsCrouching", isCrouching);
+    }
+
+    private void SetColliderHeight(float requestedHeight)
+    {
         // 발바닥 위치를 유지하며 콜라이더 높이 변경
-        float height = Mathf.Clamp(slideColliderHeight, 0.01f, originalSize.y);
+        float height = Mathf.Clamp(requestedHeight, 0.01f, originalSize.y);
         bodyCollider.size = new Vector2(originalSize.x, height);
         bodyCollider.offset = originalOffset
             - new Vector2(0f, (originalSize.y - height) * 0.5f);
