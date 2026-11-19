@@ -1,25 +1,25 @@
 # Graph Report - GuitarHero  (2026-11-19)
 
 ## Corpus Check
-- 63 files · ~53,042 words
+- 66 files · ~53,971 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 2305 file(s) not represented in the graph (top: .meta 1242, .asset 1002, .anim 28)
-- WARNING: 2305 of 2480 files seen (93%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
+- Unclassified: 2307 file(s) not represented in the graph (top: .meta 1244, .asset 1002, .anim 28)
+- WARNING: 2307 of 2486 files seen (93%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
 
 ## Summary
-- 1402 nodes · 2619 edges · 124 communities (62 shown, 62 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 102 edges (avg confidence: 0.86)
+- 1420 nodes · 2651 edges · 122 communities (61 shown, 61 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 105 edges (avg confidence: 0.87)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7601136f`
+- Built from commit: `8b86c611`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - TrainingDummy
 - Boss1MissileArt
-- AttackHit
+- Collider2D
 - 보스 1 기획서
 - unityengine
 - Boss1MissileBarrage
@@ -40,13 +40,13 @@
 - Boss1RearMissiles
 - PlayerAttack
 - com.unity.modules.audio@1.0.0
-- BoxCollider2D
+- SpriteRenderer
 - com.unity.modules.uielements@1.0.0
-- BoxCollider2D
+- PlayerRhythmGauge
 - 리듬 게이지 기획문서
-- com.unity.modules.accessibility
+- com.unity.modules.imageconversion@1.0.0
 - com.unity.modules.physics@1.0.0
-- com.unity.ext.nunit
+- com.unity.ide.rider
 - BossMeleeTimeline
 - Boss1ProximityAttack.Tick
 - Boss1Backstep
@@ -63,10 +63,9 @@
 - com.unity.modules.physics2d@1.0.0
 - PlayerChordStrike
 - PlayerHitAudio
-- com.unity.nuget.newtonsoft-json@3.2.1
+- com.unity.collections@2.4.3
 - FlameState
 - com.unity.modules.subsystems@1.0.0
-- com.unity.collections@2.4.3
 - HealthBarUI
 - 보스 1 구현 스펙 (초안)
 - Boss1SlamSpriteVisual
@@ -78,8 +77,8 @@
 - Pattern
 - Phase
 - CombatFeelValidation.CheckInPlayMode
-- com.unity.collab-proxy
-- ChordNoteProjectile
+- dependencies
+- Phase
 - com.unity.ide.visualstudio
 - Phase
 - ExclusiveAction
@@ -126,7 +125,7 @@
 - com.unity.ugui@2.0.0
 - com.unity.visualscripting@1.9.12
 - PlayerHitCameraShake
-- 기타 히어로 (GuitarHero)
+- Stage
 - 보스 1 GPT 이미지 프롬프트
 - 보스 1 아트 디렉션
 - 패턴 상세
@@ -134,7 +133,6 @@
 - 타격감 튜닝
 - Q: 이펙터 시스템 우리 설계된게 뭐가 잇었지
 - com.unity.modules.ai
-- com.unity.modules.wind
 
 ## God Nodes (most connected - your core abstractions)
 1. `Boss1ProximityAttack` - 80 edges
@@ -145,7 +143,7 @@
 6. `Boss1LeapSlam` - 47 edges
 7. `Boss1RearMissiles` - 47 edges
 8. `Boss1BoostRush` - 44 edges
-9. `TrainingDummy` - 37 edges
+9. `TrainingDummy` - 38 edges
 10. `PlayerRhythmGauge` - 35 edges
 
 ## Surprising Connections (you probably didn't know these)
@@ -153,29 +151,29 @@
   Docs/위키/타격감 튜닝.md → Assets/Scripts/Combat/AttackHit.cs
 - `공중·방향 공격 및 키 설정` --references--> `PlayerAttack`  [INFERRED]
   Docs/위키/타격감 튜닝.md → Assets/Scripts/Player/PlayerAttack.cs
-- `코드 컨벤션 (기존 코드 기준)` --references--> `Damageable`  [INFERRED]
-  CLAUDE.md → Assets/Scripts/Combat/Damageable.cs
-- `2. 기존 코드와의 연결점` --references--> `Damageable`  [INFERRED]
-  Docs/위키/보스 1 구현 스펙.md → Assets/Scripts/Combat/Damageable.cs
-- `3. 구성 요소 (새 파일 6개, `Assets/Scripts/Boss/`)` --references--> `Damageable`  [INFERRED]
-  Docs/위키/보스 1 구현 스펙.md → Assets/Scripts/Combat/Damageable.cs
+- `로비 구현` --references--> `CityCameraFollow`  [INFERRED]
+  Docs/위키/로비 구현.md → Assets/Scripts/Environment/CityCameraFollow.cs
+- `2. 기존 코드와의 연결점` --references--> `TrainingDummy`  [INFERRED]
+  Docs/위키/보스 1 구현 스펙.md → Assets/Scripts/Characters/TrainingDummy.cs
+- `2. 기존 코드와의 연결점` --references--> `ZombieMovement`  [INFERRED]
+  Docs/위키/보스 1 구현 스펙.md → Assets/Scripts/Characters/ZombieMovement.cs
 
 ## Import Cycles
 - None detected.
 
-## Communities (124 total, 62 thin omitted)
+## Communities (122 total, 61 thin omitted)
 
 ### Community 0 - "TrainingDummy"
 Cohesion: 0.06
-Nodes (27): TrainingDummy, CurrentHealth, IsDead, IsPlayingHit, MaxHealth, PlayerRhythmGauge, AttackDamageMultiplier, AttackSpeedMultiplier (+19 more)
+Nodes (14): BodyFront, TrainingDummy, CurrentHealth, IsDead, IsPlayingHit, MaxHealth, ZombieMovement, LobbyInteraction (+6 more)
 
 ### Community 1 - "Boss1MissileArt"
-Cohesion: 0.09
-Nodes (7): Boss1MissileArt, ActiveBursts, Burst, HasArt, HasExplosionArt, HasMissileArt, Boss1PrototypeModel
+Cohesion: 0.15
+Nodes (6): Boss1MissileArt, ActiveBursts, Burst, HasArt, HasExplosionArt, HasMissileArt
 
-### Community 2 - "AttackHit"
-Cohesion: 0.19
-Nodes (6): AttackHit, ComboStep, Damage, Direction, DisplayPoint, Point
+### Community 2 - "Collider2D"
+Cohesion: 0.08
+Nodes (18): AttackHit, ComboStep, Damage, Direction, DisplayPoint, Point, ChordNoteProjectile, Damageable (+10 more)
 
 ### Community 3 - "보스 1 기획서"
 Cohesion: 0.18
@@ -183,10 +181,10 @@ Nodes (11): 2페이즈 가속, 개요, 공통 전투 규칙, 반격 창 설계 �
 
 ### Community 4 - "unityengine"
 Cohesion: 0.09
-Nodes (7): RhythmHitKind, Basic, Enhanced, Note, 게임의 정체성 v20261110, **기타 히어로**, **총 기획 문서**
+Nodes (3): 게임의 정체성 v20261110, **기타 히어로**, **총 기획 문서**
 
 ### Community 5 - "Boss1MissileBarrage"
-Cohesion: 0.18
+Cohesion: 0.19
 Nodes (6): Boss1MissileBarrage, CurrentStage, H, IsActive, Rocket, ShotsFired
 
 ### Community 6 - "com.unity.2d.common@12.0.4"
@@ -198,8 +196,8 @@ Cohesion: 0.06
 Nodes (34): dependencies, depth, source, version, dependencies, depth, source, version (+26 more)
 
 ### Community 8 - "com.unity.modules.jsonserialize@1.0.0"
-Cohesion: 0.07
-Nodes (32): dependencies, depth, source, url, version, dependencies, dependencies, depth (+24 more)
+Cohesion: 0.06
+Nodes (40): dependencies, depth, source, url, version, dependencies, dependencies, depth (+32 more)
 
 ### Community 9 - "PlayerMovement"
 Cohesion: 0.12
@@ -207,7 +205,7 @@ Nodes (7): PlayerMovement, IsAttacking, IsCrouching, IsOnGround, IsSliding, IsUs
 
 ### Community 10 - "com.unity.render-pipelines.core"
 Cohesion: 0.07
-Nodes (34): depth, source, version, depth, source, version, dependencies, depth (+26 more)
+Nodes (29): depth, source, version, dependencies, depth, source, version, dependencies (+21 more)
 
 ### Community 11 - "Boss1BoostRush"
 Cohesion: 0.10
@@ -226,16 +224,16 @@ Cohesion: 0.08
 Nodes (24): Boss1ProximityAttack, AttackSerial, BarrageActive, BarragePending, BodyBusy, EffectiveWindupMultiplier, ExclusiveActionPending, Facing (+16 more)
 
 ### Community 15 - "com.unity.nuget.mono-cecil@1.11.5"
-Cohesion: 0.15
-Nodes (13): dependencies, depth, source, url, version, dependencies, depth, source (+5 more)
+Cohesion: 0.08
+Nodes (26): dependencies, depth, source, url, version, dependencies, depth, source (+18 more)
 
 ### Community 16 - "Boss1LeapSlam"
 Cohesion: 0.09
 Nodes (20): Boss1LeapSlam, CurrentPhase, H, IsBusy, LandingPoint, MarkerVisible, Phase, Airborne (+12 more)
 
 ### Community 18 - "packages-lock.json"
-Cohesion: 0.08
-Nodes (24): dependencies, dependencies, depth, source, version, dependencies, depth, source (+16 more)
+Cohesion: 0.09
+Nodes (24): dependencies, depth, source, url, version, dependencies, depth, source (+16 more)
 
 ### Community 19 - "com.unity.modules.imgui@1.0.0"
 Cohesion: 0.11
@@ -257,49 +255,49 @@ Nodes (24): dependencies, depth, source, version, dependencies, depth, source, v
 Cohesion: 0.09
 Nodes (22): dependencies, depth, source, url, version, dependencies, depth, source (+14 more)
 
-### Community 25 - "BoxCollider2D"
-Cohesion: 0.20
-Nodes (3): BodyFront, PlayerAttackHitbox, StandingColliderHeight
+### Community 25 - "PlayerRhythmGauge"
+Cohesion: 0.08
+Nodes (25): PlayerRhythmGauge, AttackDamageMultiplier, AttackSpeedMultiplier, CurrentGauge, DecayPerSecond, LifeVersion, NormalizedGauge, Stage (+17 more)
 
 ### Community 26 - "리듬 게이지 기획문서"
 Cohesion: 0.10
 Nodes (21): 0에서 시작하는 첫 진입 시간, 10 조정 검토 사항, 11 기능 검증 항목, 1 기획 의도와 구현 범위, 2 단계와 능력치, 3 게이지 획득과 피격, 4 공격 능력치 적용, 5 현재 프로젝트에서 확인한 공격 값 (+13 more)
 
-### Community 27 - "com.unity.modules.accessibility"
-Cohesion: 0.40
-Nodes (5): dependencies, depth, source, version, com.unity.modules.accessibility
+### Community 27 - "com.unity.modules.imageconversion@1.0.0"
+Cohesion: 0.12
+Nodes (16): dependencies, depth, source, version, dependencies, depth, source, version (+8 more)
 
 ### Community 28 - "com.unity.modules.physics@1.0.0"
-Cohesion: 0.07
-Nodes (32): dependencies, depth, source, version, dependencies, depth, source, version (+24 more)
+Cohesion: 0.08
+Nodes (26): dependencies, depth, source, version, dependencies, depth, source, version (+18 more)
 
-### Community 29 - "com.unity.ext.nunit"
-Cohesion: 0.15
-Nodes (13): dependencies, depth, source, version, dependencies, depth, source, url (+5 more)
+### Community 29 - "com.unity.ide.rider"
+Cohesion: 0.33
+Nodes (6): dependencies, depth, source, url, version, com.unity.ide.rider
 
 ### Community 30 - "BossMeleeTimeline"
-Cohesion: 0.10
-Nodes (14): BossMeleeTimeline, Active, Attack, CurrentStage, Elapsed, Recovery, Stage, Active (+6 more)
+Cohesion: 0.11
+Nodes (9): BossMeleeTimeline, Active, Attack, CurrentStage, Elapsed, Recovery, StageProgress, Total (+1 more)
 
 ### Community 32 - "Boss1Backstep"
-Cohesion: 0.18
+Cohesion: 0.16
 Nodes (9): Boss1Backstep, CooldownRemaining, CurrentPhase, DesiredSpeed, EndPoint, Facing, IsBusy, Progress (+1 more)
 
 ### Community 33 - "Boss1Health"
-Cohesion: 0.16
+Cohesion: 0.14
 Nodes (6): Boss1Health, CurrentHealth, IsDead, IsPhaseTransitionPending, IsPhaseTwo, MaxHealth
 
 ### Community 34 - "com.unity.2d.tilemap@1.0.0"
 Cohesion: 0.12
-Nodes (17): dependencies, depth, dependencies, depth, source, url, version, source (+9 more)
+Nodes (18): dependencies, depth, dependencies, depth, source, url, version, source (+10 more)
 
 ### Community 35 - "Boss1BoosterFlameVisual"
 Cohesion: 0.12
 Nodes (15): Boss1BoosterFlameVisual, BoundExhaustDirection, CurrentBodySprite, CurrentNozzleUses, CurrentState, ExhaustDirection, FlameRenderer, HasCurrentNozzleBinding (+7 more)
 
 ### Community 36 - "Boss1BoostStep"
-Cohesion: 0.17
-Nodes (10): Boss1BoostStep, CurrentPhase, DesiredSpeed, Facing, IsBusy, Phase, Idle, Moving (+2 more)
+Cohesion: 0.29
+Nodes (5): Boss1BoostStep, CurrentPhase, DesiredSpeed, Facing, IsBusy
 
 ### Community 38 - "manifest.json"
 Cohesion: 0.12
@@ -310,20 +308,24 @@ Cohesion: 0.12
 Nodes (16): dependencies, com.unity.2d.tilemap@1.0.0, com.unity.2d.tooling@1.0.4, com.unity.modules.accessibility@1.0.0, com.unity.modules.androidjni@1.0.0, com.unity.modules.imageconversion@1.0.0, com.unity.modules.screencapture@1.0.0, com.unity.modules.unitywebrequestwww@1.0.0 (+8 more)
 
 ### Community 40 - "com.unity.modules.imgui@1.0.0"
-Cohesion: 0.09
-Nodes (23): dependencies, depth, source, version, dependencies, depth, source, version (+15 more)
+Cohesion: 0.08
+Nodes (25): dependencies, depth, source, version, dependencies, depth, source, version (+17 more)
+
+### Community 41 - "MonoBehaviour"
+Cohesion: 0.18
+Nodes (3): CityCameraFollow, CityParallax, CityStageFlow
 
 ### Community 42 - "PlayerHealth"
 Cohesion: 0.20
 Nodes (4): PlayerHealth, CurrentHealth, IsDead, MaxHealth
 
 ### Community 43 - "com.unity.modules.physics2d@1.0.0"
-Cohesion: 0.10
-Nodes (20): dependencies, depth, source, url, version, dependencies, depth, source (+12 more)
+Cohesion: 0.17
+Nodes (12): dependencies, depth, source, url, version, dependencies, depth, source (+4 more)
 
-### Community 46 - "com.unity.nuget.newtonsoft-json@3.2.1"
-Cohesion: 0.11
-Nodes (19): dependencies, depth, source, url, version, depth, source, url (+11 more)
+### Community 46 - "com.unity.collections@2.4.3"
+Cohesion: 0.17
+Nodes (12): dependencies, depth, source, url, version, depth, source, url (+4 more)
 
 ### Community 47 - "FlameState"
 Cohesion: 0.18
@@ -332,10 +334,6 @@ Nodes (11): FlameState, BackstepMoving, BackstepWindup, Hidden, LeapAirborne, Le
 ### Community 48 - "com.unity.modules.subsystems@1.0.0"
 Cohesion: 0.18
 Nodes (11): dependencies, depth, source, version, dependencies, depth, source, version (+3 more)
-
-### Community 49 - "com.unity.collections@2.4.3"
-Cohesion: 0.15
-Nodes (13): depth, source, url, version, dependencies, depth, source, version (+5 more)
 
 ### Community 52 - "보스 1 구현 스펙 (초안)"
 Cohesion: 0.22
@@ -353,13 +351,13 @@ Nodes (7): Pattern, Backstep, Leap, Melee, None, RearMissiles, Rush
 Cohesion: 0.33
 Nodes (6): Phase, Exploding, Flying, Idle, Locked, Tracking
 
-### Community 62 - "com.unity.collab-proxy"
-Cohesion: 0.33
-Nodes (6): dependencies, depth, source, url, version, com.unity.collab-proxy
+### Community 62 - "dependencies"
+Cohesion: 0.09
+Nodes (22): dependencies, depth, source, url, version, dependencies, depth, source (+14 more)
 
-### Community 63 - "ChordNoteProjectile"
-Cohesion: 0.29
-Nodes (3): ChordNoteProjectile, Damageable, 코드 컨벤션 (기존 코드 기준)
+### Community 63 - "Phase"
+Cohesion: 0.40
+Nodes (5): Phase, Idle, Moving, Preparing, Resting
 
 ### Community 64 - "com.unity.ide.visualstudio"
 Cohesion: 0.33
@@ -377,9 +375,9 @@ Nodes (4): ExclusiveAction, Barrage, None, PhaseTransition
 Cohesion: 0.50
 Nodes (3): Canvas 체력바, 동작, 조정
 
-### Community 113 - "기타 히어로 (GuitarHero)"
-Cohesion: 0.22
-Nodes (8): 검증, 게임 디자인 핵심 (구현 판단의 기준), 기술 스택, 기타 히어로 (GuitarHero), 기획 문서 위치, 작업 시 주의, 팀 개발 방식, 폴더 구조
+### Community 113 - "Stage"
+Cohesion: 0.40
+Nodes (5): Stage, Active, Idle, Recovery, Windup
 
 ### Community 114 - "보스 1 GPT 이미지 프롬프트"
 Cohesion: 0.22
@@ -409,29 +407,25 @@ Nodes (4): Answer, Outcome, Q: 이펙터 시스템 우리 설계된게 뭐가 �
 Cohesion: 0.40
 Nodes (5): dependencies, depth, source, version, com.unity.modules.ai
 
-### Community 122 - "com.unity.modules.wind"
-Cohesion: 0.40
-Nodes (5): dependencies, depth, source, version, com.unity.modules.wind
-
 ## Knowledge Gaps
-- **216 isolated node(s):** `IsSliding`, `IsCrouching`, `IsAttacking`, `IsUsingSkill`, `SlideColliderHeight` (+211 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 627 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **62 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **216 isolated node(s):** `CurrentHealth`, `IsDead`, `IsPlayingHit`, `MaxHealth`, `CurrentGauge` (+211 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 634 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **61 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `dependencies` connect `com.unity.modules.physics@1.0.0` to `com.unity.2d.common@12.0.4`, `com.unity.modules.unitywebrequest@1.0.0`, `com.unity.modules.jsonserialize@1.0.0`, `com.unity.render-pipelines.core`, `com.unity.nuget.mono-cecil@1.11.5`, `packages-lock.json`, `com.unity.modules.imgui@1.0.0`, `com.unity.modules.audio@1.0.0`, `com.unity.modules.uielements@1.0.0`, `com.unity.modules.accessibility`, `com.unity.ext.nunit`, `com.unity.2d.tilemap@1.0.0`, `com.unity.modules.imgui@1.0.0`, `com.unity.modules.physics2d@1.0.0`, `com.unity.nuget.newtonsoft-json@3.2.1`, `com.unity.modules.subsystems@1.0.0`, `com.unity.collections@2.4.3`, `com.unity.collab-proxy`, `com.unity.ide.visualstudio`, `com.unity.modules.ai`, `com.unity.modules.wind`?**
-  _High betweenness centrality (0.084) - this node is a cross-community bridge._
-- **What connects `IsSliding`, `IsCrouching`, `IsAttacking` to the rest of the system?**
+- **Why does `dependencies` connect `dependencies` to `com.unity.2d.common@12.0.4`, `com.unity.modules.unitywebrequest@1.0.0`, `com.unity.modules.jsonserialize@1.0.0`, `com.unity.render-pipelines.core`, `com.unity.nuget.mono-cecil@1.11.5`, `packages-lock.json`, `com.unity.modules.imgui@1.0.0`, `com.unity.modules.audio@1.0.0`, `com.unity.modules.uielements@1.0.0`, `com.unity.modules.imageconversion@1.0.0`, `com.unity.modules.physics@1.0.0`, `com.unity.ide.rider`, `com.unity.2d.tilemap@1.0.0`, `com.unity.modules.imgui@1.0.0`, `com.unity.modules.physics2d@1.0.0`, `com.unity.collections@2.4.3`, `com.unity.modules.subsystems@1.0.0`, `com.unity.ide.visualstudio`, `com.unity.modules.ai`?**
+  _High betweenness centrality (0.074) - this node is a cross-community bridge._
+- **What connects `CurrentHealth`, `IsDead`, `IsPlayingHit` to the rest of the system?**
   _216 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `TrainingDummy` be split into smaller, more focused modules?**
-  _Cohesion score 0.059125085440874914 - nodes in this community are weakly interconnected._
-- **Why does `Boss1ProximityAttack` connect `Boss1ProximityAttack` to `Boss1MissileArt`, `Boss1MissileBarrage`, `Boss1BoostRush`, `Boss1AimedMissile`, `Boss1LeapSlam`, `Vector2`, `Boss1RearMissiles`, `BoxCollider2D`, `BoxCollider2D`, `BossMeleeTimeline`, `Boss1ProximityAttack.Tick`, `Boss1Backstep`, `Boss1Health`, `Boss1BoosterFlameVisual`, `Boss1BoostStep`, `MonoBehaviour`, `Boss1SlamSpriteVisual`, `Boss1AttackHitboxes`, `Boss1BoostRushVisual`, `Pattern`, `ExclusiveAction`, `Transform`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
-- **Should `Boss1MissileArt` be split into smaller, more focused modules?**
-  _Cohesion score 0.09246088193456614 - nodes in this community are weakly interconnected._
-- **Why does `Boss1AimedMissile` connect `Boss1AimedMissile` to `Boss1Backstep`, `Boss1Health`, `AttackHit`, `Boss1MissileArt`, `unityengine`, `Boss1MissileBarrage`, `PlayerMovement`, `MonoBehaviour`, `PlayerChordStrike`, `PlayerHitAudio`, `Boss1ProximityAttack`, `Vector2`, `Boss1RearMissiles`, `BoxCollider2D`, `Boss1AttackHitboxes`, `BoxCollider2D`, `Phase`, `Boss1ProximityAttack.Tick`?**
-  _High betweenness centrality (0.050) - this node is a cross-community bridge._
+  _Cohesion score 0.05894736842105263 - nodes in this community are weakly interconnected._
+- **Why does `Boss1ProximityAttack` connect `Boss1ProximityAttack` to `TrainingDummy`, `Boss1MissileArt`, `Collider2D`, `Boss1MissileBarrage`, `Boss1BoostRush`, `Boss1AimedMissile`, `Boss1LeapSlam`, `Boss1RearMissiles`, `SpriteRenderer`, `BossMeleeTimeline`, `Boss1ProximityAttack.Tick`, `Boss1Backstep`, `Boss1Health`, `Boss1BoosterFlameVisual`, `Boss1BoostStep`, `MonoBehaviour`, `Boss1SlamSpriteVisual`, `Boss1AttackHitboxes`, `Boss1BoostRushVisual`, `Pattern`, `ExclusiveAction`, `PlayerHitCameraShake`?**
+  _High betweenness centrality (0.067) - this node is a cross-community bridge._
+- **Should `Collider2D` be split into smaller, more focused modules?**
+  _Cohesion score 0.08250355618776671 - nodes in this community are weakly interconnected._
+- **Why does `PlayerRhythmGauge` connect `PlayerRhythmGauge` to `TrainingDummy`, `Collider2D`, `unityengine`, `PlayerRhythmGaugeUI`, `MonoBehaviour`, `PlayerAttack`, `SpriteRenderer`?**
+  _High betweenness centrality (0.049) - this node is a cross-community bridge._
 - **Should `unityengine` be split into smaller, more focused modules?**
-  _Cohesion score 0.08970099667774087 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0919661733615222 - nodes in this community are weakly interconnected._
