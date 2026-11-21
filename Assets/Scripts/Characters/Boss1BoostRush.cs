@@ -16,11 +16,12 @@ public class Boss1BoostRush : MonoBehaviour
     [SerializeField, Min(0f)] private float reuseDelay = 5f;
     [SerializeField, Min(0f)] private float patternInterval = 0.4f;
     [Header("Geometry (Player Height H)")]
-    [SerializeField, Min(0f)] private float selectionDistance = 2.5f;
     [Tooltip("플레이어 높이 H 기준 이동 거리. 일반 이동으로 후퇴해도 닿도록 설정")]
     [SerializeField, Min(0.1f)] private float travelDistance = 12f;
     [Tooltip("점프로 넘을 수 있는 웅크린 몸체와 공격 판정 높이")]
     [SerializeField, Range(0.2f, 1.2f)] private float crouchHeight = 0.9f;
+    [Header("Hitbox (player height H)")]
+    [Tooltip("Forward distance added beyond the crouched body.")]
     [SerializeField, Min(0f)] private float armReach = 0.25f;
     [SerializeField] private LayerMask terrainLayers = ~0;
     [SerializeField] private LayerMask targetLayers = ~0;
@@ -43,6 +44,7 @@ public class Boss1BoostRush : MonoBehaviour
         Mathf.Max(0f, stageDuration - elapsed) + travelTime : Stage == RushStage.Moving ? Mathf.Max(0f, travelTime - elapsed) : 0f;
 
     private Rigidbody2D body;
+    private Boss1AttackHitboxes attackHitboxes;
     private BoxCollider2D bodyCollider, hitbox;
     private Vector2 standingSize, standingOffset;
     private bool crouched, meleeCompleted, lastWasRush;
@@ -55,6 +57,7 @@ public class Boss1BoostRush : MonoBehaviour
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
+        attackHitboxes = GetComponent<Boss1AttackHitboxes>();
         bodyCollider = GetComponent<BoxCollider2D>();
         var child = new GameObject("Hitbox_BoostRush");
         child.layer = gameObject.layer;
@@ -74,7 +77,6 @@ public class Boss1BoostRush : MonoBehaviour
         localHeight = Mathf.Max(0.1f, height);
         worldHeight = localHeight * Mathf.Abs(transform.lossyScale.y);
         Facing = facing < 0f ? -1f : 1f;
-        if ((target.position.x - transform.position.x) * Facing <= selectionDistance * worldHeight) return false;
         Crouch();
         Physics2D.SyncTransforms();
         // 막힌 방향으로 예고만 반복하지 않도록 최소 전진 공간을 확인한다.
@@ -141,9 +143,20 @@ public class Boss1BoostRush : MonoBehaviour
         float height = Mathf.Min(standingSize.y, PoseHeight);
         bodyCollider.size = new Vector2(standingSize.x, height);
         bodyCollider.offset = standingOffset - Vector2.up * (standingSize.y - height) * 0.5f;
-        hitbox.size = new Vector2(standingSize.x + armReach * localHeight, height);
-        hitbox.offset = bodyCollider.offset + Vector2.right * Facing * armReach * localHeight * 0.5f;
+        GetHitboxArea(bodyCollider, bodyCollider.offset, height, localHeight, Facing, out var center, out var size);
+        hitbox.size = size;
+        hitbox.offset = center;
         crouched = true;
+    }
+
+    private void GetHitboxArea(BoxCollider2D collider, Vector2 bodyCenter, float height,
+        float playerHeight, float facing, out Vector2 center, out Vector2 size)
+    {
+        var settings = attackHitboxes != null ? attackHitboxes : GetComponent<Boss1AttackHitboxes>();
+        float coveredWidth = settings != null ? settings.TorsoSize(collider).x : collider.size.x * 0.5f;
+        float extension = armReach * playerHeight;
+        size = new Vector2(coveredWidth + extension, height);
+        center = bodyCenter + Vector2.right * facing * (collider.size.x - coveredWidth + extension) * 0.5f;
     }
 
     private void RestoreBody()
@@ -217,9 +230,19 @@ public class Boss1BoostRush : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (hitbox == null) return;
-        Gizmos.color = HitboxActive ? Color.red : Color.yellow;
+        var owner = GetComponent<Boss1ProximityAttack>();
+        var collider = GetComponent<BoxCollider2D>();
+        if (owner == null || collider == null) return;
+
+        float height = Mathf.Min(collider.size.y, owner.Height * crouchHeight);
+        Vector2 bodyCenter = collider.offset - Vector2.up * (collider.size.y - height) * 0.5f;
+        GetHitboxArea(collider, bodyCenter, height, owner.Height, owner.Facing, out var center, out var size);
+        var oldMatrix = Gizmos.matrix;
+        var oldColor = Gizmos.color;
+        Gizmos.color = HitboxActive ? Color.red : Color.green;
         Gizmos.matrix = transform.localToWorldMatrix;
-        Gizmos.DrawWireCube(hitbox.offset, hitbox.size);
+        Gizmos.DrawWireCube(HitboxActive ? hitbox.offset : center, HitboxActive ? hitbox.size : size);
+        Gizmos.matrix = oldMatrix;
+        Gizmos.color = oldColor;
     }
 }

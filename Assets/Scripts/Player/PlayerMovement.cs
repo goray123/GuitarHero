@@ -6,11 +6,14 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private float moveSpeed = 4.8f;
-    [SerializeField] private float jumpSpeed = 10f;
-    [Tooltip("상승 중 점프 버튼을 놓았을 때 남길 상승 속도 비율")]
-    [SerializeField, Range(0f, 1f)] private float jumpCutMultiplier = 0.5f;
-    [Tooltip("자유 낙하 중 적용할 중력 배율")]
-    [SerializeField, Min(1f)] private float fallGravityMultiplier = 1.3f;
+    [Tooltip("기본 공격 1, 2타 중 좌우 이동 속도 배율")]
+    [SerializeField, Range(0f, 1f)] private float basicAttackMoveSpeedMultiplier = 0.7f;
+    [SerializeField, Min(0.01f)] private float minimumJumpHeight = 1.4f;
+    [SerializeField, Min(0.01f)] private float maximumJumpHeight = 2.4f;
+    private const float MinimumHoldTime = 0.05f;
+    private const float MaximumHoldTime = 0.25f;
+    [Tooltip("같은 높이에서 상승 속도 대비 하강 속도 비율")]
+    [SerializeField, Min(1f)] private float fallSpeedMultiplier = 1.3f;
     [SerializeField] private float coyoteTime = 0.1f;
 
     [Tooltip("슬라이드 한 번에 이동할 거리. 벽에 막히면 실제 이동 거리는 줄어듦")]
@@ -55,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
     private bool jumpRequested;
     private bool jumpCutRequested;
     private bool isJumping;
+    private float releasedHoldTime, jumpStartY;
     private bool slideRequested;
     private float lastGroundedTime = float.NegativeInfinity;
 
@@ -167,6 +171,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJumpReleased(InputAction.CallbackContext context)
     {
+        if (!jumpCutRequested) releasedHoldTime = (float)context.duration;
         jumpCutRequested = true;
     }
 
@@ -215,6 +220,14 @@ public class PlayerMovement : MonoBehaviour
         GUI.Box(labelRect, $"Slide Cooldown: {remainingCooldown:F1}s", cooldownLabelStyle);
     }
 
+    private float SpeedForHeight(float height)
+    {
+        if (height <= 0f) return 0f;
+        float gravity = -Physics2D.gravity.y * rb.gravityScale;
+        // Box2D applies gravity before moving each fixed step.
+        return Mathf.Sqrt(2f * gravity * height) + 0.5f * gravity * Time.fixedDeltaTime;
+    }
+
     private void UpdateMovement(float currentTime)
     {
         // 코드 스트라이크 중에는 입력 대신 반동 포물선만 적용
@@ -258,7 +271,8 @@ public class PlayerMovement : MonoBehaviour
             // 점프와 슬라이드가 동시에 들어오면 점프를 우선
             if (!IsAttacking && jumpRequested)
             {
-                velocity.y = jumpSpeed;
+                jumpStartY = rb.position.y;
+                velocity.y = SpeedForHeight(Mathf.Max(minimumJumpHeight, maximumJumpHeight));
                 isJumping = true;
                 isGrounded = false;
 
@@ -277,13 +291,16 @@ public class PlayerMovement : MonoBehaviour
 
         if (isJumping && (jumpCutRequested || !jumpAction.IsPressed()))
         {
-            velocity.y *= jumpCutMultiplier;
+            float hold = Mathf.InverseLerp(MinimumHoldTime, MaximumHoldTime, releasedHoldTime);
+            float height = Mathf.Lerp(minimumJumpHeight, Mathf.Max(minimumJumpHeight, maximumJumpHeight), hold);
+            float remaining = height - (rb.position.y - jumpStartY);
+            velocity.y = Mathf.Min(velocity.y, SpeedForHeight(remaining));
             isJumping = false;
         }
 
         if (!isGrounded && velocity.y < 0f)
             velocity.y += Physics2D.gravity.y * rb.gravityScale *
-                (fallGravityMultiplier - 1f) * Time.fixedDeltaTime;
+                (fallSpeedMultiplier * fallSpeedMultiplier - 1f) * Time.fixedDeltaTime;
 
         UpdateCrouch(isGrounded && !isSliding && !IsAttacking && crouchAction.IsPressed());
 
@@ -291,11 +308,14 @@ public class PlayerMovement : MonoBehaviour
             // 마지막 물리 프레임에서는 남은 시간만큼만 이동
             velocity.x = slideDirection * currentSlideSpeed *
                 Mathf.Clamp01((slideEndTime - currentTime) / Time.fixedDeltaTime);
-        else if (slideEnded || isCrouching || (IsAttacking && isGrounded))
-            // 공중 공격은 일반 좌우 조작을 유지.
+        else if (slideEnded || isCrouching)
             velocity.x = 0f;
         else
-            velocity.x = moveInput * moveSpeed;
+        {
+            float speedMultiplier = attack != null && attack.IsBasicComboAttack
+                ? basicAttackMoveSpeedMultiplier : 1f;
+            velocity.x = moveInput * moveSpeed * speedMultiplier;
+        }
 
         // 공격의 전진과 포물선 이동을 일반 조작보다 우선 적용
         if (IsAttacking)

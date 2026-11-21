@@ -4,13 +4,13 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class Boss1RearMissiles : MonoBehaviour
 {
-    [SerializeField] private float rearDistanceH = 2f;
     [SerializeField] private float dwellTime = 0.8f;
     [SerializeField] private float windup = 0.8f;
     [SerializeField] private float flightTime = 0.6f;
     [SerializeField] private float recovery = 0.5f;
     [SerializeField] private float explosionTime = 0.2f;
-    [SerializeField] private float radiusH = 0.4f;
+    [Tooltip("Explosion radius in player heights (H).")]
+    [SerializeField, Min(0.01f)] private float radiusH = 0.4f;
     [SerializeField] private float reuseTime = 7f;
     public bool IsBusy => active && !recoveryFinished;
     public bool WarningVisible => active && age < windup + flightTime;
@@ -85,10 +85,7 @@ public class Boss1RearMissiles : MonoBehaviour
 
     private bool IsInRearSector(Transform player, float facing)
     {
-        float h = owner.Height * Mathf.Abs(transform.lossyScale.y);
-        float rear = -(player.position.x - transform.position.x) * facing;
-        return rear > 0f && rear <= rearDistanceH * h &&
-            Mathf.Abs(player.position.y - transform.position.y) <= 2f * h;
+        return (player.position.x - transform.position.x) * facing < 0f;
     }
 
     private void ClearRequest() { dwell = 0f; queued = false; }
@@ -149,6 +146,7 @@ public class Boss1RearMissiles : MonoBehaviour
                     damage.DeliverHit(player, collider.ClosestPoint(targets[i]), Vector2.up, 0.06f, 5);
                 }
             }
+            damage.HitTorso(-Facing, Vector2.up, 0.06f, 5, hitPlayers[0]);
         }
         if (age + 0.00001f >= windup + flightTime + explosionTime) active = false;
     }

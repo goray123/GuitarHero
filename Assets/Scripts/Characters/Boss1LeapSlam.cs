@@ -18,16 +18,24 @@ public class Boss1LeapSlam : MonoBehaviour
     public bool Ready => !IsBusy && cooldown <= 0f;
     public float Progress => Mathf.Clamp01(elapsed / Mathf.Max(0.001f, duration));
     public Vector2 LandingPoint { get; private set; }
-    public float Radius => H;
-    public float WaveHeight => 0.5f * H;
-    public float WaveWidth => 0.35f * H;
+    [Header("Hitboxes (player height H)")]
+    [SerializeField, Min(0.01f)] private float landingRadiusH = 1f;
+    [SerializeField, Min(0.01f)] private float waveHeightH = 0.75f;
+    [SerializeField] private Sprite waveSprite;
+    public Sprite WaveSprite => waveSprite;
+    [SerializeField, Min(0.01f)] private float waveWidthH = 0.35f;
+    [SerializeField, Min(0.01f)] private float waveRangeH = 4f;
+
+    public float Radius => landingRadiusH * H;
+    public float WaveHeight => waveHeightH * H;
+    public float WaveWidth => waveWidthH * H;
     public float WaveDistance { get; private set; }
     public bool WavesActive { get; private set; }
     public bool MarkerVisible => CurrentPhase == Phase.Airborne || CurrentPhase == Phase.Impact;
     public float RemainingDangerTime => CurrentPhase == Phase.Windup ? Mathf.Max(0f, duration - elapsed) + flightTime + 0.5f :
         CurrentPhase == Phase.Airborne ? Mathf.Max(0f, flightTime - elapsed) + 0.5f :
         Mathf.Max(CurrentPhase == Phase.Impact ? Mathf.Max(0f, impactTime - elapsed) : 0f,
-            WavesActive ? Mathf.Max(0f, (4f * H - WaveDistance) / (8f * H)) : 0f);
+            WavesActive ? Mathf.Max(0f, (waveRangeH * H - WaveDistance) / (8f * H)) : 0f);
     private float H => owner.Height * Mathf.Abs(transform.lossyScale.y);
     private Boss1ProximityAttack owner;
     private Boss1AttackHitboxes damage;
@@ -142,6 +150,7 @@ public class Boss1LeapSlam : MonoBehaviour
         Physics2D.SyncTransforms();
         Physics2D.OverlapCircle(LandingPoint, Radius, new ContactFilter2D { useTriggers = false }, results);
         HitResults(0.10f, Vector2.down);
+        damage.HitTorso(owner.Facing, Vector2.down, 0.10f, 4, hitPlayers);
     }
 
     public Vector2 WaveCenter(int direction) => LandingPoint + new Vector2(direction * WaveDistance, WaveHeight * 0.5f);
@@ -149,7 +158,7 @@ public class Boss1LeapSlam : MonoBehaviour
     private void AdvanceWaves(float dt)
     {
         float previous = WaveDistance;
-        WaveDistance = Mathf.Min(4f * H, WaveDistance + 8f * H * dt);
+        WaveDistance = Mathf.Min(waveRangeH * H, WaveDistance + 8f * H * dt);
         // Sweep the travelled segment to avoid tunnelling through thin player colliders.
         foreach (int direction in new[] { -1, 1 })
         {
@@ -159,7 +168,8 @@ public class Boss1LeapSlam : MonoBehaviour
                 new ContactFilter2D { useTriggers = false }, results);
             HitResults(0.06f, Vector2.right * direction);
         }
-        if (WaveDistance >= 4f * H) WavesActive = false;
+        damage.HitTorso(owner.Facing, Vector2.right * owner.Facing, 0.06f, 4, hitPlayers);
+        if (WaveDistance >= waveRangeH * H) WavesActive = false;
     }
 
     private void HitResults(float fraction, Vector2 direction)

@@ -6,7 +6,6 @@ using UnityEngine;
 public class Boss1Backstep : MonoBehaviour
 {
     public enum Phase { Idle, Windup, Moving, Settling }
-    [SerializeField] private float closeDistanceH = 1.2f;
     [SerializeField] private float closeDuration = 1.5f;
     [SerializeField] private float windup = 0.35f;
     [SerializeField] private float distanceH = 3f;
@@ -35,9 +34,7 @@ public class Boss1Backstep : MonoBehaviour
         worldHeight = height * Mathf.Abs(transform.lossyScale.y);
         if (IsBusy || player == null || !player.gameObject.activeInHierarchy) { dwell = 0f; return; }
         float forward = (player.position.x - transform.position.x) * facing;
-        bool close = forward >= 0f && forward <= closeDistanceH * worldHeight &&
-            Mathf.Abs(player.position.y - transform.position.y) <= 2f * worldHeight;
-        dwell = close ? dwell + dt : 0f;
+        dwell = forward >= 0f ? dwell + dt : 0f;
     }
 
     public bool TryBegin(float facing)
