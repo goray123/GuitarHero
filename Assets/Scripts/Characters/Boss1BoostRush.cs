@@ -12,6 +12,7 @@ public class Boss1BoostRush : MonoBehaviour
     [Header("Timing (Seconds)")]
     [SerializeField, Min(0.01f)] private float windup = 0.85f;
     [SerializeField, Min(0.01f)] private float travelTime = 0.55f;
+    [Tooltip("후딜은 이 값에 1.2배를 적용합니다.")]
     [SerializeField, Min(0.01f)] private float braking = 0.60f;
     [SerializeField, Min(0f)] private float reuseDelay = 5f;
     [SerializeField, Min(0f)] private float patternInterval = 0.4f;
@@ -23,6 +24,8 @@ public class Boss1BoostRush : MonoBehaviour
     [Header("Hitbox (player height H)")]
     [Tooltip("Forward distance added beyond the crouched body.")]
     [SerializeField, Min(0f)] private float armReach = 0.25f;
+    [Tooltip("Distance extended into the body from its front edge (H).")]
+    [SerializeField, Min(0f)] private float bodyReachH;
     [SerializeField] private LayerMask terrainLayers = ~0;
     [SerializeField] private LayerMask targetLayers = ~0;
     [Header("Damage")]
@@ -44,7 +47,6 @@ public class Boss1BoostRush : MonoBehaviour
         Mathf.Max(0f, stageDuration - elapsed) + travelTime : Stage == RushStage.Moving ? Mathf.Max(0f, travelTime - elapsed) : 0f;
 
     private Rigidbody2D body;
-    private Boss1AttackHitboxes attackHitboxes;
     private BoxCollider2D bodyCollider, hitbox;
     private Vector2 standingSize, standingOffset;
     private bool crouched, meleeCompleted, lastWasRush;
@@ -57,7 +59,6 @@ public class Boss1BoostRush : MonoBehaviour
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
-        attackHitboxes = GetComponent<Boss1AttackHitboxes>();
         bodyCollider = GetComponent<BoxCollider2D>();
         var child = new GameObject("Hitbox_BoostRush");
         child.layer = gameObject.layer;
@@ -104,7 +105,7 @@ public class Boss1BoostRush : MonoBehaviour
             float free = FreeDistance(step);
             if (free <= 0.001f || remainingDistance <= 0.001f || elapsed >= travelTime)
             {
-                Enter(RushStage.Braking, braking);
+                Enter(RushStage.Braking, braking * 1.2f);
                 return true;
             }
             // 벽 앞까지의 실제 이동분만 판정한다. 끝 프레임도 거리를 초과하지 않는다.
@@ -152,11 +153,10 @@ public class Boss1BoostRush : MonoBehaviour
     private void GetHitboxArea(BoxCollider2D collider, Vector2 bodyCenter, float height,
         float playerHeight, float facing, out Vector2 center, out Vector2 size)
     {
-        var settings = attackHitboxes != null ? attackHitboxes : GetComponent<Boss1AttackHitboxes>();
-        float coveredWidth = settings != null ? settings.TorsoSize(collider).x : collider.size.x * 0.5f;
         float extension = armReach * playerHeight;
-        size = new Vector2(coveredWidth + extension, height);
-        center = bodyCenter + Vector2.right * facing * (collider.size.x - coveredWidth + extension) * 0.5f;
+        float bodyReach = Mathf.Max(0f, bodyReachH) * playerHeight;
+        size = new Vector2(extension + bodyReach, height);
+        center = bodyCenter + Vector2.right * facing * (collider.size.x + extension - bodyReach) * 0.5f;
     }
 
     private void RestoreBody()

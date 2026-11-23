@@ -242,7 +242,6 @@ MonoBehaviour:
   sweepBottomH: 0
   slamBottomH: 0
   punchSlideClearanceH: 0.1
-  torsoCoverage: 0.5
 --- !u!114 &901003006
 MonoBehaviour:
   m_ObjectHideFlags: 0

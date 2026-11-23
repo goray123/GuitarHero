@@ -11,6 +11,7 @@ public class Boss1LeapSlam : MonoBehaviour
     [SerializeField, Min(0.01f)] private float flightTime = 0.7f;
     [SerializeField, Min(0f)] private float apexHeightH = 2.5f;
     [SerializeField, Min(0.01f)] private float impactTime = 0.15f;
+    [Tooltip("후딜은 이 값에 1.2배를 적용합니다.")]
     [SerializeField, Min(0f)] private float recoveryTime = 0.55f;
     [SerializeField, Min(0f)] private float reuseTime = 6f;
     public Phase CurrentPhase { get; private set; }
@@ -106,7 +107,7 @@ public class Boss1LeapSlam : MonoBehaviour
         }
         else if (CurrentPhase == Phase.Impact)
         {
-            if (elapsed + 0.00001f >= duration) Enter(Phase.Recovery, recoveryTime);
+            if (elapsed + 0.00001f >= duration) Enter(Phase.Recovery, recoveryTime * 1.2f);
             else HitLanding();
         }
         else if (elapsed + 0.00001f >= duration)
@@ -150,7 +151,6 @@ public class Boss1LeapSlam : MonoBehaviour
         Physics2D.SyncTransforms();
         Physics2D.OverlapCircle(LandingPoint, Radius, new ContactFilter2D { useTriggers = false }, results);
         HitResults(0.10f, Vector2.down);
-        damage.HitTorso(owner.Facing, Vector2.down, 0.10f, 4, hitPlayers);
     }
 
     public Vector2 WaveCenter(int direction) => LandingPoint + new Vector2(direction * WaveDistance, WaveHeight * 0.5f);
@@ -168,7 +168,6 @@ public class Boss1LeapSlam : MonoBehaviour
                 new ContactFilter2D { useTriggers = false }, results);
             HitResults(0.06f, Vector2.right * direction);
         }
-        damage.HitTorso(owner.Facing, Vector2.right * owner.Facing, 0.06f, 4, hitPlayers);
         if (WaveDistance >= waveRangeH * H) WavesActive = false;
     }
 

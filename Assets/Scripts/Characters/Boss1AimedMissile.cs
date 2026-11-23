@@ -157,7 +157,6 @@ public class Boss1AimedMissile : MonoBehaviour
             if (player == null || !player.isActiveAndEnabled || !hitPlayers.Add(player)) continue;
             damage.DeliverHit(player, collider.ClosestPoint(ExplosionPoint), Direction, 0.06f, 6);
         }
-        damage.HitTorso(Direction.x < 0f ? -1f : 1f, Direction, 0.06f, 6, hitPlayers);
     }
 
     private void Beep(float pitch)

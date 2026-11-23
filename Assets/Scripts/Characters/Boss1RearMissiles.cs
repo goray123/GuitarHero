@@ -7,6 +7,7 @@ public class Boss1RearMissiles : MonoBehaviour
     [SerializeField] private float dwellTime = 0.8f;
     [SerializeField] private float windup = 0.8f;
     [SerializeField] private float flightTime = 0.6f;
+    [Tooltip("후딜은 이 값에 1.2배를 적용합니다.")]
     [SerializeField] private float recovery = 0.5f;
     [SerializeField] private float explosionTime = 0.2f;
     [Tooltip("Explosion radius in player heights (H).")]
@@ -126,7 +127,7 @@ public class Boss1RearMissiles : MonoBehaviour
         if (!active) return;
         float previousAge = age;
         age += dt;
-        if (!recoveryFinished && age + 0.00001f >= windup + recovery)
+        if (!recoveryFinished && age + 0.00001f >= windup + recovery * 1.2f)
         {
             recoveryFinished = true;
             cooldown = reuseTime;
@@ -146,7 +147,6 @@ public class Boss1RearMissiles : MonoBehaviour
                     damage.DeliverHit(player, collider.ClosestPoint(targets[i]), Vector2.up, 0.06f, 5);
                 }
             }
-            damage.HitTorso(-Facing, Vector2.up, 0.06f, 5, hitPlayers[0]);
         }
         if (age + 0.00001f >= windup + flightTime + explosionTime) active = false;
     }

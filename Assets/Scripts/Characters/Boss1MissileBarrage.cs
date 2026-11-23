@@ -12,13 +12,13 @@ public class Boss1MissileBarrage : MonoBehaviour
     [SerializeField, Min(1)] private int missileCount = 30;
     [SerializeField, Min(0.01f)] private float shotInterval = 0.2f;
     [SerializeField, Min(0.01f)] private float explosionTime = 0.2f;
+    [Tooltip("후딜은 이 값에 1.2배를 적용합니다.")]
     [SerializeField, Min(0f)] private float recoveryTime = 0.6f;
     [Header("Geometry (H)")]
     [SerializeField, Min(0f)] private float scatterH = 0.5f;
     [SerializeField, Min(0.01f)] private float explosionRadiusH = 0.4f;
     [SerializeField, Min(0.1f)] private float flightSpeedH = 10f;
     [SerializeField] private Vector2 muzzleH = new Vector2(0.6f, 3.3f);
-    [SerializeField, Min(0.01f)] private float projectileRadiusH = 0.09f;
     [Header("Preparation Art")]
     [SerializeField] private Sprite preparationSprite;
     [Tooltip("그림의 발바닥부터 머리까지 높이 / PPU. 발사기 회전 때문에 전체 바운드로 배율을 바꾸지 않음")]
@@ -37,7 +37,6 @@ public class Boss1MissileBarrage : MonoBehaviour
     private float timer, nextShot, facing;
     private bool reserved;
     private float H => owner.Height * Mathf.Abs(transform.lossyScale.y);
-    private readonly HashSet<PlayerMovement> torsoHits = new HashSet<PlayerMovement>();
     private readonly List<Rocket> rockets = new List<Rocket>();
     private sealed class Rocket {
         public SpriteRenderer visual;
@@ -64,7 +63,6 @@ public class Boss1MissileBarrage : MonoBehaviour
             if(timer<=0f) { reserved=true; owner.BarragePending=true; }
             if(!reserved || !owner.HasMissileTarget || owner.NextExclusiveAction!=Boss1ProximityAttack.ExclusiveAction.Barrage || !owner.ReadyForExclusiveAction) return;
             owner.BarrageActive=true; facing=owner.Facing;
-            torsoHits.Clear();
             CurrentStage=Stage.Preparing; timer=preparationTime; ShotsFired=0; nextShot=0f;
         } else if(CurrentStage==Stage.Preparing) {
             timer-=dt;
@@ -75,15 +73,13 @@ public class Boss1MissileBarrage : MonoBehaviour
             if(!owner.HasMissileTarget || ShotsFired>=missileCount) CurrentStage=Stage.Draining;
         }
         AdvanceRockets(dt);
-        if(CurrentStage==Stage.Draining && rockets.Count==0) { CurrentStage=Stage.Recovery; timer=recoveryTime; }
+        if(CurrentStage==Stage.Draining && rockets.Count==0) { CurrentStage=Stage.Recovery; timer=recoveryTime * 1.2f; }
         else if(CurrentStage==Stage.Recovery) {
             timer-=dt;
             if(timer<=0f) { owner.BarrageActive=false; owner.BarragePending=false; reserved=false;
                 CurrentStage=Stage.Waiting; timer=repeatInterval; }
         }
     }
-    private readonly List<RaycastHit2D> flightHits = new List<RaycastHit2D>();
-    private readonly ContactFilter2D playerFilter = new ContactFilter2D { useTriggers = false };
 
     private void Launch()
     {
@@ -107,16 +103,6 @@ public class Boss1MissileBarrage : MonoBehaviour
             {
                 Vector2 next = Vector2.MoveTowards(rocket.position, rocket.target, flightSpeedH * H * dt);
                 bool arrived = next.Equals(rocket.target);
-                Physics2D.CircleCast(rocket.position, projectileRadiusH * H, rocket.direction,
-                    playerFilter, flightHits, Vector2.Distance(rocket.position, next));
-                foreach (var hit in flightHits)
-                {
-                    var player = hit.collider.GetComponentInParent<PlayerMovement>();
-                    if (player == null || !player.isActiveAndEnabled) continue;
-                    next = hit.collider.ClosestPoint(hit.centroid);
-                    arrived = true;
-                    break;
-                }
                 rocket.position = next;
                 if (!arrived)
                 {
@@ -145,7 +131,6 @@ public class Boss1MissileBarrage : MonoBehaviour
                 if (player != null && player.isActiveAndEnabled && rocket.hit.Add(player))
                     damage.DeliverHit(player, collider.ClosestPoint(rocket.position), rocket.direction, 0.06f, 7);
             }
-            damage.HitTorso(facing, rocket.direction, 0.06f, 7, rocket.hit, torsoHits);
         }
     }
 

@@ -4,9 +4,10 @@ using UnityEngine;
 [CustomEditor(typeof(Boss1AttackHitboxes))]
 public class BossHitboxEditor : Editor
 {
-    private static readonly string[] Modes = { "몸통", "휘두르기", "펀치", "내려찍기", "돌진", "착지", "충격파", "후방 미사일", "조준 미사일 폭발", "미사일 난사", "조준 미사일 탄체" };
-    private static readonly string[] Reach = { "", "sweepReachAndTopH", "punchReachAndTopH", "slamReachAndTopH" };
-    private static readonly string[] Bottom = { "", "sweepBottomH", "punchSlideClearanceH", "slamBottomH" };
+    private static readonly string[] Modes = { "휘두르기", "펀치", "내려찍기", "돌진", "착지", "충격파", "후방 미사일", "조준 미사일 폭발", "미사일 난사", "조준 미사일 탄체" };
+    private static readonly string[] Reach = { "sweepReachAndTopH", "punchReachAndTopH", "slamReachAndTopH" };
+    private static readonly string[] Bottom = { "sweepBottomH", "punchSlideClearanceH", "slamBottomH" };
+    private static readonly string[] BodyReach = { "sweepBodyReachH", "punchBodyReachH", "slamBodyReachH" };
     private int mode;
     private bool editing;
     private Boss1AttackHitboxes Boxes => (Boss1AttackHitboxes)target;
@@ -15,17 +16,17 @@ public class BossHitboxEditor : Editor
     {
         switch (mode)
         {
-            case 4: return Boxes.GetComponent<Boss1BoostRush>();
-            case 5: case 6: return Boxes.GetComponent<Boss1LeapSlam>();
-            case 7: return Boxes.GetComponent<Boss1RearMissiles>();
-            case 8: case 10: return Boxes.GetComponent<Boss1AimedMissile>();
-            case 9: return Boxes.GetComponent<Boss1MissileBarrage>();
+            case 3: return Boxes.GetComponent<Boss1BoostRush>();
+            case 4: case 5: return Boxes.GetComponent<Boss1LeapSlam>();
+            case 6: return Boxes.GetComponent<Boss1RearMissiles>();
+            case 7: case 9: return Boxes.GetComponent<Boss1AimedMissile>();
+            case 8: return Boxes.GetComponent<Boss1MissileBarrage>();
             default: return Boxes;
         }
     }
 
-    private string RadiusField => mode == 5 ? "landingRadiusH" : mode == 7 ? "radiusH" :
-        mode == 10 ? "projectileRadiusH" : "explosionRadiusH";
+    private string RadiusField => mode == 4 ? "landingRadiusH" : mode == 6 ? "radiusH" :
+        mode == 9 ? "projectileRadiusH" : "explosionRadiusH";
 
     public override void OnInspectorGUI()
     {
@@ -38,14 +39,14 @@ public class BossHitboxEditor : Editor
         {
             using var settings = new SerializedObject(component);
             void Field(string name, string label) => EditorGUILayout.PropertyField(settings.FindProperty(name), new GUIContent(label));
-            if (mode == 0) Field("torsoCoverage", "몸통 포함 비율");
-            else if (mode <= 3)
+            if (mode <= 2)
             {
                 Field(Reach[mode], "전방 거리 / 상단 높이 (H)");
-                Field(Bottom[mode], mode == 2 ? "슬라이드 위 여유 (H)" : "하단 높이 (H)");
+                Field(BodyReach[mode], "몸 쪽으로 확장 (H)");
+                Field(Bottom[mode], mode == 1 ? "슬라이드 위 여유 (H)" : "하단 높이 (H)");
             }
-            else if (mode == 4) { Field("armReach", "팔 거리 (H)"); Field("crouchHeight", "웅크린 높이 (H)"); }
-            else if (mode == 6) { Field("waveWidthH", "폭 (H)"); Field("waveHeightH", "높이 (H)"); Field("waveRangeH", "이동 거리 (H)"); }
+            else if (mode == 3) { Field("armReach", "팔 거리 (H)"); Field("bodyReachH", "몸 쪽으로 확장 (H)"); Field("crouchHeight", "웅크린 높이 (H)"); }
+            else if (mode == 5) { Field("waveWidthH", "폭 (H)"); Field("waveHeightH", "높이 (H)"); Field("waveRangeH", "이동 거리 (H)"); }
             else Field(RadiusField, "반경 (H)");
             if (settings.ApplyModifiedProperties()) SceneView.RepaintAll();
         }
@@ -73,49 +74,45 @@ public class BossHitboxEditor : Editor
         Vector3 forward = Vector3.right * owner.Facing;
         Vector3 up = Vector3.up;
         var matrix = Boxes.transform.localToWorldMatrix;
-        if (mode >= 5)
+        if (mode >= 4)
             matrix = Matrix4x4.TRS(Boxes.transform.position, Quaternion.identity, Vector3.one * Mathf.Abs(Boxes.transform.lossyScale.y));
         using var drawing = new Handles.DrawingScope(Color.white, matrix);
         EditorGUI.BeginChangeCheck();
-        if (mode == 0)
+        if (mode <= 2)
         {
-            var coverage = Prop("torsoCoverage");
-            float width = Boxes.TorsoSize(body).x;
-            Vector3 front = (Vector3)body.offset + forward * body.size.x * 0.5f;
-            Handles.DrawWireCube(front - forward * width * 0.5f, new Vector3(width, body.size.y));
-            float delta = Drag(front - forward * width, -forward);
-            if (delta != 0f) coverage.floatValue = Mathf.Clamp(coverage.floatValue + delta / body.size.x, 0.5f, 1f);
-        }
-        else if (mode <= 3)
-        {
-            Boxes.GetArea(mode, out var center, out var size);
+            Boxes.GetArea(mode + 1, out var center, out var size);
             Vector3 mid = forward * center.x + up * center.y;
             Handles.DrawWireCube(mid, size);
             var reach = Prop(Reach[mode]);
+            var bodyReach = Prop(BodyReach[mode]);
             var bottom = Prop(Bottom[mode]);
             Vector2 value = reach.vector2Value;
             float dx = Drag(mid + forward * size.x * 0.5f, forward);
+            float dr = Drag(mid - forward * size.x * 0.5f, -forward);
             float dy = Drag(mid + up * size.y * 0.5f, up);
             float db = Drag(mid - up * size.y * 0.5f, up);
             if (dx != 0f) value.x = Mathf.Max(0f, value.x + dx / h);
+            if (dr != 0f) bodyReach.floatValue = Mathf.Max(0f, bodyReach.floatValue + dr / h);
             if (dy != 0f) value.y = Mathf.Max(center.y - size.y * 0.5f + 0.25f * h, center.y + size.y * 0.5f + dy) / h;
             if (db != 0f) bottom.floatValue = Mathf.Max(0f, bottom.floatValue + db / h);
             reach.vector2Value = value;
         }
-        else if (mode == 4)
+        else if (mode == 3)
         {
             var arm = Prop("armReach");
+            var bodyReach = Prop("bodyReachH");
             var crouch = Prop("crouchHeight");
             float height = Mathf.Min(body.size.y, crouch.floatValue * h);
-            float width = Boxes.TorsoSize(body).x + arm.floatValue * h;
+            float width = (arm.floatValue + Mathf.Max(0f, bodyReach.floatValue)) * h;
             Vector3 foot = (Vector3)body.offset - up * body.size.y * 0.5f;
             Vector3 front = foot + forward * (body.size.x * 0.5f + arm.floatValue * h) + up * height * 0.5f;
             Vector3 mid = front - forward * width * 0.5f;
             Handles.DrawWireCube(mid, new Vector3(width, height));
             arm.floatValue = Mathf.Max(0f, arm.floatValue + Drag(front, forward) / h);
+            bodyReach.floatValue = Mathf.Max(0f, bodyReach.floatValue + Drag(front - forward * width, -forward) / h);
             crouch.floatValue = Mathf.Clamp(crouch.floatValue + Drag(mid + up * height * 0.5f, up) / h, 0.2f, 1.2f);
         }
-        else if (mode == 6)
+        else if (mode == 5)
         {
             var range = Prop("waveRangeH");
             var width = Prop("waveWidthH");
@@ -131,7 +128,7 @@ public class BossHitboxEditor : Editor
         else
         {
             var radius = Prop(RadiusField);
-            Vector3 preview = mode == 5 ? Vector3.zero : (mode == 7 ? -forward : forward) * 2f * h;
+            Vector3 preview = mode == 4 ? Vector3.zero : (mode == 6 ? -forward : forward) * 2f * h;
             Handles.DrawWireDisc(preview, Vector3.forward, radius.floatValue * h);
             radius.floatValue = Mathf.Max(0.01f, radius.floatValue + Drag(preview + up * radius.floatValue * h, up) / h);
         }

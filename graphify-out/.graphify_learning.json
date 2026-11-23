@@ -1,6 +1,74 @@
 {
-  "generated_at": "2026-11-19T10:45:35.378011+00:00",
+  "generated_at": "2026-11-23T16:32:57.024871+00:00",
   "nodes": {
+    "assets_scripts_characters_boss1backstep_boss1backstep": {
+      "code_fingerprint": "efb3e5b65fb2d6c271b77d67ea44a537b7697ee36048880745703c875a03f0fd",
+      "label": "Boss1Backstep",
+      "last": "2026-11-23T15:44:28.581933+00:00",
+      "provenance": [
+        {
+          "date": "2026-11-23T15:44:28.581933+00:00",
+          "outcome": "useful",
+          "q": "전체적으로 모든 패턴의 후딜을 20% 증가시켜주고, 미사일 난사 패턴에서 미사일이 도착지점에서만 피격 판정이 있게 해줘."
+        }
+      ],
+      "score": 0.999222533,
+      "source_file": "Assets/Scripts/Characters/Boss1Backstep.cs",
+      "status": "tentative",
+      "uses": 1
+    },
+    "assets_scripts_characters_boss1boostrush_boss1boostrush": {
+      "code_fingerprint": "4833db48e28bfcfdb90e17af8bb90017f8f50e4ca1230e0224483d926c9cc62c",
+      "label": "Boss1BoostRush",
+      "last": "2026-11-23T16:06:45.143766+00:00",
+      "provenance": [
+        {
+          "date": "2026-11-23T16:06:45.143766+00:00",
+          "outcome": "useful",
+          "q": "보스가 왼쪽을 볼 때 히트박스의 몸 쪽 경계를 조정할 수 없는 이유와 수정"
+        },
+        {
+          "date": "2026-11-23T16:00:56.847358+00:00",
+          "outcome": "useful",
+          "q": "몸통 관련 판정을 그냥 다 빼줘."
+        },
+        {
+          "date": "2026-11-23T15:44:28.581933+00:00",
+          "outcome": "useful",
+          "q": "전체적으로 모든 패턴의 후딜을 20% 증가시켜주고, 미사일 난사 패턴에서 미사일이 도착지점에서만 피격 판정이 있게 해줘."
+        },
+        {
+          "date": "2026-11-23T15:43:00.589814+00:00",
+          "outcome": "useful",
+          "q": "전체적으로 보스패턴에 몸통 판정이 어떻게 들어가있는지 설명해줘"
+        }
+      ],
+      "score": 3.997487934,
+      "source_file": "Assets/Scripts/Characters/Boss1BoostRush.cs",
+      "status": "preferred",
+      "uses": 4
+    },
+    "assets_scripts_editor_bosshitboxeditor_bosshitboxeditor": {
+      "code_fingerprint": "ccb77ee89d3e281d21bb440fbbe700b2bf00dc5aceaba91b1287e38103773de7",
+      "label": "BossHitboxEditor",
+      "last": "2026-11-23T16:06:45.143766+00:00",
+      "provenance": [
+        {
+          "date": "2026-11-23T16:06:45.143766+00:00",
+          "outcome": "useful",
+          "q": "보스가 왼쪽을 볼 때 히트박스의 몸 쪽 경계를 조정할 수 없는 이유와 수정"
+        },
+        {
+          "date": "2026-11-23T16:00:56.847358+00:00",
+          "outcome": "useful",
+          "q": "몸통 관련 판정을 그냥 다 빼줘."
+        }
+      ],
+      "score": 1.999066381,
+      "source_file": "Assets/Scripts/Editor/BossHitboxEditor.cs",
+      "status": "preferred",
+      "uses": 2
+    },
     "claude_게임_디자인_핵심_구현_판단의_기준": {
       "code_fingerprint": "75b8319fa6b31441f96ae851186411e63f9697678b2e82e5c8bbfdf9762e3da7",
       "label": "게임 디자인 핵심 (구현 판단의 기준)",
@@ -12,7 +80,7 @@
           "q": "이펙터 시스템 우리 설계된게 뭐가 잇었지"
         }
       ],
-      "score": 0.999346469,
+      "score": 0.906062674,
       "source_file": "CLAUDE.md",
       "status": "tentative",
       "uses": 1
@@ -28,7 +96,7 @@
           "q": "이펙터 시스템 우리 설계된게 뭐가 잇었지"
         }
       ],
-      "score": 0.999346469,
+      "score": 0.906062674,
       "source_file": "Docs/기획문서/게임의 정체성 v20261110.md",
       "status": "tentative",
       "uses": 1
