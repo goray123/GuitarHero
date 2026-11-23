@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Boss1AttackHitboxes))]
 public class Boss1ProximityAttack : MonoBehaviour
 {
+    private const float GapClosingDistanceH = 5f;
+
     [SerializeField] private Transform player;
 
     [Tooltip("플레이어가 없을 때 사용하는 서 있는 높이 H")]
@@ -41,8 +43,8 @@ public class Boss1ProximityAttack : MonoBehaviour
     public bool BarragePending { get; set; }
     public bool BarrageActive { get; set; }
     public ExclusiveAction NextExclusiveAction => PhaseTransitionPending ? ExclusiveAction.PhaseTransition :
-        BarragePending ? ExclusiveAction.Barrage : ExclusiveAction.None;
-    public bool ExclusiveActionPending => PhaseTransitionPending || BarragePending;
+        BarragePending && !ShouldCloseDistance ? ExclusiveAction.Barrage : ExclusiveAction.None;
+    public bool ExclusiveActionPending => NextExclusiveAction != ExclusiveAction.None;
     public bool ReadyForExclusiveAction => ExclusiveActionPending && !BodyBusy && (boostStep == null || !boostStep.IsBusy) &&
         (leap == null || !leap.WavesActive) &&
         (rearMissiles == null || !rearMissiles.HasLiveMissiles) && rearSafetyRemaining <= 0f;
@@ -102,6 +104,17 @@ public class Boss1ProximityAttack : MonoBehaviour
     }
 
     private bool HasPlayer => player != null && player.gameObject.activeInHierarchy;
+
+    private bool ShouldCloseDistance
+    {
+        get
+        {
+            if (!HasPlayer) return false;
+            float targetX = playerCollider != null ? playerCollider.bounds.center.x : player.position.x;
+            float worldH = Height * Mathf.Abs(transform.lossyScale.y);
+            return Mathf.Abs(targetX - transform.position.x) >= GapClosingDistanceH * worldH;
+        }
+    }
 
     // Use horizontal reach, not distance to the sprite pivot (jumping changes that pivot).
     private bool InRange(int attack)
@@ -234,6 +247,13 @@ public class Boss1ProximityAttack : MonoBehaviour
         }
         bool missilesBusy = rearMissiles != null && rearMissiles.HasLiveMissiles;
         bool mayBegin = rearSafetyRemaining <= 0f && !missilesBusy;
+        // Select only gap closers at long range, including the opening pattern.
+        if (ShouldCloseDistance)
+        {
+            FacePlayer();
+            if (mayBegin && cooldown <= 0f) TryApproachPattern(false, missilesBusy);
+            return;
+        }
         if (RearPending)
         {
             if (cooldown <= 0f && mayBegin && rearMissiles.TryBegin(Facing, missilesBusy))
@@ -249,10 +269,7 @@ public class Boss1ProximityAttack : MonoBehaviour
         if (mayBegin && firstMeleeFinished && cooldown <= 0f)
         {
             FacePlayer();
-            bool leapFirst = Random.value < 0.5f;
-            if (leapFirst && TryLeap(false, missilesBusy)) return;
-            if (TryRush(false, missilesBusy)) return;
-            if (!leapFirst && TryLeap(false, missilesBusy)) return;
+            if (TryApproachPattern(false, missilesBusy)) return;
         }
         if (mayBegin && cooldown <= 0f && meleeReuseRemaining <= 0f)
         {
@@ -285,6 +302,15 @@ public class Boss1ProximityAttack : MonoBehaviour
         seenLeap = true; RecordPattern(Pattern.Leap);
         return true;
     }
+
+    private bool TryApproachPattern(bool followup, bool missilesBusy)
+    {
+        bool leapFirst = Random.value < 0.5f;
+        if (leapFirst && TryLeap(followup, missilesBusy)) return true;
+        if (TryRush(followup, missilesBusy)) return true;
+        return !leapFirst && TryLeap(followup, missilesBusy);
+    }
+
     private float DistanceToMeleeReach()
     {
         float targetX = playerCollider != null ? playerCollider.bounds.center.x : player.position.x;
@@ -299,11 +325,13 @@ public class Boss1ProximityAttack : MonoBehaviour
         if (!HasPlayer) return;
         cooldown = 0f;
         FacePlayer();
+        if (ShouldCloseDistance)
+        {
+            TryApproachPattern(true, false);
+            return;
+        }
         if (Random.Range(0, 3) == 0) { BeginAttack(1); return; }
-        bool preferLeap = Random.value < 0.5f;
-        if (preferLeap && TryLeap(true, false)) return;
-        if (TryRush(true, false)) return;
-        if (!preferLeap && TryLeap(true, false)) return;
+        if (TryApproachPattern(true, false)) return;
         BeginAttack(1);
     }
     private void OnDisable()

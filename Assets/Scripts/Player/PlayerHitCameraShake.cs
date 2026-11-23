@@ -10,36 +10,49 @@ public class PlayerHitCameraShake : MonoBehaviour
     [SerializeField, Min(0f)] private float thirdAmplitude = 0.055f;
     [SerializeField, Min(0f)] private float landingAmplitude = 0.065f;
     [SerializeField, Min(0.01f)] private float duration = 0.14f;
+    [Header("Player Damage")]
+    [SerializeField, Min(0f)] private float damageAmplitude = 0.09f;
+    [SerializeField, Min(0.01f)] private float damageDuration = 0.2f;
 
     private PlayerAttack attack;
+    private PlayerHealth health;
     private Transform cameraTransform;
     private Vector3 appliedOffset;
     private Vector2 shakeDirection;
     private float amplitude;
     private float elapsed;
+    private float lifetime;
 
-    private void Awake() => attack = GetComponent<PlayerAttack>();
+    private void Awake()
+    {
+        attack = GetComponent<PlayerAttack>();
+        health = GetComponent<PlayerHealth>();
+    }
 
     private void OnEnable()
     {
         attack.HitConfirmed += OnHit;
         attack.SlamLanded += OnLanding;
+        if (health != null) health.Damaged += OnDamaged;
     }
 
     private void OnDisable()
     {
         attack.HitConfirmed -= OnHit;
         attack.SlamLanded -= OnLanding;
+        if (health != null) health.Damaged -= OnDamaged;
         RemoveOffset();
         amplitude = 0f;
     }
 
     private void OnHit(Vector2 point, Vector2 direction, int comboStep) =>
-        Kick(direction, comboStep == 3 ? thirdAmplitude : basicAmplitude);
+        Kick(direction, comboStep == 3 ? thirdAmplitude : basicAmplitude, duration);
 
-    private void OnLanding(Vector2 point) => Kick(Vector2.down, landingAmplitude);
+    private void OnLanding(Vector2 point) => Kick(Vector2.down, landingAmplitude, duration);
 
-    private void Kick(Vector2 direction, float strength)
+    private void OnDamaged(AttackHit hit) => Kick(hit.Direction, damageAmplitude, damageDuration);
+
+    private void Kick(Vector2 direction, float strength, float shakeDuration)
     {
         if (strength <= 0f) return;
         if (cameraTransform == null)
@@ -53,6 +66,7 @@ public class PlayerHitCameraShake : MonoBehaviour
         shakeDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
         amplitude = strength;
         elapsed = 0f;
+        lifetime = Mathf.Max(0.01f, shakeDuration);
     }
 
     private void Update() => RemoveOffset();
@@ -60,7 +74,6 @@ public class PlayerHitCameraShake : MonoBehaviour
     private void LateUpdate()
     {
         if (cameraTransform == null || amplitude <= 0f) return;
-        float lifetime = Mathf.Max(0.01f, duration);
         float t = Mathf.Clamp01(elapsed / lifetime);
         Vector2 perpendicular = new Vector2(-shakeDirection.y, shakeDirection.x);
         Vector2 offset = (shakeDirection * Mathf.Cos(t * Mathf.PI * 5f) +

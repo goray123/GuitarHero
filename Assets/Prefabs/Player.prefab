@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 900100039}
   - component: {fileID: 900100040}
   - component: {fileID: 900100041}
+  - component: {fileID: 900100042}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -280,6 +281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHitStop
   basicDuration: 0.05
   thirdDuration: 0.15
+  damageDuration: 0.05
 --- !u!114 &900100036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,6 +337,8 @@ MonoBehaviour:
   thirdAmplitude: 0.055
   landingAmplitude: 0.065
   duration: 0.14
+  damageAmplitude: 0.09
+  damageDuration: 0.2
 --- !u!114 &900100038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,9 +424,32 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   maxHealth: 100
+  invulnerabilityDuration: 1
   barSize: {x: 1.2, y: 0.12}
   heightOffset: 0.2
   fillColor: {r: 0.12, g: 0.9, b: 0.25, a: 1}
+--- !u!114 &900100042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c02b87b596d413f86fae56fda1b1c20, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDamageEffects
+  flashMaterial: {fileID: 2100000, guid: a3d5f677b6ee4a38af9b278e761746d4, type: 2}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.05
+  blinkInterval: 0.1
+  overlayColor: {r: 0.85, g: 0.02, b: 0.04, a: 0.45}
+  overlayDuration: 1
+  sparkPrefab: {fileID: 8982713638201100070, guid: f90ea5733602bb54eb63e768b924339d, type: 3}
+  sparkColor: {r: 1, g: 0.18, b: 0.22, a: 1}
+  sparkScale: 0.45
+  sparkSortingOrderOffset: 8
 --- !u!1 &1421525041279666300
 GameObject:
   m_ObjectHideFlags: 0
