@@ -312,6 +312,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 901004001, guid: a4aeeb053d472394c882398f82b85686, type: 3}
+      propertyPath: windup
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 901004001, guid: a4aeeb053d472394c882398f82b85686, type: 3}
       propertyPath: bodyReachH
       value: 2.0901961
       objectReference: {fileID: 0}
