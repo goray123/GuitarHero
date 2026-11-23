@@ -380,7 +380,7 @@ MonoBehaviour:
   travelTime: 0.55
   braking: 0.6
   reuseDelay: 5
-  patternInterval: 0.4
+  patternInterval: 1
   selectionDistance: 2.5
   travelDistance: 12
   crouchHeight: 0.9

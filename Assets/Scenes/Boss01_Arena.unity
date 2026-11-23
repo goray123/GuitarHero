@@ -301,7 +301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 901003006, guid: a4aeeb053d472394c882398f82b85686, type: 3}
       propertyPath: waveHeightH
-      value: 1.4244959
+      value: 1.2540189
       objectReference: {fileID: 0}
     - target: {fileID: 901003006, guid: a4aeeb053d472394c882398f82b85686, type: 3}
       propertyPath: landingRadiusH

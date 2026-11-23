@@ -53,7 +53,7 @@ public class Boss1ProximityAttack : MonoBehaviour
         (rearMissiles != null && rearMissiles.IsBusy);
     private bool firstMeleeFinished, seenRush, seenLeap;
     private float meleeReuseRemaining, rearSafetyRemaining;
-    private float PatternInterval => EffectiveWindupMultiplier < 0.999f ? 0.25f : 0.4f;
+    private float PatternInterval => EffectiveWindupMultiplier < 0.999f ? 0.75f : 1f;
     private float MissileSafetyGap => aimedMissile != null ? aimedMissile.SafetyGap : 0.35f;
     private bool RearPending => hasStartedMelee && rearMissiles != null &&
         rearMissiles.isActiveAndEnabled && rearMissiles.ReadyToBegin && LastPattern != Pattern.RearMissiles;

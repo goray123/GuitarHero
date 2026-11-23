@@ -15,7 +15,7 @@ public class Boss1BoostRush : MonoBehaviour
     [Tooltip("후딜은 이 값에 1.2배를 적용합니다.")]
     [SerializeField, Min(0.01f)] private float braking = 0.60f;
     [SerializeField, Min(0f)] private float reuseDelay = 5f;
-    [SerializeField, Min(0f)] private float patternInterval = 0.4f;
+    [SerializeField, Min(0f)] private float patternInterval = 1f;
     [Header("Geometry (Player Height H)")]
     [Tooltip("플레이어 높이 H 기준 이동 거리. 일반 이동으로 후퇴해도 닿도록 설정")]
     [SerializeField, Min(0.1f)] private float travelDistance = 12f;
@@ -86,7 +86,7 @@ public class Boss1BoostRush : MonoBehaviour
         remainingDistance = travelDistance * worldHeight;
         bool phaseTwo = windupMultiplier < 0.999f;
         currentReuse = Mathf.Max(0f, reuseDelay - (phaseTwo ? 1f : 0f));
-        currentInterval = phaseTwo ? patternInterval * 0.625f : patternInterval;
+        currentInterval = phaseTwo ? patternInterval * 0.75f : patternInterval;
         lastWasRush = true;
         Enter(RushStage.Windup, windup * Mathf.Clamp(windupMultiplier, 0.1f, 1f));
         return true;

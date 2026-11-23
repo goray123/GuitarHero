@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T16:32:57.024871+00:00",
+  "generated_at": "2026-11-23T16:48:50.230861+00:00",
   "nodes": {
     "assets_scripts_characters_boss1backstep_boss1backstep": {
       "code_fingerprint": "efb3e5b65fb2d6c271b77d67ea44a537b7697ee36048880745703c875a03f0fd",
@@ -12,7 +12,7 @@
           "q": "전체적으로 모든 패턴의 후딜을 20% 증가시켜주고, 미사일 난사 패턴에서 미사일이 도착지점에서만 피격 판정이 있게 해줘."
         }
       ],
-      "score": 0.999222533,
+      "score": 0.998967859,
       "source_file": "Assets/Scripts/Characters/Boss1Backstep.cs",
       "status": "tentative",
       "uses": 1
@@ -43,7 +43,7 @@
           "q": "전체적으로 보스패턴에 몸통 판정이 어떻게 들어가있는지 설명해줘"
         }
       ],
-      "score": 3.997487934,
+      "score": 3.996469087,
       "source_file": "Assets/Scripts/Characters/Boss1BoostRush.cs",
       "status": "preferred",
       "uses": 4
@@ -64,10 +64,74 @@
           "q": "몸통 관련 판정을 그냥 다 빼줘."
         }
       ],
-      "score": 1.999066381,
+      "score": 1.998556875,
       "source_file": "Assets/Scripts/Editor/BossHitboxEditor.cs",
       "status": "preferred",
       "uses": 2
+    },
+    "assets_scripts_player_playerattack_playerattack_cancancelwithslide": {
+      "code_fingerprint": "5630373c0b1dcb75b0705afc461e37aa0b7d1ae0e6eea8c34d6b77f9e5e1a2a0",
+      "label": "PlayerAttack.CanCancelWithSlide()",
+      "last": "2026-11-23T16:33:39.629326+00:00",
+      "provenance": [
+        {
+          "date": "2026-11-23T16:33:39.629326+00:00",
+          "outcome": "useful",
+          "q": "지금 C 대쉬가 평타를 캔슬할 수 있는지 확인해줘"
+        }
+      ],
+      "score": 0.999756519,
+      "source_file": "Assets/Scripts/Player/PlayerAttack.cs",
+      "status": "tentative",
+      "uses": 1
+    },
+    "assets_scripts_player_playerattack_playerattack_cancelforslide": {
+      "code_fingerprint": "5630373c0b1dcb75b0705afc461e37aa0b7d1ae0e6eea8c34d6b77f9e5e1a2a0",
+      "label": "PlayerAttack.CancelForSlide()",
+      "last": "2026-11-23T16:33:39.629326+00:00",
+      "provenance": [
+        {
+          "date": "2026-11-23T16:33:39.629326+00:00",
+          "outcome": "useful",
+          "q": "지금 C 대쉬가 평타를 캔슬할 수 있는지 확인해줘"
+        }
+      ],
+      "score": 0.999756519,
+      "source_file": "Assets/Scripts/Player/PlayerAttack.cs",
+      "status": "tentative",
+      "uses": 1
+    },
+    "assets_scripts_player_playerattack_playerattack_resumecomboafterslide": {
+      "code_fingerprint": "5630373c0b1dcb75b0705afc461e37aa0b7d1ae0e6eea8c34d6b77f9e5e1a2a0",
+      "label": "PlayerAttack.ResumeComboAfterSlide()",
+      "last": "2026-11-23T16:33:39.629326+00:00",
+      "provenance": [
+        {
+          "date": "2026-11-23T16:33:39.629326+00:00",
+          "outcome": "useful",
+          "q": "지금 C 대쉬가 평타를 캔슬할 수 있는지 확인해줘"
+        }
+      ],
+      "score": 0.999756519,
+      "source_file": "Assets/Scripts/Player/PlayerAttack.cs",
+      "status": "tentative",
+      "uses": 1
+    },
+    "assets_scripts_player_playermovement_playermovement_updatemovement": {
+      "code_fingerprint": "a8c6b859572fa0f348701eb7ec793bc43160919bacfe6153bcb84d2a3ed54148",
+      "label": "PlayerMovement.UpdateMovement()",
+      "last": "2026-11-23T16:33:39.629326+00:00",
+      "provenance": [
+        {
+          "date": "2026-11-23T16:33:39.629326+00:00",
+          "outcome": "useful",
+          "q": "지금 C 대쉬가 평타를 캔슬할 수 있는지 확인해줘"
+        }
+      ],
+      "score": 0.999756519,
+      "source_file": "Assets/Scripts/Player/PlayerMovement.cs",
+      "status": "tentative",
+      "uses": 1
     },
     "claude_게임_디자인_핵심_구현_판단의_기준": {
       "code_fingerprint": "75b8319fa6b31441f96ae851186411e63f9697678b2e82e5c8bbfdf9762e3da7",
@@ -80,7 +144,7 @@
           "q": "이펙터 시스템 우리 설계된게 뭐가 잇었지"
         }
       ],
-      "score": 0.906062674,
+      "score": 0.905831744,
       "source_file": "CLAUDE.md",
       "status": "tentative",
       "uses": 1
@@ -96,7 +160,7 @@
           "q": "이펙터 시스템 우리 설계된게 뭐가 잇었지"
         }
       ],
-      "score": 0.906062674,
+      "score": 0.905831744,
       "source_file": "Docs/기획문서/게임의 정체성 v20261110.md",
       "status": "tentative",
       "uses": 1
