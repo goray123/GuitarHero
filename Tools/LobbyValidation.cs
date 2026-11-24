@@ -37,6 +37,8 @@ public static class LobbyValidation
                 !string.IsNullOrEmpty(settings.FindProperty("interactionName").stringValue), "Clickable zone has a label and does not block movement");
             Check(settings.FindProperty("sceneToLoad").stringValue == (i == 1 ? "Boss01_Arena" : ""),
                 "Only the board loads the boss arena; NPCs only log");
+            Check(settings.FindProperty("allowUpArrow").boolValue == (i == 1),
+                "Only the board accepts nearby Up Arrow interaction");
         }
         Check(EditorBuildSettings.scenes[0].path == "Assets/Scenes/Lobby.unity" &&
             EditorBuildSettings.scenes.Any(x => x.enabled && x.path == "Assets/Scenes/Boss01_Arena.unity"),

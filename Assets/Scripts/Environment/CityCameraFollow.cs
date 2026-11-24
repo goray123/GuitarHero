@@ -13,6 +13,14 @@ public class CityCameraFollow : MonoBehaviour
     [SerializeField, Min(0f)] private float smoothTime = 0.16f;
     private float velocity;
 
+    public Vector2 HorizontalBounds => new Vector2(leftEdge, rightEdge);
+
+    public void SetHorizontalBounds(float left, float right)
+    {
+        leftEdge = left;
+        rightEdge = right;
+    }
+
     private void Start() => Snap();
     private float DesiredX()
     {

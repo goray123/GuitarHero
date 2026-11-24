@@ -66,15 +66,15 @@ public sealed class Boss1SlamSpriteVisual : MonoBehaviour
 
     private void LateUpdate()
     {
-        // 편집 화면에서도 실제 Idle 원본을 같은 배율로 표시.
-        if (!Application.isPlaying && owner != null && idleSprite != null)
+        // 등장 연출처럼 전투 제어가 꺼져 있어도 실제 원화를 유지한다.
+        if (owner != null && idleSprite != null && (!Application.isPlaying || !owner.isActiveAndEnabled))
         {
             CreateVisual();
             visual.sprite = idleSprite;
             float idleScale = 3.45f * owner.Height / Mathf.Max(.01f, idleReferenceSpriteHeight);
             visual.transform.localScale = new Vector3(idleScale, idleScale, 1f);
             var original = GetComponent<SpriteRenderer>();
-            visual.flipX = original != null && original.flipX;
+            visual.flipX = Application.isPlaying ? owner.Facing < 0f : original != null && original.flipX;
             visual.enabled = true;
             prototype.SetBodyVisible(false);
             return;
