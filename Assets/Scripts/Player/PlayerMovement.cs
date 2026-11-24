@@ -384,7 +384,9 @@ public class PlayerMovement : MonoBehaviour
             float distance = (originalSize.y - bodyCollider.size.y) * Mathf.Abs(transform.lossyScale.y);
             int count = bodyCollider.Cast(Vector2.up, standingHits, distance);
             for (int i = 0; i < count; i++)
-                if (!standingHits[i].collider.isTrigger && standingHits[i].normal.y < -0.1f &&
+                if (!standingHits[i].collider.isTrigger &&
+                    !Physics2D.GetIgnoreCollision(bodyCollider, standingHits[i].collider) &&
+                    standingHits[i].normal.y < -0.1f &&
                     standingHits[i].collider.bounds.max.y > bodyCollider.bounds.center.y)
                     return;
         }

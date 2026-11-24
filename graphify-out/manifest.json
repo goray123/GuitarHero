@@ -102,9 +102,9 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Characters/Boss1SlamSpriteVisual.cs": {
-    "mtime": 1794918091.1473968,
-    "seen": 1795082554.4715788,
-    "ast_hash": "5d53255bdc948feb23cf737f449e0b80",
+    "mtime": 1795534168.4428997,
+    "seen": 1795535939.0926414,
+    "ast_hash": "b0e755a155bec2e2f03513371cfdc358",
     "semantic_hash": ""
   },
   "Assets/Scripts/Characters/BossMeleeTimeline.cs": {
@@ -156,9 +156,9 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Environment/CityCameraFollow.cs": {
-    "mtime": 1793095096.5627263,
-    "seen": 1795082554.4715788,
-    "ast_hash": "262aa0a427026117a3a56f9b7b1f13a6",
+    "mtime": 1795499881.943781,
+    "seen": 1795535939.0926414,
+    "ast_hash": "82ec1623bcc5226c956909cfeb8fa169",
     "semantic_hash": ""
   },
   "Assets/Scripts/Environment/CityParallax.cs": {
@@ -222,9 +222,9 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerMovement.cs": {
-    "mtime": 1795440052.6015337,
-    "seen": 1795444692.280613,
-    "ast_hash": "584128fd2de1f0aa8dec68b110011e19",
+    "mtime": 1795536952.3800015,
+    "seen": 1795537025.0443494,
+    "ast_hash": "725d5d9afda6298ab1cf70ad2fdc9f9b",
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerRhythmGauge.cs": {
@@ -282,8 +282,8 @@
     "semantic_hash": ""
   },
   "Tools/CombatFeelValidation.cs": {
-    "mtime": 1795440052.6189175,
-    "seen": 1795444692.280613,
+    "mtime": 1795536956.1044314,
+    "seen": 1795537025.0443494,
     "ast_hash": "c38e2d2d227ec65c3a707fd1e62ad7f5",
     "semantic_hash": ""
   },
@@ -300,9 +300,9 @@
     "semantic_hash": ""
   },
   "Tools/ValidateCombatFeel.ps1": {
-    "mtime": 1795449963.942236,
-    "seen": 1795450040.083921,
-    "ast_hash": "1a4eb5f5a16d4c06235695fe29c86e3d",
+    "mtime": 1795536952.833109,
+    "seen": 1795537025.0443494,
+    "ast_hash": "3c81a194041a086a6ac7ecde476ed087",
     "semantic_hash": ""
   },
   "Tools/ValidateRhythmGauge.ps1": {
@@ -1050,21 +1050,21 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Environment/LobbyInteraction.cs": {
-    "mtime": 1795086018.5721416,
-    "seen": 1795444692.280613,
-    "ast_hash": "63586369b9f1d33a3100d9afad727818",
+    "mtime": 1795499881.4212418,
+    "seen": 1795535939.0926414,
+    "ast_hash": "9e6e2f86f07ffa69e06e57600997bc2f",
     "semantic_hash": ""
   },
   "Tools/LobbyValidation.cs": {
-    "mtime": 1795086018.6036963,
-    "seen": 1795444692.280613,
-    "ast_hash": "42656fdb767da3cccbf25ad97e0ef456",
+    "mtime": 1795500155.3466785,
+    "seen": 1795535939.0926414,
+    "ast_hash": "ac0e75414d57dc8d3b7537b932884c53",
     "semantic_hash": ""
   },
   "Docs/\uc704\ud0a4/\ub85c\ube44 \uad6c\ud604.md": {
-    "mtime": 1795086018.5916066,
-    "seen": 1795444692.280613,
-    "ast_hash": "9f99f6f080538ff4f57a1db76e16709d",
+    "mtime": 1795500155.8683236,
+    "seen": 1795535939.0926414,
+    "ast_hash": "92baf22c391e0a5ad29e602e56cb9c31",
     "semantic_hash": ""
   },
   "Assets/Environment/Lobby/LobbyPlayableBackdrop.png": {
@@ -1131,6 +1131,72 @@
     "mtime": 1795451619.6293266,
     "seen": 1795452619.213984,
     "ast_hash": "ee41616c86a39278a56ec9a3dd3ee931",
+    "semantic_hash": ""
+  },
+  "Art/Boss1/FactoryArena.assets.json": {
+    "mtime": 1795534974.3094726,
+    "seen": 1795535939.0926414,
+    "ast_hash": "35925f9a0da9e8fe966ed8849ac9a969",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Environment/ArenaShutter.cs": {
+    "mtime": 1795534904.2735195,
+    "seen": 1795535939.0926414,
+    "ast_hash": "1f76f963bebf02b8721b95457d175f4b",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Environment/Boss1Encounter.cs": {
+    "mtime": 1795534168.8848164,
+    "seen": 1795535939.0926414,
+    "ast_hash": "423747e984f53c777a2f7a274eb604d1",
+    "semantic_hash": ""
+  },
+  "Tools/Boss1EncounterValidation.cs": {
+    "mtime": 1795535049.9726622,
+    "seen": 1795535939.0926414,
+    "ast_hash": "e8df1e9aa03d2c5d66c48e695361e6e7",
+    "semantic_hash": ""
+  },
+  "Docs/\uc704\ud0a4/\ubcf4\uc2a4 1 \uc52c \uc9c4\uc785.md": {
+    "mtime": 1795535161.8608859,
+    "seen": 1795535939.0926414,
+    "ast_hash": "5998efe6491c25c500f005e4515d2957",
+    "semantic_hash": ""
+  },
+  "graphify-out/memory/query_20261123_165052_9106a9e3_\ubcf4\uc2a4\uc758_\ud328\ud134_\uc0ac\uc774\uc0ac\uc774_\uac04\uaca9\uc774_\ub298\uc5b4\ub0ac\uc73c\uba74_\uc88b\uaca0\uc5b4__\ub118_\uc9e7\ub2e4__\uc9c0\uae08.md": {
+    "mtime": 1795452652.4159763,
+    "seen": 1795535939.0926414,
+    "ast_hash": "284b0a8591a6a172bfca32ba8becb54c",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Boss01/FactoryArenaBackdrop.png": {
+    "mtime": 1795533934.6985097,
+    "seen": 1795535939.0941617,
+    "ast_hash": "8213b59ef2b739d75e03685ba1e96f71",
+    "semantic_hash": ""
+  },
+  "Assets/Environment/Boss01/FactoryShutter.png": {
+    "mtime": 1795534055.4683301,
+    "seen": 1795535939.0941617,
+    "ast_hash": "f5010a892ac438dadf2a7039823e2c40",
+    "semantic_hash": ""
+  },
+  "Docs/\uc704\ud0a4/assets/boss01/FactoryArena_Combat.png": {
+    "mtime": 1795535023.546391,
+    "seen": 1795535939.0941617,
+    "ast_hash": "ec1d817fa5777b7b92fdd417df6aee30",
+    "semantic_hash": ""
+  },
+  "Docs/\uc704\ud0a4/assets/boss01/FactoryArena_Overview.png": {
+    "mtime": 1795535025.246516,
+    "seen": 1795535939.0941617,
+    "ast_hash": "77544f8b7a9ecdfc8becdb2565e0b6fb",
+    "semantic_hash": ""
+  },
+  "Tools/BossCollisionValidation.cs": {
+    "mtime": 1795536953.305355,
+    "seen": 1795537025.0443494,
+    "ast_hash": "f73de2df7ab951d12ac2ec4437bef9da",
     "semantic_hash": ""
   }
 }
