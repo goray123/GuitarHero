@@ -7,7 +7,8 @@ public class Boss1Health : Damageable
 {
     [SerializeField, Min(1f)] private float maxHealth = 200f;
     [Header("Screen Health Bar")]
-    [SerializeField] private string bossName = "Boss1";
+    [SerializeField] private string bossName = "메가 메카트론 JT8-3";
+    [SerializeField] private Font nameFont;
     [Tooltip("1920 기준 좌우 여백. 화면 너비에 비례해 조절됨")]
     [SerializeField, Range(0f, 400f)] private float sideMargin = 48f;
     [SerializeField, Min(1f)] private float barHeight = 24f;
@@ -15,6 +16,8 @@ public class Boss1Health : Damageable
 
     public float CurrentHealth { get; private set; }
     public float MaxHealth => Mathf.Max(1f, maxHealth);
+    public string DisplayName => bossName;
+    public Font NameFont => nameFont != null ? nameFont : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
     public bool IsDead => CurrentHealth <= 0f;
     public bool IsPhaseTwo { get; private set; }
     public bool IsPhaseTransitionPending => phaseTransitionRequested;
@@ -39,11 +42,15 @@ public class Boss1Health : Damageable
     private GameObject hud;
     private RectTransform greenBar;
     private HealthBarUI damageNumbers;
+    private float entranceProgress = 1f;
 
     private void Awake() => CurrentHealth = MaxHealth;
 
-    private void Start()
+    private void Start() => BuildHud();
+
+    private void BuildHud()
     {
+        if (hud != null) return;
         // 화면 크기가 바뀌어도 이름과 체력 바를 상단 중앙에 유지.
         hud = new GameObject("Boss1 Health HUD", typeof(Canvas), typeof(CanvasScaler));
         var canvas = hud.GetComponent<Canvas>();
@@ -70,7 +77,7 @@ public class Boss1Health : Damageable
         title.pivot = new Vector2(0.5f, 1f);
         title.sizeDelta = new Vector2(0f, 36f);
         var label = title.gameObject.AddComponent<Text>();
-        label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        label.font = NameFont;
         label.text = bossName;
         label.fontSize = 28;
         label.alignment = TextAnchor.MiddleCenter;
@@ -88,6 +95,15 @@ public class Boss1Health : Damageable
         greenBar.anchorMax = Vector2.one;
         greenBar.offsetMin = greenBar.offsetMax = Vector2.zero;
         Paint(greenBar, new Color(0.1f, 0.85f, 0.18f));
+        RefreshBar();
+        hud.SetActive(entranceProgress > 0f);
+    }
+
+    public void SetEntranceProgress(float progress)
+    {
+        entranceProgress = Mathf.Clamp01(progress);
+        BuildHud();
+        hud.SetActive(entranceProgress > 0f);
         RefreshBar();
     }
 
@@ -137,7 +153,7 @@ public class Boss1Health : Damageable
     {
         if (greenBar == null) return;
         // 왼쪽 끝을 고정하고 오른쪽부터 초록색이 줄어 빨간 바가 드러남.
-        greenBar.anchorMax = new Vector2(Mathf.Clamp01(CurrentHealth / MaxHealth), 1f);
+        greenBar.anchorMax = new Vector2(Mathf.Clamp01(CurrentHealth / MaxHealth) * entranceProgress, 1f);
     }
 
     private static RectTransform Rect(string name, Transform parent)

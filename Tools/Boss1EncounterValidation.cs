@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 public static class Boss1EncounterValidation
@@ -47,6 +48,7 @@ public static class Boss1EncounterValidation
 
     public static async Task<string> Run()
     {
+        results.Clear();
         Check(EditorApplication.isPlaying && SceneManager.GetActiveScene().name == "Lobby", "Start in lobby Play mode");
         var inputSettings = InputSystem.settings;
         var editorInput = inputSettings.editorInputBehaviorInPlayMode;
@@ -103,6 +105,13 @@ public static class Boss1EncounterValidation
             InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.RightArrow));
             await Until(() => encounter.CurrentPhase == Boss1Encounter.Phase.Entrance);
             InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+            double entranceStarted = Time.realtimeSinceStartupAsDouble;
+            Check(!player.enabled && !player.GetComponent<PlayerAttack>().enabled && !player.GetComponent<PlayerChordStrike>().enabled,
+                "Cinematic suspends movement, attacks and skills before the drop");
+            Check(!player.GetComponent<PlayerRhythmGaugeUI>().enabled && !player.GetComponentInChildren<Canvas>().enabled,
+                "Cinematic hides player HUD without resetting player health");
+            Check(!boss.TryTakeDamage(1f), "Boss cannot take damage during its entrance");
+            await Until(() => boss.gameObject.activeSelf);
             Check(boss.gameObject.activeSelf && left.enabled && right.enabled && boss.transform.position.y > 5f &&
                 !boss.enabled && !boss.GetComponent<Boss1ProximityAttack>().enabled,
                 $"Crossing trigger closes gates and drops the boss without attacking (active={boss.gameObject.activeSelf}, gates={left.enabled}/{right.enabled}, y={boss.transform.position.y:F2}, damage={boss.enabled}, AI={boss.GetComponent<Boss1ProximityAttack>().enabled})");
@@ -114,6 +123,21 @@ public static class Boss1EncounterValidation
             Check(boss.transform.Find("Prototype Shapes").GetComponentsInChildren<SpriteRenderer>()
                 .Where(r => bodyNames.Contains(r.name)).All(r => !r.enabled),
                 "Falling boss uses original sprite with all geometric body parts hidden");
+            var camera = Object.FindFirstObjectByType<CityCameraFollow>();
+            Check(camera.ViewCamera.orthographicSize < 7.5f, "Entrance zooms the camera toward the boss");
+            var cinematic = encounter.transform.Find("Boss Entrance HUD");
+            var title = cinematic.Find("Boss Title").GetComponent<CanvasGroup>();
+            var name = title.transform.Find("Name").GetComponent<Text>();
+            Check(name.text == "메가 메카트론 JT8-3" && name.font.HasCharacter('메') && name.font.HasCharacter('론'),
+                "Boss title uses the requested name and a bundled Korean font");
+            Check(cinematic.Find("Top Letterbox").GetComponent<RectTransform>().anchorMin.y < 0.93f &&
+                cinematic.Find("Bottom Letterbox").GetComponent<RectTransform>().anchorMax.y > 0.07f,
+                "Top and bottom cinematic bars cover 7.5 percent each");
+            await Until(() => title.alpha > 0.9f);
+            Check(Mathf.Abs(boss.GetComponent<Rigidbody2D>().position.y) < 0.1f && !boss.enabled,
+                "Large title is revealed on landing while combat remains suspended");
+            ScreenCapture.CaptureScreenshot("Temp/BossEntrance_Title.png");
+            await NextFrame();
             uint entranceLife = rhythm.LifeVersion;
             rhythm.RecordConfirmedDamage(RhythmHitKind.Basic, 1f);
             await Until(() => encounter.CurrentPhase == Boss1Encounter.Phase.Combat);
@@ -122,6 +146,14 @@ public static class Boss1EncounterValidation
                 "Boss lands on floor before combat starts");
             Check(rhythm.CurrentGauge == 0f && rhythm.LifeVersion != entranceLife,
                 "Combat start clears rhythm earned during the entrance again");
+            double firstEntranceDuration = Time.realtimeSinceStartupAsDouble - entranceStarted;
+            Check(player.enabled && player.GetComponent<PlayerAttack>().enabled && player.GetComponent<PlayerChordStrike>().enabled &&
+                player.GetComponent<PlayerRhythmGaugeUI>().enabled && player.GetComponentInChildren<Canvas>().enabled &&
+                !cinematic.gameObject.activeSelf && Mathf.Approximately(camera.ViewCamera.orthographicSize, 8f) && Time.timeScale == 1f,
+                "Combat restores controls, normal framing and time scale without leaving cinematic UI");
+            var healthFill = GameObject.Find("Boss1 Health HUD").transform.Find("Boss Health/Lost Health (Red)/Remaining Health (Green)")
+                .GetComponent<RectTransform>();
+            Check(Mathf.Approximately(healthFill.anchorMax.x, 1f), "Boss health bar finishes filling before combat starts");
             var leftPanel = left.transform.Find("SteelShutterPanel");
             var rightPanel = right.transform.Find("SteelShutterPanel");
             Check(Mathf.Abs(leftPanel.position.y) < .02f && Mathf.Abs(rightPanel.position.y) < .02f,
@@ -149,6 +181,45 @@ public static class Boss1EncounterValidation
                 "Fully open shutters hide inside the ceiling");
             Check(Object.FindFirstObjectByType<CityCameraFollow>().HorizontalBounds == new Vector2(-24f, 28f),
                 "Boss defeat restores approach camera bounds");
+
+            SceneManager.LoadScene("Boss01_Arena");
+            await NextFrame();
+            await NextFrame();
+            encounter = Object.FindFirstObjectByType<Boss1Encounter>();
+            player = Object.FindFirstObjectByType<PlayerMovement>();
+            body = player.GetComponent<Rigidbody2D>();
+            boss = Object.FindFirstObjectByType<Boss1Health>(FindObjectsInactive.Include);
+            camera = Object.FindFirstObjectByType<CityCameraFollow>();
+            var musicObject = new GameObject("Validation Music", typeof(AudioSource));
+            var music = musicObject.GetComponent<AudioSource>();
+            var clip = AudioClip.Create("Validation Music", 4410, 1, 44100, false);
+            music.clip = clip;
+            music.volume = 0.8f;
+            music.loop = true;
+            music.Play();
+            body.position = new Vector2(6.1f, 0.75f);
+            body.linearVelocity = Vector2.zero;
+            await Until(() => boss.gameObject.activeSelf);
+            Check(Mathf.Abs(music.volume - 0.2f) < 0.01f, "Entrance ducks existing looping music to 25 percent");
+            encounter.enabled = false;
+            await NextFrame();
+            Check(player.enabled && player.GetComponent<PlayerAttack>().enabled && player.GetComponent<PlayerChordStrike>().enabled &&
+                !boss.gameObject.activeSelf && Mathf.Approximately(camera.ViewCamera.orthographicSize, 8f) &&
+                Mathf.Abs(music.volume - 0.8f) < 0.01f,
+                "Interrupted entrance restores controls, music, camera and hidden boss");
+            Check(!GameObject.Find("ArenaLeftGate").GetComponent<BoxCollider2D>().enabled &&
+                !GameObject.Find("ArenaRightGate").GetComponent<BoxCollider2D>().enabled,
+                "Interrupted entrance reopens the arena gates");
+            body.position = new Vector2(6.1f, body.position.y);
+            encounter.enabled = true;
+            double replayStarted = Time.realtimeSinceStartupAsDouble;
+            await Until(() => encounter.CurrentPhase == Boss1Encounter.Phase.Combat);
+            Check(Time.realtimeSinceStartupAsDouble - replayStarted < firstEntranceDuration - 0.3,
+                "Retry keeps the entrance impact with a shorter anticipation and title hold");
+            Check(Time.timeScale == 1f && Mathf.Abs(music.volume - 0.8f) < 0.01f && player.enabled,
+                "Retry leaves music, time and controls restored");
+            Object.Destroy(musicObject);
+            Object.Destroy(clip);
             return string.Join("\n", results);
         }
         finally

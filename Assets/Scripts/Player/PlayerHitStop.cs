@@ -43,7 +43,7 @@ public class PlayerHitStop : MonoBehaviour
 
     private void OnDamaged(AttackHit hit) => StopFor(damageDuration, true);
 
-    private void StopFor(float duration, bool extend = false)
+    public void StopFor(float duration, bool extend = false)
     {
         // 정지 중 추가 명중은 무시해 여러 적을 맞혀도 시간 누적 방지
         if (duration <= 0f || float.IsNaN(duration) || float.IsInfinity(duration))

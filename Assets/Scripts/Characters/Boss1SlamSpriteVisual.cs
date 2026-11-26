@@ -34,6 +34,7 @@ public sealed class Boss1SlamSpriteVisual : MonoBehaviour
 
     // Other presentation components attach to the sampled sprite, including its pivot and facing.
     public SpriteRenderer BodyRenderer => visual;
+    public float EntranceCompression { get; set; }
 
     private void OnEnable()
     {
@@ -72,7 +73,9 @@ public sealed class Boss1SlamSpriteVisual : MonoBehaviour
             CreateVisual();
             visual.sprite = idleSprite;
             float idleScale = 3.45f * owner.Height / Mathf.Max(.01f, idleReferenceSpriteHeight);
-            visual.transform.localScale = new Vector3(idleScale, idleScale, 1f);
+            float compression = Mathf.Clamp01(EntranceCompression);
+            visual.transform.localScale = new Vector3(idleScale * (1f + compression * 0.04f),
+                idleScale * (1f - compression * 0.1f), 1f);
             var original = GetComponent<SpriteRenderer>();
             visual.flipX = Application.isPlaying ? owner.Facing < 0f : original != null && original.flipX;
             visual.enabled = true;

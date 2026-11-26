@@ -481,7 +481,7 @@ public static class CombatFeelValidation
             Time.timeScale = 1f;
 
             PlayerHitCameraShake shake = player.GetComponent<PlayerHitCameraShake>();
-            Call(shake, "Kick", Vector2.right, 0.05f, Get<float>(shake, "duration"));
+            shake.Kick(Vector2.right, 0.05f, Get<float>(shake, "duration"));
             await NextFrame();
             shake.enabled = false;
             Check((cameraObject.transform.position - cameraRest).sqrMagnitude < 0.000001f,

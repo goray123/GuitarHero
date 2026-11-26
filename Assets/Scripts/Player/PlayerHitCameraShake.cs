@@ -52,7 +52,7 @@ public class PlayerHitCameraShake : MonoBehaviour
 
     private void OnDamaged(AttackHit hit) => Kick(hit.Direction, damageAmplitude, damageDuration);
 
-    private void Kick(Vector2 direction, float strength, float shakeDuration)
+    public void Kick(Vector2 direction, float strength, float shakeDuration)
     {
         if (strength <= 0f) return;
         if (cameraTransform == null)

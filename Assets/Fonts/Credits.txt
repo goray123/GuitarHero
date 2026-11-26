@@ -1,0 +1,9 @@
+BossTitleKR.ttf is derived from Noto Sans KR (NotoSansKR-VF.ttf).
+Original: https://github.com/google/fonts/tree/main/ofl/notosanskr
+Copyright 2014-2021 Adobe (http://www.adobe.com/), Reserved Font Name 'Source'.
+License: SIL Open Font License 1.1; see OFL.txt in this folder.
+
+Modified for this project using fontTools: instantiated weight 700, retained
+ASCII, Hangul Jamo, Hangul Compatibility Jamo and all modern Hangul syllables,
+and renamed the font to Boss Title KR. Font data is bundled in player builds
+so the Korean boss name does not depend on fonts installed on the device.
