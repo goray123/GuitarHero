@@ -410,7 +410,10 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRhythmGaugeUI
   screenOffset: {x: 24, y: 24}
-  panelSize: {x: 420, y: 102}
+  guitarArtwork: {fileID: 21300000, guid: 6c00cc7fb7ff4075970f9e205e96d53f, type: 3}
+  dashIcon: {fileID: 21300000, guid: 4cb189b960d4488ab466b38e1d3a803b, type: 3}
+  cooldownPixel: {fileID: 21300000, guid: 3b315a976558e044cbd5545880b88122, type: 3}
+  dashCooldownTransparency: 90
 --- !u!114 &900100041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,9 +428,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   maxHealth: 100
   invulnerabilityDuration: 1
-  barSize: {x: 1.2, y: 0.12}
-  heightOffset: 0.2
-  fillColor: {r: 0.12, g: 0.9, b: 0.25, a: 1}
 --- !u!114 &900100042
 MonoBehaviour:
   m_ObjectHideFlags: 0

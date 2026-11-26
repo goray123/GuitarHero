@@ -270,17 +270,25 @@ public static class RhythmGaugeValidation
         Check(ui != null, "Player prefab includes a connected rhythm HUD");
         Canvas canvas = Get<GameObject>(ui, "hudRoot").GetComponent<Canvas>();
         Check(canvas.renderMode == RenderMode.ScreenSpaceOverlay, "HUD renders as a screen overlay");
-        Call(gauge, "SetGauge", 750f);
-        Near(Get<Image>(ui, "fill").rectTransform.anchorMax.x, 0.75f, "HUD shows the actual gauge fill");
-        Check(Get<Text>(ui, "stageText").text.Contains("FEVER"), "HUD updates the stage name immediately");
-        Check(Get<Text>(ui, "statsText").text.Contains("2.00") && Get<Text>(ui, "statsText").text.Contains("1.50"),
-            "HUD shows next-attack speed and damage multipliers");
-        Call(gauge, "SetGauge", 1000f);
-        Check(Get<Text>(ui, "valueText").text == "1000 / 1000", "HUD displays exact maximum gauge");
+        var cells = Get<RectTransform[]>(ui, "rhythmShades");
+        var hp = Get<RectTransform>(ui, "hpShade");
+        var guitar = hp.parent.parent.GetComponent<Image>();
+        Check(guitar.sprite != null, "Player prefab references the guitar artwork");
+        Near(guitar.rectTransform.anchorMax.x, 1f / 3.36f, "HUD width scales with screen width");
+        Near(guitar.rectTransform.anchorMax.y, 1f / 6.05f, "HUD height scales with screen height");
+        Canvas.ForceUpdateCanvases();
+        Check(guitar.rectTransform.rect.height > 0f, "HUD is visible");
+        Call(gauge, "SetGauge", 625f);
+        for (int i = 0; i < cells.Length; i++)
+            Near(cells[i].anchorMin.x, Mathf.Clamp01(2.5f - i), "Rhythm cell tracks its charge: " + i);
+        var health = player.GetComponent<PlayerHealth>();
+        health.ResetHealth();
+        health.TryTakeDamage(health.MaxHealth * 0.25f);
+        Near(hp.anchorMin.x, 0.75f, "Neck tracks accepted damage");
+        health.ResetHealth();
+        Near(hp.anchorMin.x, 1f, "Reset lights the full neck");
         foreach (Graphic graphic in canvas.GetComponentsInChildren<Graphic>())
             Check(!graphic.raycastTarget, "HUD does not block gameplay input: " + graphic.name);
-        Canvas.ForceUpdateCanvases();
-        Check(Get<Image>(ui, "fill").rectTransform.rect.height > 0f, "HUD bar has a positive visible height");
         gauge.ResetGauge();
     }
 
@@ -363,7 +371,7 @@ public static class RhythmGaugeValidation
         player.GetComponent<PlayerHitStop>().enabled = false;
         var previousBackground = InputSystem.settings.backgroundBehavior;
         var previousEditorInput = InputSystem.settings.editorInputBehaviorInPlayMode;
-        // í—¤ë“œë¦¬ìŠ¤ ì—ë””í„°ì—ëŠ” í¬ì»¤ìŠ¤ë¥¼ ì¤„ Game Viewê°€ ì—†ìŒ.
+        // Çìµå¸®½º ¿¡µğÅÍ¿¡´Â Æ÷Ä¿½º¸¦ ÁÙ Game View°¡ ¾øÀ½.
         InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
         InputSystem.settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
         var keyboard = InputSystem.AddDevice<Keyboard>();

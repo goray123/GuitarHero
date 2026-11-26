@@ -43,6 +43,9 @@ public class PlayerMovement : MonoBehaviour
     private PlayerChordStrike chordStrike;
 
     public bool IsSliding => isSliding;
+    // Match the input gate: the cooldown countdown begins when the slide ends.
+    public float SlideCooldownFraction => isSliding ? 1f :
+        slideCooldown > 0f ? Mathf.Clamp01((nextSlideTime - Time.time) / slideCooldown) : 0f;
     public bool IsCrouching => isCrouching;
     public bool IsOnGround => rb != null && IsGrounded() && rb.linearVelocity.y <= 0.1f;
     private bool IsAttacking => attack != null && attack.IsAttacking;

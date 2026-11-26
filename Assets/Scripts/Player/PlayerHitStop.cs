@@ -19,6 +19,17 @@ public class PlayerHitStop : MonoBehaviour
 
     public bool IsStopped => isStopped;
 
+    // During hitstop, change the speed that will resume instead of ending the freeze.
+    public float PlaybackScale
+    {
+        get => isStopped ? previousTimeScale : Time.timeScale;
+        set
+        {
+            if (isStopped) previousTimeScale = value;
+            else Time.timeScale = value;
+        }
+    }
+
     private void Awake()
     {
         attack = GetComponent<PlayerAttack>();

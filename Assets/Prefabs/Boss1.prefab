@@ -432,7 +432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 600
   bossName: Boss1
-  sideMargin: 48
+  barLength: 1824
   barHeight: 24
   topMargin: 24
 --- !u!114 &901004300

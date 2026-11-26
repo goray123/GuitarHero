@@ -52,7 +52,7 @@ public class PlayerHitCameraShake : MonoBehaviour
 
     private void OnDamaged(AttackHit hit) => Kick(hit.Direction, damageAmplitude, damageDuration);
 
-    private void Kick(Vector2 direction, float strength, float shakeDuration)
+    public void Kick(Vector2 direction, float strength, float shakeDuration)
     {
         if (strength <= 0f) return;
         if (cameraTransform == null)
@@ -76,8 +76,9 @@ public class PlayerHitCameraShake : MonoBehaviour
         if (cameraTransform == null || amplitude <= 0f) return;
         float t = Mathf.Clamp01(elapsed / lifetime);
         Vector2 perpendicular = new Vector2(-shakeDirection.y, shakeDirection.x);
-        Vector2 offset = (shakeDirection * Mathf.Cos(t * Mathf.PI * 5f) +
-            perpendicular * (Mathf.Sin(t * Mathf.PI * 7f) * 0.2f)) * (amplitude * (1f - t) * (1f - t));
+        float wave = elapsed / Mathf.Min(lifetime, 0.3f);
+        Vector2 offset = (shakeDirection * Mathf.Cos(wave * Mathf.PI * 5f) +
+            perpendicular * (Mathf.Sin(wave * Mathf.PI * 7f) * 0.2f)) * (amplitude * (1f - t) * (1f - t));
         appliedOffset = offset;
         cameraTransform.localPosition += appliedOffset;
         elapsed += Time.unscaledDeltaTime;

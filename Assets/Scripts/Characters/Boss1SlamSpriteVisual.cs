@@ -31,6 +31,14 @@ public sealed class Boss1SlamSpriteVisual : MonoBehaviour
     private Boss1Backstep backstep;
     private Boss1BoostStep boostStep;
     private Boss1RearMissiles rearMissiles;
+    private Sprite entrancePose;
+    private int entranceReleaseFrame = -1;
+
+    public void SetEntrancePose(Sprite pose)
+    {
+        if (entrancePose != null && pose == null) entranceReleaseFrame = Time.frameCount;
+        entrancePose = pose;
+    }
 
     // Other presentation components attach to the sampled sprite, including its pivot and facing.
     public SpriteRenderer BodyRenderer => visual;
@@ -67,12 +75,15 @@ public sealed class Boss1SlamSpriteVisual : MonoBehaviour
     private void LateUpdate()
     {
         // 등장 연출처럼 전투 제어가 꺼져 있어도 실제 원화를 유지한다.
-        if (owner != null && idleSprite != null && (!Application.isPlaying || !owner.isActiveAndEnabled))
+        bool showEntrance = Application.isPlaying && entrancePose != null;
+        if (owner != null && (showEntrance || idleSprite != null) &&
+            (showEntrance || !Application.isPlaying || !owner.isActiveAndEnabled || Time.frameCount == entranceReleaseFrame))
         {
             CreateVisual();
-            visual.sprite = idleSprite;
-            float idleScale = 3.45f * owner.Height / Mathf.Max(.01f, idleReferenceSpriteHeight);
-            visual.transform.localScale = new Vector3(idleScale, idleScale, 1f);
+            visual.sprite = showEntrance ? entrancePose : idleSprite;
+            float poseHeight = showEntrance ? movementReferenceSpriteHeight : idleReferenceSpriteHeight;
+            float poseScale = 3.45f * owner.Height / Mathf.Max(.01f, poseHeight);
+            visual.transform.localScale = new Vector3(poseScale, poseScale, 1f);
             var original = GetComponent<SpriteRenderer>();
             visual.flipX = Application.isPlaying ? owner.Facing < 0f : original != null && original.flipX;
             visual.enabled = true;

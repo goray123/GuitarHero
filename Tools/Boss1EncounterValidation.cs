@@ -103,12 +103,14 @@ public static class Boss1EncounterValidation
             InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.RightArrow));
             await Until(() => encounter.CurrentPhase == Boss1Encounter.Phase.Entrance);
             InputSystem.QueueStateEvent(keyboard, new KeyboardState());
-            Check(boss.gameObject.activeSelf && left.enabled && right.enabled && boss.transform.position.y > 5f &&
-                !boss.enabled && !boss.GetComponent<Boss1ProximityAttack>().enabled,
-                $"Crossing trigger closes gates and drops the boss without attacking (active={boss.gameObject.activeSelf}, gates={left.enabled}/{right.enabled}, y={boss.transform.position.y:F2}, damage={boss.enabled}, AI={boss.GetComponent<Boss1ProximityAttack>().enabled})");
+            Check(!boss.gameObject.activeSelf && left.enabled && right.enabled && !player.enabled &&
+                !player.GetComponent<PlayerAttack>().enabled && !player.GetComponent<PlayerChordStrike>().enabled,
+                "Crossing trigger locks controls and closes gates before the drop");
             Check(rhythm.CurrentGauge == 0f && rhythm.LifeVersion != trainingLife,
                 "Boss entrance clears training rhythm and invalidates old projectile rewards");
             var art = boss.GetComponent<Boss1SlamSpriteVisual>();
+            await Until(() => boss.gameObject.activeSelf);
+            Check(boss.transform.position.y > 5f && !boss.enabled, "Boss enters from above before combat");
             await Until(() => art.BodyRenderer != null && art.BodyRenderer.enabled);
             string[] bodyNames = { "Torso", "Head", "Facing Sensor", "Rear Arm", "Front Arm", "Rear Fist", "Front Fist", "Left Leg", "Right Leg" };
             Check(boss.transform.Find("Prototype Shapes").GetComponentsInChildren<SpriteRenderer>()
@@ -117,7 +119,7 @@ public static class Boss1EncounterValidation
             uint entranceLife = rhythm.LifeVersion;
             rhythm.RecordConfirmedDamage(RhythmHitKind.Basic, 1f);
             await Until(() => encounter.CurrentPhase == Boss1Encounter.Phase.Combat);
-            Check(boss.enabled && boss.GetComponent<Boss1ProximityAttack>().enabled &&
+            Check(player.enabled && boss.enabled && boss.GetComponent<Boss1ProximityAttack>().enabled &&
                 Mathf.Abs(boss.GetComponent<Rigidbody2D>().position.y) < 0.1f,
                 "Boss lands on floor before combat starts");
             Check(rhythm.CurrentGauge == 0f && rhythm.LifeVersion != entranceLife,
