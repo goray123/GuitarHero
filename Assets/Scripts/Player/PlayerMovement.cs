@@ -230,7 +230,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateMovement(float currentTime)
     {
-        // 코드 스트라이크 중에는 입력 대신 반동 포물선만 적용
+        // 음표 스킬 중에는 입력 대신 스킬의 반동 또는 제자리 상승 적용
         if (IsUsingSkill)
         {
             ClearActionRequests();

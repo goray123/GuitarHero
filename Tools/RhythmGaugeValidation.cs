@@ -9,6 +9,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -31,7 +32,19 @@ public static class RhythmGaugeValidation
     public static void Run()
     {
         Application.runInBackground = true;
-        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+        var validationScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+        var arena = EditorSceneManager.OpenScene("Assets/Scenes/Boss01_Arena.unity", OpenSceneMode.Additive);
+        foreach (var root in arena.GetRootGameObjects())
+        {
+            var rush = root.GetComponentInChildren<Boss1BoostRush>(true);
+            if (rush == null) continue;
+            var boss = Object.Instantiate(rush.gameObject);
+            boss.name = "S Rush Validation Boss";
+            boss.SetActive(false);
+            SceneManager.MoveGameObjectToScene(boss, validationScene);
+            break;
+        }
+        EditorSceneManager.CloseScene(arena, true);
         SessionState.SetBool(Pending, true);
         EditorApplication.EnterPlaymode();
     }
@@ -617,6 +630,247 @@ public static class RhythmGaugeValidation
         }
     }
 
+    private static void DownwardChordRules(GameObject player, TrainingDummy dummy)
+    {
+        var skill = player.GetComponent<PlayerChordStrike>();
+        var movement = player.GetComponent<PlayerMovement>();
+        var attack = player.GetComponent<PlayerAttack>();
+        var body = player.GetComponent<Rigidbody2D>();
+        var sprite = player.GetComponent<SpriteRenderer>();
+        var gauge = player.GetComponent<PlayerRhythmGauge>();
+        var previousSimulation = Physics2D.simulationMode;
+        var previousBackground = InputSystem.settings.backgroundBehavior;
+        var previousEditorInput = InputSystem.settings.editorInputBehaviorInPlayMode;
+        InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+        InputSystem.settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard = InputSystem.AddDevice<Keyboard>();
+        void Keys(params Key[] keys)
+        {
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(keys));
+            InputSystem.Update();
+            Call(movement, "Update");
+        }
+        void ClearNotes()
+        {
+            foreach (var note in Object.FindObjectsByType<ChordNoteProjectile>(FindObjectsSortMode.None))
+                Object.DestroyImmediate(note.gameObject);
+        }
+        try
+        {
+            Time.timeScale = 1f;
+            Physics2D.simulationMode = SimulationMode2D.Script;
+            Call(attack, "StopAttack");
+            movement.enabled = false;
+            movement.enabled = true;
+            float dt = Time.fixedDeltaTime;
+            // Ground, ascending air, and falling air must all gain the same height.
+            float[] starts = { body.position.y, 6f, 10f };
+            float[] speeds = { 0f, 8f, -15f };
+            for (int test = 0; test < starts.Length; test++)
+            {
+                Keys();
+                skill.enabled = false;
+                skill.enabled = true;
+                ClearNotes();
+                Set(skill, "nextUseTime", Time.time + 100f);
+                Set(skill, "nextDownwardUseTime", 0f);
+                body.position = new Vector2(0f, starts[test]);
+                body.linearVelocity = Vector2.zero;
+                sprite.flipX = test == 1;
+                Physics2D.SyncTransforms();
+                Physics2D.Simulate(dt);
+                Check(movement.IsOnGround == (test == 0), "S starting contact state is ground, then airborne");
+                starts[test] = body.position.y;
+                body.linearVelocity = new Vector2(4f, speeds[test]);
+                Keys(Key.S, Key.RightArrow);
+                float start = Time.time;
+                Call(skill, "UpdateSkill", start);
+                Check(skill.BlocksActions && Get<bool>(skill, "downward"), "S starts independently of A cooldown: " + test);
+                Near(Get<float>(skill, "nextDownwardUseTime") - start, 5f, "S cooldown starts at activation");
+                Check(Object.FindObjectsByType<ChordNoteProjectile>(FindObjectsSortMode.None).Length == 0,
+                    "S does not fire before the apex");
+                Keys(Key.S, Key.LeftArrow, Key.Z, Key.C, Key.X, Key.A);
+                float duration = Get<float>(skill, "duration");
+                int steps = Mathf.RoundToInt(duration / dt);
+                for (int i = 0; i < steps; i++)
+                {
+                    float current = start + i * dt;
+                    Call(skill, "UpdateSkill", current);
+                    Call(attack, "UpdateAttack", current);
+                    Call(movement, "UpdateMovement", current);
+                    Physics2D.Simulate(dt);
+                }
+                Near(body.position.x, 0f, "Movement input cannot move S horizontally");
+                Near(body.position.y - starts[test], Get<float>(skill, "downwardJumpHeight"),
+                    "S rises the same height regardless of starting height or velocity: " + test);
+                Check(!movement.IsSliding && !attack.IsAttacking && sprite.flipX == (test == 1),
+                    "Jump, slide, attack, A and facing changes stay blocked during S");
+                Set(skill, "startedAt", Time.time - duration);
+                Call(skill, "LateUpdate");
+                float expectedTilt = test == 1 ? 60f : -60f;
+                Near(Mathf.DeltaAngle(0f, Get<SpriteRenderer>(skill, "aimSprite").transform.localEulerAngles.z),
+                    expectedTilt, "S visibly aims down 60 degrees at the apex");
+                Set(skill, "startedAt", start);
+                gauge.ResetGauge();
+                Call(skill, "UpdateSkill", start + duration);
+                var notes = Object.FindObjectsByType<ChordNoteProjectile>(FindObjectsSortMode.None);
+                Check(notes.Length == 3 && !skill.BlocksActions, "Apex fires exactly three notes and immediately releases actions");
+                var angles = new List<float>();
+                Call(dummy, "Respawn");
+                float health = dummy.CurrentHealth;
+                foreach (var note in notes)
+                {
+                    Vector2[] path = Get<Vector2[]>(note, "path");
+                    Vector2 end = path[path.Length - 1];
+                    Check(end.y < 0f && (test == 1 ? end.x < 0f : end.x > 0f), "S note aims down in the captured facing direction");
+                    angles.Add(Mathf.Atan2(-end.y, Mathf.Abs(end.x)) * Mathf.Rad2Deg);
+                    Near(Get<float>(note, "range"), Get<float>(skill, "noteRange"), "S reuses A note range");
+                    Near(Get<float>(note, "speed"), Get<float>(skill, "noteSpeed"), "S reuses A note speed");
+                    Call(note, "TryContact", dummy.GetComponent<Collider2D>(), Vector2.zero, end.normalized);
+                }
+                angles.Sort();
+                if (angles.Count == 3)
+                    for (int i = 0; i < 3; i++) Near(angles[i], 42f + 18f * i, "S fan covers 42, 60 and 78 degrees below horizontal");
+                Near(health - dummy.CurrentHealth, 3f * Get<float>(skill, "noteDamage"), "Three S notes apply the existing per-note damage");
+                Near(gauge.CurrentGauge, 112.5f, "Three accepted S hits use the existing rhythm rewards");
+                Keys(Key.RightArrow);
+                Call(movement, "UpdateMovement", start + duration);
+                Near(body.linearVelocity.x, Get<float>(movement, "moveSpeed"), "Movement resumes on the exact firing tick");
+                Check(!Get<bool>(movement, "jumpRequested") && !Get<bool>(movement, "slideRequested") &&
+                    !Get<bool>(attack, "attackRequested"), "Inputs pressed during S are discarded");
+                Keys(Key.S);
+                Check(!skill.BlocksActions, "S presses during cooldown are discarded");
+                skill.enabled = false;
+                Check(!sprite.forceRenderingOff && !Get<SpriteRenderer>(skill, "aimSprite").enabled && body.rotation == 0f,
+                    "Cancel restores the original sprite without rotating the body collider");
+                skill.enabled = true;
+                Keys();
+                Keys(Key.S);
+                Check(!skill.BlocksActions, "Re-enabling S cannot bypass its cooldown");
+            }
+            Keys();
+            Set(skill, "nextUseTime", Time.time);
+            Keys(Key.A);
+            Call(skill, "UpdateSkill", Time.time);
+            Check(skill.BlocksActions && !Get<bool>(skill, "downward"), "A can start while S is cooling down");
+            Call(skill, "UpdateSkill", Time.time + Get<float>(skill, "duration"));
+            Keys();
+            Set(skill, "nextDownwardUseTime", Time.time);
+            Keys(Key.S);
+            Call(skill, "UpdateSkill", Time.time);
+            Check(skill.BlocksActions && Get<bool>(skill, "downward"), "S can start exactly at its cooldown boundary");
+        }
+        finally
+        {
+            skill.enabled = false;
+            skill.enabled = true;
+            ClearNotes();
+            InputSystem.RemoveDevice(keyboard);
+            Physics2D.simulationMode = previousSimulation;
+            InputSystem.settings.backgroundBehavior = previousBackground;
+            InputSystem.settings.editorInputBehaviorInPlayMode = previousEditorInput;
+        }
+    }
+
+    private static void DownwardChordRushRules(GameObject player)
+    {
+        Boss1BoostRush rush = null;
+        foreach (var candidate in Object.FindObjectsByType<Boss1BoostRush>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            if (candidate.name == "S Rush Validation Boss") rush = candidate;
+        Check(rush != null, "Rush dodge uses the actual boss arena overrides");
+        if (rush == null) return;
+        var owner = rush.GetComponent<Boss1ProximityAttack>();
+        foreach (var behaviour in rush.GetComponents<MonoBehaviour>())
+            if (behaviour != rush) behaviour.enabled = false;
+        Set(owner, "player", player.transform);
+        rush.gameObject.SetActive(true);
+        Call(owner, "Start");
+        var bossBody = rush.GetComponent<Rigidbody2D>();
+        var body = player.GetComponent<Rigidbody2D>();
+        var box = player.GetComponent<BoxCollider2D>();
+        var movement = player.GetComponent<PlayerMovement>();
+        var skill = player.GetComponent<PlayerChordStrike>();
+        var health = player.GetComponent<PlayerHealth>();
+        Call(player.GetComponent<PlayerAttack>(), "StopAttack");
+        player.GetComponent<PlayerDamageEffects>().enabled = false;
+        health.enabled = true;
+        Set(health, "invulnerabilityDuration", 0f);
+        Set(movement, "moveInput", 0f);
+        Physics2D.IgnoreCollision(box, rush.GetComponent<BoxCollider2D>());
+        var previousSimulation = Physics2D.simulationMode;
+        float configuredHeight = Get<float>(skill, "downwardJumpHeight");
+        int hits = 0;
+        void OnHit(PlayerMovement target, AttackHit hit) { if (target == movement) hits++; }
+        rush.PlayerHit += OnHit;
+        try
+        {
+            Physics2D.simulationMode = SimulationMode2D.Script;
+            float dt = Time.fixedDeltaTime;
+            // Include the old 0.8 height as a control, plus early/late timing in both directions.
+            for (int test = 0; test < 5; test++)
+            {
+                float facing = test < 3 ? 1f : -1f;
+                float lead = test == 2 || test == 4 ? 0.18f : 0.16f;
+                float time = Time.time;
+                rush.Cancel();
+                skill.enabled = false;
+                skill.enabled = true;
+                Set(skill, "nextDownwardUseTime", 0f);
+                Set(skill, "downwardJumpHeight", test == 0 ? 0.8f : configuredHeight);
+                health.ResetHealth();
+                hits = 0;
+                body.position = new Vector2(5f * facing, 1f);
+                bossBody.position = new Vector2(0f, 0.02f);
+                body.linearVelocity = bossBody.linearVelocity = Vector2.zero;
+                for (int i = 0; i < 30; i++)
+                {
+                    Call(movement, "UpdateMovement", time);
+                    Physics2D.Simulate(dt);
+                    time += dt;
+                }
+                Check(movement.IsOnGround, "S rush dodge starts on the bare floor");
+                Check(rush.TryBegin(player.transform, owner.Height, facing, test % 2 == 0 ? 1f : 0.8f, true),
+                    "Arena boost rush starts");
+                while (rush.Stage == Boss1BoostRush.RushStage.Windup) rush.Tick(dt);
+                float speed = Get<float>(rush, "travelDistance") * owner.Height * Mathf.Abs(rush.transform.lossyScale.y) /
+                    Get<float>(rush, "travelTime");
+                float front = rush.Hitbox.transform.TransformPoint(rush.Hitbox.offset).x +
+                    facing * rush.Hitbox.size.x * Mathf.Abs(rush.transform.lossyScale.x) * 0.5f;
+                Physics2D.SyncTransforms();
+                float nearEdge = box.bounds.center.x - facing * box.bounds.extents.x;
+                body.position += Vector2.right * (front + facing * speed * lead - nearEdge);
+                Physics2D.SyncTransforms();
+                Call(skill, "RequestSkill", true);
+                bool passedPlayer = false;
+                for (int i = 0; i < 100 && rush.Stage == Boss1BoostRush.RushStage.Moving; i++)
+                {
+                    Call(skill, "UpdateSkill", time);
+                    Call(movement, "UpdateMovement", time);
+                    rush.Tick(dt);
+                    bossBody.linearVelocity = new Vector2(rush.DesiredSpeed, bossBody.linearVelocity.y);
+                    Physics2D.Simulate(dt);
+                    time += dt;
+                    if ((bossBody.position.x - body.position.x) * facing > 2f) passedPlayer = true;
+                }
+                Check(passedPlayer, "Rush travels completely past the player during the dodge");
+                Check(test == 0 ? hits == 1 && health.CurrentHealth < health.MaxHealth :
+                    hits == 0 && health.CurrentHealth == health.MaxHealth,
+                    test == 0 ? "Old 0.8-height S reproduces the boost-rush hit" :
+                    $"Ground S avoids the full arena rush without invulnerability: facing={facing}, lead={lead:F2}s");
+                foreach (var note in Object.FindObjectsByType<ChordNoteProjectile>(FindObjectsSortMode.None))
+                    Object.DestroyImmediate(note.gameObject);
+            }
+        }
+        finally
+        {
+            rush.PlayerHit -= OnHit;
+            rush.Cancel();
+            Set(skill, "downwardJumpHeight", configuredHeight);
+            Physics2D.simulationMode = previousSimulation;
+            Object.Destroy(rush.gameObject);
+        }
+    }
+
     private static async void CheckInPlayMode()
     {
         int exitCode = 0;
@@ -647,6 +901,8 @@ public static class RhythmGaugeValidation
             UIRules(player);
             await TimeAndLandingRules(player, dummy, second);
             await DirectionalAttackRules(player, dummy);
+            DownwardChordRules(player, dummy);
+            DownwardChordRushRules(player);
             GameObject ownedHUD = Get<GameObject>(player.GetComponent<PlayerRhythmGaugeUI>(), "hudRoot");
             Object.Destroy(player);
             Object.Destroy(dummy.gameObject);

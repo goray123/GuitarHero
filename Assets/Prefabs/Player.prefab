@@ -374,9 +374,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerChordStrike
   inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   notePrefab: {fileID: 400, guid: 78b61161d1bd4517b5049c9f56f465eb, type: 3}
+  cooldownTime: 5
   recoilDistance: 4
   recoilHeight: 1.25
   recoilDuration: 0.4
+  downwardJumpHeight: 1.6
+  downwardRiseTime: 0.26
+  downwardAimAngle: 60
   noteDamage: 5
   noteRange: 3
   noteSpeed: 10
