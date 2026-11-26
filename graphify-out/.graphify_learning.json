@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-26T13:52:38.405638+00:00",
+  "generated_at": "2026-11-26T16:04:33.952724+00:00",
   "nodes": {
     "assets_scripts_editor_bosshitboxeditor_bosshitboxeditor": {
-      "code_fingerprint": "ccb77ee89d3e281d21bb440fbbe700b2bf00dc5aceaba91b1287e38103773de7",
+      "code_fingerprint": "82158079c81bc039ccb8d03e4fe2295b86db6c8bd4f575f47bf18885f794eb66",
       "label": "BossHitboxEditor",
       "last": "2026-11-23T16:06:45.143766+00:00",
       "provenance": [
@@ -17,13 +17,13 @@
           "q": "몸통 관련 판정을 그냥 다 빼줘."
         }
       ],
-      "score": 1.869998699,
+      "score": 1.866044549,
       "source_file": "Assets/Scripts/Editor/BossHitboxEditor.cs",
       "status": "preferred",
       "uses": 2
     },
     "assets_scripts_environment_boss1encounter_boss1encounter": {
-      "code_fingerprint": "1eeaea71671996661f687560269c09ce94a7390ca895755454d65bd21533e95f",
+      "code_fingerprint": "551d20ab276cd645da3bb5dc8bda8dcbea7dc82f6f103a0e02c9d5e91ad80b92",
       "label": "Boss1Encounter",
       "last": "2026-11-26T11:35:22.134850+00:00",
       "provenance": [
@@ -38,7 +38,7 @@
           "q": "보스가 떨어질 때 영화 같은 검은 띠, 큰 이름, 카메라 줌과 쉐이크로 등장 연출을 만들고 싶은데 어떤 것을 추가하면 좋을까"
         }
       ],
-      "score": 1.995008234,
+      "score": 1.990789749,
       "source_file": "Assets/Scripts/Environment/Boss1Encounter.cs",
       "status": "preferred",
       "uses": 2
@@ -54,13 +54,13 @@
           "q": "ㅇㅋ 좋아. 그렇게 구현해줘. 보스 이름은 메가 메카트론 JT8-3이야"
         }
       ],
-      "score": 0.997799898,
+      "score": 0.99569003,
       "source_file": "Assets/Scripts/Environment/Boss1EntrancePresentation.cs",
       "status": "tentative",
       "uses": 1
     },
     "assets_scripts_player_playerattack_playerattack_cancancelwithslide": {
-      "code_fingerprint": "3b745ea25d6084c207b8502c53b5fa7d6973f8eb3aa81938ed7c1b3de32f62c2",
+      "code_fingerprint": "b1e39ed5724f8e230d283d427c5de66ab24f419bbd885d5664a1926722bada7b",
       "label": "PlayerAttack.CanCancelWithSlide()",
       "last": "2026-11-23T16:33:39.629326+00:00",
       "provenance": [
@@ -70,13 +70,13 @@
           "q": "지금 C 대쉬가 평타를 캔슬할 수 있는지 확인해줘"
         }
       ],
-      "score": 0.935446677,
+      "score": 0.933468656,
       "source_file": "Assets/Scripts/Player/PlayerAttack.cs",
       "status": "tentative",
       "uses": 1
     },
     "assets_scripts_player_playerattack_playerattack_cancelforslide": {
-      "code_fingerprint": "3b745ea25d6084c207b8502c53b5fa7d6973f8eb3aa81938ed7c1b3de32f62c2",
+      "code_fingerprint": "b1e39ed5724f8e230d283d427c5de66ab24f419bbd885d5664a1926722bada7b",
       "label": "PlayerAttack.CancelForSlide()",
       "last": "2026-11-23T16:33:39.629326+00:00",
       "provenance": [
@@ -86,13 +86,13 @@
           "q": "지금 C 대쉬가 평타를 캔슬할 수 있는지 확인해줘"
         }
       ],
-      "score": 0.935446677,
+      "score": 0.933468656,
       "source_file": "Assets/Scripts/Player/PlayerAttack.cs",
       "status": "tentative",
       "uses": 1
     },
     "assets_scripts_player_playerattack_playerattack_resumecomboafterslide": {
-      "code_fingerprint": "3b745ea25d6084c207b8502c53b5fa7d6973f8eb3aa81938ed7c1b3de32f62c2",
+      "code_fingerprint": "b1e39ed5724f8e230d283d427c5de66ab24f419bbd885d5664a1926722bada7b",
       "label": "PlayerAttack.ResumeComboAfterSlide()",
       "last": "2026-11-23T16:33:39.629326+00:00",
       "provenance": [
@@ -102,13 +102,13 @@
           "q": "지금 C 대쉬가 평타를 캔슬할 수 있는지 확인해줘"
         }
       ],
-      "score": 0.935446677,
+      "score": 0.933468656,
       "source_file": "Assets/Scripts/Player/PlayerAttack.cs",
       "status": "tentative",
       "uses": 1
     },
     "assets_scripts_player_playermovement_playermovement_updatemovement": {
-      "code_fingerprint": "a8398c0a555d7ae5500843f9027be58e23fe600378e32889c5451a957ab9cf21",
+      "code_fingerprint": "d74850afee630994f234401c91f12472c0f4cdf13676e9512baecd12234e10fe",
       "label": "PlayerMovement.UpdateMovement()",
       "last": "2026-11-23T16:33:39.629326+00:00",
       "provenance": [
@@ -118,7 +118,7 @@
           "q": "지금 C 대쉬가 평타를 캔슬할 수 있는지 확인해줘"
         }
       ],
-      "score": 0.935446677,
+      "score": 0.933468656,
       "source_file": "Assets/Scripts/Player/PlayerMovement.cs",
       "status": "tentative",
       "uses": 1
@@ -134,7 +134,7 @@
           "q": "이펙터 시스템 우리 설계된게 뭐가 잇었지"
         }
       ],
-      "score": 0.847563662,
+      "score": 0.845771471,
       "source_file": "CLAUDE.md",
       "status": "tentative",
       "uses": 1
@@ -150,7 +150,7 @@
           "q": "이펙터 시스템 우리 설계된게 뭐가 잇었지"
         }
       ],
-      "score": 0.847563662,
+      "score": 0.845771471,
       "source_file": "Docs/기획문서/게임의 정체성 v20261110.md",
       "status": "tentative",
       "uses": 1
@@ -166,8 +166,24 @@
           "q": "내 깃 확인하고 문제해결해서 메인에 푸시해줘"
         }
       ],
-      "score": 0.997470433,
+      "score": 0.995361262,
       "source_file": "Tools/CombatFeelValidation.cs",
+      "status": "tentative",
+      "uses": 1
+    },
+    "tools_rhythmgaugevalidation_rhythmgaugevalidation": {
+      "code_fingerprint": "a53c3f6b7608b5f18d5010e4149aa65af4218ff583118ca3eae6531ec9f608f4",
+      "label": "RhythmGaugeValidation",
+      "last": "2026-11-26T14:00:45.513150+00:00",
+      "provenance": [
+        {
+          "date": "2026-11-26T14:00:45.513150+00:00",
+          "outcome": "useful",
+          "q": "이 스킬로 맨 바닥에서 보스1의 부스터돌진이 피해져야해"
+        }
+      ],
+      "score": 0.998015474,
+      "source_file": "Tools/RhythmGaugeValidation.cs",
       "status": "tentative",
       "uses": 1
     }
