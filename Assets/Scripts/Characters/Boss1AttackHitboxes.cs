@@ -8,6 +8,20 @@ public class Boss1AttackHitboxes : MonoBehaviour
     [SerializeField] private LayerMask targetLayers = ~0;
     [Tooltip("체력 시스템 연결 전 임시 최대 체력 기준. 피해는 6%, 6%, 10%.")]
     [SerializeField, Min(1f)] private float referencePlayerMaxHealth = 100f;
+    [Header("Combo hitboxes (player height H)")]
+    [Tooltip("X: forward reach from the torso edge. Y: top measured from the feet.")]
+    [SerializeField] private Vector2 sweepReachAndTopH = new Vector2(1.5f, 1.2f);
+    [Tooltip("X: forward reach from the torso edge. Y: top measured from the feet.")]
+    [SerializeField] private Vector2 punchReachAndTopH = new Vector2(2f, 1f);
+    [Tooltip("X: forward reach from the torso edge. Y: top measured from the feet.")]
+    [SerializeField] private Vector2 slamReachAndTopH = new Vector2(2f, 3f);
+    [Tooltip("Distance extended into the body from its front edge (H).")]
+    [SerializeField, Min(0f)] private float sweepBodyReachH;
+    [SerializeField, Min(0f)] private float punchBodyReachH;
+    [SerializeField, Min(0f)] private float slamBodyReachH;
+    [SerializeField, Min(0f)] private float sweepBottomH;
+    [SerializeField, Min(0f)] private float slamBottomH;
+    [SerializeField, Min(0f)] private float punchSlideClearanceH = 0.1f;
     public event Action<PlayerMovement, AttackHit> PlayerHit;
     public int ActiveAttack { get; private set; }
     private Boss1ProximityAttack controller;
@@ -30,16 +44,19 @@ public class Boss1AttackHitboxes : MonoBehaviour
         }
     }
 
-    // Positive-facing local geometry, measured from feet and the front of the torso.
+    // Positive-facing local geometry; body reach moves only the inner edge.
     public void GetArea(int attack, out Vector2 center, out Vector2 size)
     {
         var owner = controller != null ? controller : GetComponent<Boss1ProximityAttack>();
         float h = owner.Height;
-        float reach = (attack == 1 ? 1.5f : 2f) * h;
-        float bottom = attack == 2 ? owner.SlideHeight + 0.1f * h : 0f;
-        float top = attack == 1 ? 1.2f * h : attack == 2 ? Mathf.Max(h, bottom + 0.25f * h) : 3f * h;
-        size = new Vector2(reach, top - bottom);
-        center = new Vector2(owner.BodyFront + reach * 0.5f, (bottom + top) * 0.5f);
+        Vector2 reachAndTop = attack == 1 ? sweepReachAndTopH : attack == 2 ? punchReachAndTopH : slamReachAndTopH;
+        float reach = Mathf.Max(0f, reachAndTop.x) * h;
+        float bodyReach = Mathf.Max(0f, attack == 1 ? sweepBodyReachH : attack == 2 ? punchBodyReachH : slamBodyReachH) * h;
+        float bottom = attack == 2 ? owner.SlideHeight + punchSlideClearanceH * h :
+            (attack == 1 ? sweepBottomH : slamBottomH) * h;
+        float top = Mathf.Max(reachAndTop.y * h, bottom + 0.25f * h);
+        size = new Vector2(reach + bodyReach, top - bottom);
+        center = new Vector2(owner.BodyFront + (reach - bodyReach) * 0.5f, (bottom + top) * 0.5f);
     }
 
     public void Evaluate()
@@ -68,6 +85,26 @@ public class Boss1AttackHitboxes : MonoBehaviour
             DeliverHit(player, other.ClosestPoint(box.bounds.center), Vector2.right * controller.Facing,
                 ActiveAttack == 3 ? 0.10f : 0.06f, ActiveAttack);
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        var owner = GetComponent<Boss1ProximityAttack>();
+        var body = GetComponent<BoxCollider2D>();
+        if (owner == null || body == null) return;
+
+        var oldMatrix = Gizmos.matrix;
+        var oldColor = Gizmos.color;
+        Gizmos.matrix = transform.localToWorldMatrix;
+        for (int attack = 1; attack <= 3; attack++)
+        {
+            GetArea(attack, out var center, out var size);
+            center.x *= owner.Facing;
+            Gizmos.color = attack == 1 ? Color.yellow : attack == 2 ? Color.cyan : Color.red;
+            Gizmos.DrawWireCube(center, size);
+        }
+        Gizmos.matrix = oldMatrix;
+        Gizmos.color = oldColor;
     }
 
     public void DeliverHit(PlayerMovement player, Vector2 point, Vector2 direction, float fraction, int attack)

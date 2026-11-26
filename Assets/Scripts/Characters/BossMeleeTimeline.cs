@@ -4,7 +4,7 @@ public sealed class BossMeleeTimeline
     public enum Stage { Idle, Windup, Active, Recovery }
     private static readonly float[] Windups = { 0.65f, 0.75f, 0.85f };
     private static readonly float[] Actives = { 0.15f, 0.15f, 0.20f };
-    private static readonly float[] Recoveries = { 0.35f, 0.35f, 0.55f };
+    private static readonly float[] Recoveries = { 0.42f, 0.42f, 0.66f };
     public int Attack { get; private set; }
     public float Elapsed { get; private set; }
     public float Windup { get; private set; }

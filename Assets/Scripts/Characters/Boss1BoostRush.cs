@@ -12,16 +12,20 @@ public class Boss1BoostRush : MonoBehaviour
     [Header("Timing (Seconds)")]
     [SerializeField, Min(0.01f)] private float windup = 0.85f;
     [SerializeField, Min(0.01f)] private float travelTime = 0.55f;
+    [Tooltip("후딜은 이 값에 1.2배를 적용합니다.")]
     [SerializeField, Min(0.01f)] private float braking = 0.60f;
     [SerializeField, Min(0f)] private float reuseDelay = 5f;
-    [SerializeField, Min(0f)] private float patternInterval = 0.4f;
+    [SerializeField, Min(0f)] private float patternInterval = 1f;
     [Header("Geometry (Player Height H)")]
-    [SerializeField, Min(0f)] private float selectionDistance = 2.5f;
     [Tooltip("플레이어 높이 H 기준 이동 거리. 일반 이동으로 후퇴해도 닿도록 설정")]
     [SerializeField, Min(0.1f)] private float travelDistance = 12f;
     [Tooltip("점프로 넘을 수 있는 웅크린 몸체와 공격 판정 높이")]
     [SerializeField, Range(0.2f, 1.2f)] private float crouchHeight = 0.9f;
+    [Header("Hitbox (player height H)")]
+    [Tooltip("Forward distance added beyond the crouched body.")]
     [SerializeField, Min(0f)] private float armReach = 0.25f;
+    [Tooltip("Distance extended into the body from its front edge (H).")]
+    [SerializeField, Min(0f)] private float bodyReachH;
     [SerializeField] private LayerMask terrainLayers = ~0;
     [SerializeField] private LayerMask targetLayers = ~0;
     [Header("Damage")]
@@ -74,7 +78,6 @@ public class Boss1BoostRush : MonoBehaviour
         localHeight = Mathf.Max(0.1f, height);
         worldHeight = localHeight * Mathf.Abs(transform.lossyScale.y);
         Facing = facing < 0f ? -1f : 1f;
-        if ((target.position.x - transform.position.x) * Facing <= selectionDistance * worldHeight) return false;
         Crouch();
         Physics2D.SyncTransforms();
         // 막힌 방향으로 예고만 반복하지 않도록 최소 전진 공간을 확인한다.
@@ -83,7 +86,7 @@ public class Boss1BoostRush : MonoBehaviour
         remainingDistance = travelDistance * worldHeight;
         bool phaseTwo = windupMultiplier < 0.999f;
         currentReuse = Mathf.Max(0f, reuseDelay - (phaseTwo ? 1f : 0f));
-        currentInterval = phaseTwo ? patternInterval * 0.625f : patternInterval;
+        currentInterval = phaseTwo ? patternInterval * 0.75f : patternInterval;
         lastWasRush = true;
         Enter(RushStage.Windup, windup * Mathf.Clamp(windupMultiplier, 0.1f, 1f));
         return true;
@@ -102,7 +105,7 @@ public class Boss1BoostRush : MonoBehaviour
             float free = FreeDistance(step);
             if (free <= 0.001f || remainingDistance <= 0.001f || elapsed >= travelTime)
             {
-                Enter(RushStage.Braking, braking);
+                Enter(RushStage.Braking, braking * 1.2f);
                 return true;
             }
             // 벽 앞까지의 실제 이동분만 판정한다. 끝 프레임도 거리를 초과하지 않는다.
@@ -141,9 +144,19 @@ public class Boss1BoostRush : MonoBehaviour
         float height = Mathf.Min(standingSize.y, PoseHeight);
         bodyCollider.size = new Vector2(standingSize.x, height);
         bodyCollider.offset = standingOffset - Vector2.up * (standingSize.y - height) * 0.5f;
-        hitbox.size = new Vector2(standingSize.x + armReach * localHeight, height);
-        hitbox.offset = bodyCollider.offset + Vector2.right * Facing * armReach * localHeight * 0.5f;
+        GetHitboxArea(bodyCollider, bodyCollider.offset, height, localHeight, Facing, out var center, out var size);
+        hitbox.size = size;
+        hitbox.offset = center;
         crouched = true;
+    }
+
+    private void GetHitboxArea(BoxCollider2D collider, Vector2 bodyCenter, float height,
+        float playerHeight, float facing, out Vector2 center, out Vector2 size)
+    {
+        float extension = armReach * playerHeight;
+        float bodyReach = Mathf.Max(0f, bodyReachH) * playerHeight;
+        size = new Vector2(extension + bodyReach, height);
+        center = bodyCenter + Vector2.right * facing * (collider.size.x + extension - bodyReach) * 0.5f;
     }
 
     private void RestoreBody()
@@ -217,9 +230,19 @@ public class Boss1BoostRush : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (hitbox == null) return;
-        Gizmos.color = HitboxActive ? Color.red : Color.yellow;
+        var owner = GetComponent<Boss1ProximityAttack>();
+        var collider = GetComponent<BoxCollider2D>();
+        if (owner == null || collider == null) return;
+
+        float height = Mathf.Min(collider.size.y, owner.Height * crouchHeight);
+        Vector2 bodyCenter = collider.offset - Vector2.up * (collider.size.y - height) * 0.5f;
+        GetHitboxArea(collider, bodyCenter, height, owner.Height, owner.Facing, out var center, out var size);
+        var oldMatrix = Gizmos.matrix;
+        var oldColor = Gizmos.color;
+        Gizmos.color = HitboxActive ? Color.red : Color.green;
         Gizmos.matrix = transform.localToWorldMatrix;
-        Gizmos.DrawWireCube(hitbox.offset, hitbox.size);
+        Gizmos.DrawWireCube(HitboxActive ? hitbox.offset : center, HitboxActive ? hitbox.size : size);
+        Gizmos.matrix = oldMatrix;
+        Gizmos.color = oldColor;
     }
 }

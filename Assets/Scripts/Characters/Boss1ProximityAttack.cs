@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Boss1AttackHitboxes))]
 public class Boss1ProximityAttack : MonoBehaviour
 {
+    private const float GapClosingDistanceH = 5f;
+
     [SerializeField] private Transform player;
 
     [Tooltip("플레이어가 없을 때 사용하는 서 있는 높이 H")]
@@ -41,18 +43,17 @@ public class Boss1ProximityAttack : MonoBehaviour
     public bool BarragePending { get; set; }
     public bool BarrageActive { get; set; }
     public ExclusiveAction NextExclusiveAction => PhaseTransitionPending ? ExclusiveAction.PhaseTransition :
-        BarragePending ? ExclusiveAction.Barrage : ExclusiveAction.None;
-    public bool ExclusiveActionPending => PhaseTransitionPending || BarragePending;
+        BarragePending && !ShouldCloseDistance ? ExclusiveAction.Barrage : ExclusiveAction.None;
+    public bool ExclusiveActionPending => NextExclusiveAction != ExclusiveAction.None;
     public bool ReadyForExclusiveAction => ExclusiveActionPending && !BodyBusy && (boostStep == null || !boostStep.IsBusy) &&
         (leap == null || !leap.WavesActive) &&
-        (rearMissiles == null || !rearMissiles.HasLiveMissiles) &&
-        (aimedMissile == null || (!aimedMissile.HasVolley && aimedMissile.CanBeginBodyPattern(0f))) && rearSafetyRemaining <= 0f;
+        (rearMissiles == null || !rearMissiles.HasLiveMissiles) && rearSafetyRemaining <= 0f;
     public bool BodyBusy => BarrageActive || Timeline.Attack != 0 || (leap != null && leap.IsBusy) ||
         (boostRush != null && boostRush.BlocksActions) || (backstep != null && backstep.IsBusy) ||
         (rearMissiles != null && rearMissiles.IsBusy);
-    private bool firstMeleeFinished, seenRush, seenLeap, exclusiveIntroduction;
+    private bool firstMeleeFinished, seenRush, seenLeap;
     private float meleeReuseRemaining, rearSafetyRemaining;
-    private float PatternInterval => EffectiveWindupMultiplier < 0.999f ? 0.25f : 0.4f;
+    private float PatternInterval => EffectiveWindupMultiplier < 0.999f ? 0.75f : 1f;
     private float MissileSafetyGap => aimedMissile != null ? aimedMissile.SafetyGap : 0.35f;
     private bool RearPending => hasStartedMelee && rearMissiles != null &&
         rearMissiles.isActiveAndEnabled && rearMissiles.ReadyToBegin && LastPattern != Pattern.RearMissiles;
@@ -65,16 +66,6 @@ public class Boss1ProximityAttack : MonoBehaviour
         (aimedMissile != null && aimedMissile.isActiveAndEnabled && aimedMissile.PhaseTwoEnabled) ? 0.8f : windupMultiplier;
     public bool HasMissileTarget => HasPlayer;
     public Vector2 MissileTargetPoint => playerCollider != null ? (Vector2)playerCollider.bounds.center : HasPlayer ? (Vector2)player.position : (Vector2)transform.position;
-
-    public bool CanStartAimedVolley(float earliestImpact)
-    {
-        if (!firstMeleeFinished || ExclusiveActionPending || RearPending || exclusiveIntroduction || rearSafetyRemaining > 0f || (backstep != null && backstep.IsBusy)) return false;
-        float danger = Timeline.RemainingSequenceDanger(EffectiveWindupMultiplier);
-        if (leap != null && leap.isActiveAndEnabled) danger = Mathf.Max(danger, leap.RemainingDangerTime);
-        if (boostRush != null && boostRush.isActiveAndEnabled) danger = Mathf.Max(danger, boostRush.RemainingDangerTime);
-        // Reserve fixed-step rounding at the remaining melee stage boundaries too.
-        return danger + 3f * Time.fixedDeltaTime <= earliestImpact;
-    }
 
     private void Awake()
     {
@@ -114,11 +105,23 @@ public class Boss1ProximityAttack : MonoBehaviour
 
     private bool HasPlayer => player != null && player.gameObject.activeInHierarchy;
 
+    private bool ShouldCloseDistance
+    {
+        get
+        {
+            if (!HasPlayer) return false;
+            float targetX = playerCollider != null ? playerCollider.bounds.center.x : player.position.x;
+            float worldH = Height * Mathf.Abs(transform.lossyScale.y);
+            return Mathf.Abs(targetX - transform.position.x) >= GapClosingDistanceH * worldH;
+        }
+    }
+
     // Use horizontal reach, not distance to the sprite pivot (jumping changes that pivot).
     private bool InRange(int attack)
     {
         if (!HasPlayer) return false;
-        float reach = (BodyFront + (attack == 1 ? 1.5f : 2f) * Height) * Mathf.Abs(transform.lossyScale.x);
+        hitboxes.GetArea(attack, out var center, out var size);
+        float reach = (center.x + size.x * 0.5f) * Mathf.Abs(transform.lossyScale.x);
         float targetX = playerCollider != null ? playerCollider.bounds.center.x : player.position.x;
         float targetHalfWidth = playerCollider != null ? playerCollider.bounds.extents.x : 0f;
         float feet = playerCollider != null ? playerCollider.bounds.min.y : player.position.y;
@@ -199,22 +202,19 @@ public class Boss1ProximityAttack : MonoBehaviour
             bool wasBusy = leap.IsBusy;
             leap.Tick(dt);
             if (leap.IsBusy) { boostRush?.Tick(dt); return; }
-            if (wasBusy) { exclusiveIntroduction = false; cooldown = PatternInterval; return; }
+            if (wasBusy) { cooldown = PatternInterval; return; }
         }
-        bool rushWasBusy = boostRush != null && boostRush.BlocksActions;
         if (boostRush != null && boostRush.Tick(dt))
         {
-            if (!boostRush.BlocksActions) exclusiveIntroduction = false;
             desiredSpeed = boostRush.DesiredSpeed;
             return;
         }
-        if (rushWasBusy) exclusiveIntroduction = false;
         if (Timeline.Attack != 0)
         {
             if (!Timeline.Advance(dt)) return;
             int completed = Timeline.Attack;
             // Complete this strike's recovery before deciding whether to continue.
-            bool continueMelee = completed < 3 && InRange(completed);
+            bool continueMelee = completed < 3 && HasPlayer;
             Timeline.Stop();
             if (continueMelee) { BeginAttack(completed + 1); return; }
             firstMeleeFinished = true;
@@ -237,7 +237,7 @@ public class Boss1ProximityAttack : MonoBehaviour
         }
         if (boostStep != null && boostStep.IsBusy)
         {
-            if (InRange(1) || RearPending) boostStep.Cancel();
+            if (cooldown <= 0f || InRange(1) || RearPending) boostStep.Cancel();
             else
             {
                 boostStep.Tick(dt, DistanceToMeleeReach());
@@ -245,12 +245,15 @@ public class Boss1ProximityAttack : MonoBehaviour
                 if (boostStep.IsBusy) return;
             }
         }
-        bool missilesBusy = (aimedMissile != null && aimedMissile.HasVolley) ||
-            (rearMissiles != null && rearMissiles.HasLiveMissiles);
-        bool mayBegin = rearSafetyRemaining <= 0f &&
-            (rearMissiles == null || !rearMissiles.HasLiveMissiles) &&
-            (aimedMissile == null || aimedMissile.CanBeginBodyPattern(BossMeleeTimeline.SequenceDangerDuration(EffectiveWindupMultiplier)));
-        // Preserve an eligible rear request while the current aimed volley drains.
+        bool missilesBusy = rearMissiles != null && rearMissiles.HasLiveMissiles;
+        bool mayBegin = rearSafetyRemaining <= 0f && !missilesBusy;
+        // Select only gap closers at long range, including the opening pattern.
+        if (ShouldCloseDistance)
+        {
+            FacePlayer();
+            if (mayBegin && cooldown <= 0f) TryApproachPattern(false, missilesBusy);
+            return;
+        }
         if (RearPending)
         {
             if (cooldown <= 0f && mayBegin && rearMissiles.TryBegin(Facing, missilesBusy))
@@ -262,23 +265,19 @@ public class Boss1ProximityAttack : MonoBehaviour
         }
         if (mayBegin && hasStartedMelee && cooldown <= 0f && backstep != null && backstep.TryBegin(Facing))
         { RecordPattern(Pattern.Backstep); return; }
-        float distance = Mathf.Abs(player.position.x - transform.position.x);
         float worldH = Height * Mathf.Abs(transform.lossyScale.y);
-        if (mayBegin && firstMeleeFinished && cooldown <= 0f && distance > 2.5f * worldH && distance <= 6f * worldH)
+        if (mayBegin && firstMeleeFinished && cooldown <= 0f)
         {
             FacePlayer();
-            bool leapFirst = Random.value < 0.5f;
-            if (leapFirst && TryLeap(false, missilesBusy)) return;
-            if (TryRush(false, missilesBusy)) return;
-            if (!leapFirst && TryLeap(false, missilesBusy)) return;
+            if (TryApproachPattern(false, missilesBusy)) return;
         }
-        if (InRange(1))
+        if (mayBegin && cooldown <= 0f && meleeReuseRemaining <= 0f)
         {
-            if (mayBegin && cooldown <= 0f && meleeReuseRemaining <= 0f) BeginAttack(1);
+            BeginAttack(1);
             return;
         }
         FacePlayer();
-        boostStep?.Begin(Facing, worldH, EffectiveWindupMultiplier < 0.999f);
+        if (!InRange(1)) boostStep?.Begin(Facing, worldH, EffectiveWindupMultiplier < 0.999f);
     }
 
     private void RecordPattern(Pattern pattern)
@@ -292,7 +291,7 @@ public class Boss1ProximityAttack : MonoBehaviour
     {
         if (boostRush == null || (!followup && LastPattern == Pattern.Rush) || (!seenRush && missilesBusy)) return false;
         if (!boostRush.TryBegin(player, Height, Facing, EffectiveWindupMultiplier, followup)) return false;
-        exclusiveIntroduction = !seenRush; seenRush = true; RecordPattern(Pattern.Rush);
+        seenRush = true; RecordPattern(Pattern.Rush);
         return true;
     }
 
@@ -300,14 +299,24 @@ public class Boss1ProximityAttack : MonoBehaviour
     {
         if (leap == null || (!followup && LastPattern == Pattern.Leap) || (!seenLeap && missilesBusy)) return false;
         if (!leap.TryBegin(player, EffectiveWindupMultiplier, followup)) return false;
-        exclusiveIntroduction = !seenLeap; seenLeap = true; RecordPattern(Pattern.Leap);
+        seenLeap = true; RecordPattern(Pattern.Leap);
         return true;
     }
+
+    private bool TryApproachPattern(bool followup, bool missilesBusy)
+    {
+        bool leapFirst = Random.value < 0.5f;
+        if (leapFirst && TryLeap(followup, missilesBusy)) return true;
+        if (TryRush(followup, missilesBusy)) return true;
+        return !leapFirst && TryLeap(followup, missilesBusy);
+    }
+
     private float DistanceToMeleeReach()
     {
         float targetX = playerCollider != null ? playerCollider.bounds.center.x : player.position.x;
         float halfWidth = playerCollider != null ? playerCollider.bounds.extents.x : 0f;
-        float reach = (BodyFront + 1.5f * Height) * Mathf.Abs(transform.lossyScale.x) + halfWidth;
+        hitboxes.GetArea(1, out var center, out var size);
+        float reach = (center.x + size.x * 0.5f) * Mathf.Abs(transform.lossyScale.x) + halfWidth;
         return Mathf.Max(0f, Mathf.Abs(targetX - transform.position.x) - reach + 0.001f);
     }
 
@@ -316,20 +325,20 @@ public class Boss1ProximityAttack : MonoBehaviour
         if (!HasPlayer) return;
         cooldown = 0f;
         FacePlayer();
-        float distance = Mathf.Abs(player.position.x - transform.position.x);
-        float worldH = Height * Mathf.Abs(transform.lossyScale.y);
-        if (distance <= 2.5f * worldH) { BeginAttack(1); return; }
-        bool preferLeap = Random.value < 0.5f;
-        if (preferLeap && TryLeap(true, false)) return;
-        if (TryRush(true, false)) return;
-        if (!preferLeap && TryLeap(true, false)) return;
+        if (ShouldCloseDistance)
+        {
+            TryApproachPattern(true, false);
+            return;
+        }
+        if (Random.Range(0, 3) == 0) { BeginAttack(1); return; }
+        if (TryApproachPattern(true, false)) return;
+        BeginAttack(1);
     }
     private void OnDisable()
     {
         Timeline.Stop();
         desiredSpeed = 0f;
         cooldown = 0f;
-        exclusiveIntroduction = false;
         if (body != null) body.linearVelocity = new Vector2(0f, body.linearVelocity.y);
         if (hitboxes != null) hitboxes.Close();
         if (leap != null) leap.Cancel();

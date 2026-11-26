@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "art_direction_brief": "Docs/위키/보스 1 씬 진입.md",
+  "assets": [
+    {
+      "id": "factory-arena-backdrop",
+      "role": "보스 1 공장 벽·창문·철골·조명·수평 통로 배경",
+      "path": "Assets/Environment/Boss01/FactoryArenaBackdrop.png",
+      "status": "implemented",
+      "technical": {
+        "dimensions": "2172x724",
+        "alpha": false,
+        "anchor": "left-floor (0, 164/724)",
+        "frames": 1,
+        "filtering": "nearest"
+      },
+      "visual_locks": [
+        "사용자 배치 그림",
+        "기존 로비 공장 팔레트",
+        "수평 바닥",
+        "배경에 인물·HUD를 넣지 않음"
+      ],
+      "source": {
+        "kind": "generated",
+        "url_or_tool": "OpenAI built-in image_gen",
+        "creator": "OpenAI image_gen; 사용자 제공 구도 및 프로젝트 기존 로비 아트 참고",
+        "created_at": "2026-11-25",
+        "license": "AI 생성 이미지. 참고 입력은 사용자 첨부 및 프로젝트의 기존 에셋이다.",
+        "attribution": "사용자 첨부 배치 그림; Assets/Environment/Lobby/LobbyBackdrop.png",
+        "prompt_or_source_record": "Docs/위키/보스 1 씬 진입.md#배경셔터-에셋-출처와-기술-설정"
+      },
+      "verification": {
+        "native_scale_reviewed": true,
+        "in_engine_reviewed": true,
+        "technical_checks_passed": true,
+        "approved_by": "사용자가 제작·선택을 위임한 범위에서 Codex 선택; 실제 플레이 감각 검토는 사용자 확인"
+      }
+    },
+    {
+      "id": "factory-steel-shutter",
+      "role": "보스전 시작·종료 시 상하로 움직이는 실제 철제 셔터 패널",
+      "path": "Assets/Environment/Boss01/FactoryShutter.png",
+      "status": "implemented",
+      "technical": {
+        "dimensions": "724x2172",
+        "alpha": true,
+        "anchor": "bottom-center (0.5, 32/2172)",
+        "frames": 1,
+        "filtering": "nearest"
+      },
+      "visual_locks": [
+        "공장 배경과 같은 금속 팔레트",
+        "철제 슬랫",
+        "하단 안전 무늬",
+        "진짜 알파 투명도"
+      ],
+      "source": {
+        "kind": "generated",
+        "url_or_tool": "OpenAI built-in image_gen",
+        "creator": "OpenAI image_gen",
+        "created_at": "2026-11-25",
+        "license": "AI 생성 이미지. 스타일 참고 입력은 프로젝트의 기존 로비 에셋이다.",
+        "attribution": "Assets/Environment/Lobby/LobbyBackdrop.png",
+        "prompt_or_source_record": "Docs/위키/보스 1 씬 진입.md#배경셔터-에셋-출처와-기술-설정"
+      },
+      "verification": {
+        "native_scale_reviewed": true,
+        "in_engine_reviewed": true,
+        "technical_checks_passed": true,
+        "approved_by": "사용자 선택: 전투 시작 시 닫히는 철제 셔터"
+      }
+    }
+  ]
+}

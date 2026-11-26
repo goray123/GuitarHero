@@ -9,7 +9,7 @@ public class Boss1AimedMissile : MonoBehaviour
     [Header("Phase 2")]
     [Tooltip("체력 50% 이하에서 현재 패턴·미사일 종료 후 자동 활성화. 수동 테스트에도 사용 가능.")]
     [SerializeField] private bool phaseTwoEnabled;
-    [Tooltip("페이즈 전환/난사 대기·진행 중 새 조준을 중지하는 연결 지점. 이미 발사한 미사일은 마무리.")]
+    [Tooltip("수동으로 새 조준을 일시 중지합니다. 진행 중인 조준과 발사는 계속됩니다.")]
     [SerializeField] private bool suspendNewVolleys;
     [Header("Timing (Seconds)")]
     [SerializeField, Min(0.1f)] private float aimTime = 2f;
@@ -20,6 +20,7 @@ public class Boss1AimedMissile : MonoBehaviour
     [Header("Prototype Projectile")]
     [SerializeField, Min(0.1f)] private float speedHPerSecond = 12f;
     [SerializeField, Min(0.01f)] private float projectileRadiusH = 0.09f;
+    [Tooltip("Explosion radius in player heights (H).")]
     [SerializeField, Min(0.01f)] private float explosionRadiusH = 0.4f;
     [SerializeField, Min(0.1f)] private float maxFlightTime = 3f;
     [SerializeField] private LayerMask collisionLayers = ~0;
@@ -38,12 +39,10 @@ public class Boss1AimedMissile : MonoBehaviour
     public float LastAimStartedAt { get; private set; }
     public float Clock => clock;
     public float SafetyGap => Mathf.Max(0.35f, safetyGap);
-    public void DeferNewVolleys(float seconds) => nextAimAt = Mathf.Max(nextAimAt, clock + Mathf.Max(0f, seconds));
     private float WorldHeight => owner.Height * Mathf.Abs(transform.lossyScale.y);
     private Boss1ProximityAttack owner;
     private Boss1AttackHitboxes damage;
-    private Boss1RearMissiles rear;
-    private float clock, nextAimAt, stageTime, aimElapsed, safeBodyAt;
+    private float clock, nextAimAt, stageTime, aimElapsed;
     private bool wasPhaseTwo;
     private readonly List<RaycastHit2D> casts = new List<RaycastHit2D>();
     private readonly List<Collider2D> overlaps = new List<Collider2D>();
@@ -55,7 +54,6 @@ public class Boss1AimedMissile : MonoBehaviour
     {
         owner = GetComponent<Boss1ProximityAttack>();
         damage = GetComponent<Boss1AttackHitboxes>();
-        rear = GetComponent<Boss1RearMissiles>();
         warningSource = gameObject.AddComponent<AudioSource>();
         warningSource.playOnAwake = false; warningSource.spatialBlend = 0f; warningSource.volume = 0.12f;
         const int rate = 22050;
@@ -68,16 +66,6 @@ public class Boss1AimedMissile : MonoBehaviour
 
     private void FixedUpdate() => Tick(Time.fixedDeltaTime);
 
-    // A complete melee sequence is reserved, not just the next strike. Existing attacks continue.
-    public bool CanBeginBodyPattern(float lastDangerEndsAfter)
-    {
-        if (!isActiveAndEnabled || !phaseTwoEnabled) return true;
-        if (clock < safeBodyAt) return false;
-        if (CurrentPhase == Phase.Idle) return true;
-        return CurrentPhase == Phase.Tracking &&
-            lastDangerEndsAfter + SafetyGap + Time.fixedDeltaTime < aimTime - aimElapsed;
-    }
-
     public void Tick(float dt)
     {
         clock += dt;
@@ -88,8 +76,7 @@ public class Boss1AimedMissile : MonoBehaviour
         if (!wasPhaseTwo) { nextAimAt = Mathf.Max(nextAimAt, clock); wasPhaseTwo = true; }
         if (CurrentPhase == Phase.Idle)
         {
-            if (suspendNewVolleys || clock < nextAimAt || clock < safeBodyAt || !owner.HasMissileTarget ||
-                (rear != null && rear.HasLiveMissiles) || !owner.CanStartAimedVolley(aimTime - SafetyGap - Time.fixedDeltaTime)) return;
+            if (suspendNewVolleys || clock < nextAimAt || !owner.HasMissileTarget) return;
             CurrentPhase = Phase.Tracking; aimElapsed = 0f; stageTime = 0f;
             LastAimStartedAt = clock; nextAimAt = clock + startInterval; VolleysStarted++;
             UpdateAim(true); Beep(1f); return;
@@ -118,7 +105,6 @@ public class Boss1AimedMissile : MonoBehaviour
                 ProjectilePosition = hit.centroid;
                 ExplosionPoint = hit.point;
                 CurrentPhase = Phase.Exploding; stageTime = 0f;
-                safeBodyAt = clock + explosionTime + SafetyGap;
                 DamageExplosion();
             }
             else
@@ -180,7 +166,7 @@ public class Boss1AimedMissile : MonoBehaviour
     }
     public void Cancel()
     {
-        CurrentPhase = Phase.Idle; hitPlayers.Clear(); safeBodyAt = 0f;
+        CurrentPhase = Phase.Idle; hitPlayers.Clear();
         if (warningSource != null) warningSource.Stop();
     }
     private void OnDisable() { Cancel(); wasPhaseTwo = false; }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 난사는 본체와 기존 미사일이 끝난 뒤 단독으로 실행한다.
+// 난사는 본체 패턴이며 패시브 조준 미사일과 동시에 실행될 수 있다.
 [DefaultExecutionOrder(120), DisallowMultipleComponent]
 public class Boss1MissileBarrage : MonoBehaviour
 {
@@ -11,16 +11,14 @@ public class Boss1MissileBarrage : MonoBehaviour
     [SerializeField, Min(0.01f)] private float preparationTime = 1f;
     [SerializeField, Min(1)] private int missileCount = 30;
     [SerializeField, Min(0.01f)] private float shotInterval = 0.2f;
-    [SerializeField, Min(0.1f)] private float warningTime = 0.8f;
-    [SerializeField, Min(0.01f)] private float descentTime = 0.35f;
     [SerializeField, Min(0.01f)] private float explosionTime = 0.2f;
+    [Tooltip("후딜은 이 값에 1.2배를 적용합니다.")]
     [SerializeField, Min(0f)] private float recoveryTime = 0.6f;
     [Header("Geometry (H)")]
-    [SerializeField, Min(0f)] private float scatterH = 0.25f;
+    [SerializeField, Min(0f)] private float scatterH = 0.5f;
     [SerializeField, Min(0.01f)] private float explosionRadiusH = 0.4f;
-    [SerializeField, Min(0.1f)] private float ascentSpeedH = 10f;
+    [SerializeField, Min(0.1f)] private float flightSpeedH = 10f;
     [SerializeField] private Vector2 muzzleH = new Vector2(0.6f, 3.3f);
-    [SerializeField] private LayerMask groundLayers = ~0;
     [Header("Preparation Art")]
     [SerializeField] private Sprite preparationSprite;
     [Tooltip("그림의 발바닥부터 머리까지 높이 / PPU. 발사기 회전 때문에 전체 바운드로 배율을 바꾸지 않음")]
@@ -29,7 +27,6 @@ public class Boss1MissileBarrage : MonoBehaviour
     public bool IsActive => CurrentStage != Stage.Waiting;
     public int ShotsFired { get; private set; }
     private Boss1ProximityAttack owner;
-    private Boss1AimedMissile aimed;
     private Boss1Health health;
     private Boss1MissileArt art;
     private Boss1AttackHitboxes damage;
@@ -44,13 +41,13 @@ public class Boss1MissileBarrage : MonoBehaviour
     private sealed class Rocket {
         public SpriteRenderer visual;
         public LineRenderer warning;
-        public Vector2 position, target, dropStart;
-        public float sky, age;
-        public int phase;
+        public Vector2 position, target, direction;
+        public float age;
+        public bool exploding;
         public HashSet<PlayerMovement> hit = new HashSet<PlayerMovement>();
     }
     private void Awake() {
-        owner=GetComponent<Boss1ProximityAttack>(); aimed=GetComponent<Boss1AimedMissile>();
+        owner=GetComponent<Boss1ProximityAttack>();
         health=GetComponent<Boss1Health>(); art=GetComponent<Boss1MissileArt>(); damage=GetComponent<Boss1AttackHitboxes>();
         timer=repeatInterval;
         warningSource=gameObject.AddComponent<AudioSource>(); warningSource.playOnAwake=false; warningSource.spatialBlend=0f;
@@ -72,63 +69,71 @@ public class Boss1MissileBarrage : MonoBehaviour
             if(timer<=0f) CurrentStage=Stage.Firing;
         } else if(CurrentStage==Stage.Firing) {
             nextShot-=dt;
-            while(nextShot<=0f && ShotsFired<missileCount) { Launch(); ShotsFired++; nextShot+=Mathf.Max(.01f,shotInterval); }
-            if(ShotsFired>=missileCount) CurrentStage=Stage.Draining;
+            while(owner.HasMissileTarget && nextShot<=0f && ShotsFired<missileCount) { Launch(); ShotsFired++; nextShot+=Mathf.Max(.01f,shotInterval); }
+            if(!owner.HasMissileTarget || ShotsFired>=missileCount) CurrentStage=Stage.Draining;
         }
         AdvanceRockets(dt);
-        if(CurrentStage==Stage.Draining && rockets.Count==0) { CurrentStage=Stage.Recovery; timer=recoveryTime; }
+        if(CurrentStage==Stage.Draining && rockets.Count==0) { CurrentStage=Stage.Recovery; timer=recoveryTime * 1.2f; }
         else if(CurrentStage==Stage.Recovery) {
             timer-=dt;
             if(timer<=0f) { owner.BarrageActive=false; owner.BarragePending=false; reserved=false;
-                aimed?.DeferNewVolleys(1.5f); CurrentStage=Stage.Waiting; timer=repeatInterval; }
+                CurrentStage=Stage.Waiting; timer=repeatInterval; }
         }
     }
-    private void Launch() {
-        var r=new Rocket();
-        r.position=(Vector2)transform.position+new Vector2((ShotsFired%2==0?-1:1)*muzzleH.x*H,muzzleH.y*H);
-        var camera=Camera.main;
-        float top=camera!=null ? camera.ViewportToWorldPoint(new Vector3(.5f,1f,Mathf.Abs(camera.transform.position.z-transform.position.z))).y : r.position.y+8f*H;
-        r.sky=Mathf.Max(top+H,r.position.y+2f*H);
-        r.visual=new GameObject("Barrage Missile").AddComponent<SpriteRenderer>(); r.visual.sortingOrder=24;
-        rockets.Add(r);
+
+    private void Launch()
+    {
+        var rocket = new Rocket();
+        float muzzleSide = ShotsFired % 2 == 0 ? -1f : 1f;
+        rocket.position = (Vector2)transform.position + new Vector2(muzzleSide * muzzleH.x, muzzleH.y) * H;
+        rocket.target = owner.MissileTargetPoint + Random.insideUnitCircle * (scatterH * H);
+        rocket.direction = (rocket.target - rocket.position).normalized;
+        rocket.visual = new GameObject("Barrage Missile").AddComponent<SpriteRenderer>();
+        rocket.visual.sortingOrder = 24;
+        rocket.warning = CreateWarning(rocket.target, explosionRadiusH * H);
+        rockets.Add(rocket);
     }
-    private Vector2 GroundPoint(float x) {
-        float y=owner.MissileTargetPoint.y+10f*H;
-        var hits=Physics2D.RaycastAll(new Vector2(x,y),Vector2.down,50f*H,groundLayers);
-        foreach(var hit in hits) if(!hit.collider.isTrigger && hit.collider.transform.root!=transform.root && hit.collider.GetComponentInParent<Damageable>()==null && hit.collider.GetComponentInParent<PlayerMovement>()==null) return hit.point;
-        return new Vector2(x,GetComponent<Collider2D>().bounds.min.y);
-    }
-    private void AdvanceRockets(float dt) {
-        for(int i=rockets.Count-1;i>=0;i--) {
-            var r=rockets[i];
-            if(r.phase==0) {
-                r.position+=Vector2.up*(ascentSpeedH*H*dt);
-                if(r.position.y>=r.sky) {
-                    // 화면 밖에 도달한 미사일마다 당시 플레이어 위치로 착탄점을 결정.
-                    r.target=GroundPoint(owner.MissileTargetPoint.x+Random.Range(-scatterH,scatterH)*H);
-                    r.dropStart=new Vector2(r.target.x,r.sky); r.phase=1; r.age=0f;
-                    r.warning=CreateWarning(r.target,explosionRadiusH*H);
+
+    private void AdvanceRockets(float dt)
+    {
+        for (int i = rockets.Count - 1; i >= 0; i--)
+        {
+            var rocket = rockets[i];
+            if (!rocket.exploding)
+            {
+                Vector2 next = Vector2.MoveTowards(rocket.position, rocket.target, flightSpeedH * H * dt);
+                bool arrived = next.Equals(rocket.target);
+                rocket.position = next;
+                if (!arrived)
+                {
+                    art?.PoseRocket(rocket.visual, next, rocket.direction);
+                    continue;
                 }
-            } else if(r.phase==1) {
-                r.age+=dt;
-                float flight=Mathf.Min(descentTime,warningTime);
-                float t=Mathf.Clamp01((r.age-(warningTime-flight))/Mathf.Max(.01f,flight));
-                r.position=Vector2.Lerp(r.dropStart,r.target,t);
-                if(r.age>=warningTime) { r.phase=2; r.age=0f; Destroy(r.warning.gameObject); r.warning=null; art?.PlayExplosion(r.target,explosionRadiusH*H); }
-            } else {
-                r.age+=dt;
-                if(r.age>=explosionTime) { Release(r); rockets.RemoveAt(i); continue; }
+                rocket.exploding = true;
+                rocket.visual.enabled = false;
+                Destroy(rocket.warning.gameObject);
+                rocket.warning = null;
+                art?.PlayExplosion(next, explosionRadiusH * H);
             }
-            if(r.phase==2) {
-                foreach(var c in Physics2D.OverlapCircleAll(r.target,explosionRadiusH*H)) {
-                    var player=c.GetComponentInParent<PlayerMovement>();
-                    if(player!=null && player.isActiveAndEnabled && r.hit.Add(player)) damage.DeliverHit(player,c.ClosestPoint(r.target),Vector2.down,.06f,7);
+            else
+            {
+                rocket.age += dt;
+                if (rocket.age >= explosionTime)
+                {
+                    Release(rocket);
+                    rockets.RemoveAt(i);
+                    continue;
                 }
             }
-            r.visual.enabled=r.phase!=2;
-            if(r.visual.enabled && art!=null) art.PoseRocket(r.visual,r.position,r.phase==0?Vector2.up:Vector2.down);
+            foreach (var collider in Physics2D.OverlapCircleAll(rocket.position, explosionRadiusH * H))
+            {
+                var player = collider.GetComponentInParent<PlayerMovement>();
+                if (player != null && player.isActiveAndEnabled && rocket.hit.Add(player))
+                    damage.DeliverHit(player, collider.ClosestPoint(rocket.position), rocket.direction, 0.06f, 7);
+            }
         }
     }
+
     private LineRenderer CreateWarning(Vector2 point,float radius) {
         if(warningSource!=null) warningSource.PlayOneShot(warningClip);
         if(lineMaterial==null) lineMaterial=new Material(Shader.Find("Sprites/Default"));

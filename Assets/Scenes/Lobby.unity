@@ -212,6 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LobbyInteraction
   interactionName: "\uC774\uD399\uD130 \uAD50\uCCB4"
   sceneToLoad: 
+  allowUpArrow: 0
 --- !u!1 &163120163
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,6 +337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LobbyInteraction
   interactionName: "\uC5F0\uC8FC \uC2A4\uD0AC \uAD50\uCCB4"
   sceneToLoad: 
+  allowUpArrow: 0
 --- !u!1 &397763537
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,6 +1087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LobbyInteraction
   interactionName: "\uC758\uB8B0 \uAC8C\uC2DC\uD310"
   sceneToLoad: Boss01_Arena
+  allowUpArrow: 1
 --- !u!1 &1992657420
 GameObject:
   m_ObjectHideFlags: 0

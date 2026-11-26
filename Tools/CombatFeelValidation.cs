@@ -115,7 +115,12 @@ public static class CombatFeelValidation
             float peak = body.position.y;
             for (int i = 0; i < 100; i++)
             {
-                if (i == heldSteps) JumpButton(false);
+                if (i == heldSteps)
+                {
+                    JumpButton(false);
+                    // Manual simulation advances physics without advancing the input device clock.
+                    Set(movement, "releasedHoldTime", i * dt);
+                }
                 Call(movement, "UpdateMovement", Time.time + i * dt);
                 Physics2D.Simulate(dt);
                 peak = Mathf.Max(peak, body.position.y);
@@ -132,11 +137,10 @@ public static class CombatFeelValidation
             float fullHold = JumpHeight(int.MaxValue);
             Check(tap > 0f && tap < shortHold && shortHold < mediumHold && mediumHold < fullHold,
                 $"Jump height grows with hold duration: {tap:F3} < {shortHold:F3} < {mediumHold:F3} < {fullHold:F3}");
-            float speed = Get<float>(movement, "jumpSpeed");
-            float expectedHeight = 0f;
-            for (float v = speed + gravityStep; v > 0f; v += gravityStep)
-                expectedHeight += v * dt;
-            Check(Mathf.Abs(fullHold - expectedHeight) < 0.001f, "Holding jump preserves the original full jump height");
+            Check(Mathf.Abs(tap - 1.4f) < 0.01f && Mathf.Abs(fullHold - 2.4f) < 0.01f,
+                "Default jump heights span 1.4 to 2.4 tiles");
+            float expectedMedium = Mathf.Lerp(1.4f, 2.4f, Mathf.InverseLerp(0.05f, 0.25f, 10 * dt));
+            Check(Mathf.Abs(mediumHold - expectedMedium) < 0.01f, "Intermediate hold targets the interpolated height");
 
             Reset();
             JumpButton(true);
@@ -145,7 +149,7 @@ public static class CombatFeelValidation
             JumpButton(true);
             Call(movement, "UpdateMovement", Time.time + dt);
             float cutSpeed = body.linearVelocity.y;
-            Check(Mathf.Abs(cutSpeed - speed * 0.5f) < 0.001f,
+            Check(Mathf.Abs(cutSpeed - (Mathf.Sqrt(-2f * gravityStep / dt * 1.4f) - gravityStep * 0.5f)) < 0.001f,
                 "A release and re-press between physics ticks still cuts ascent and cannot double jump");
             JumpButton(false);
             Call(movement, "UpdateMovement", Time.time + 2f * dt);
@@ -156,8 +160,8 @@ public static class CombatFeelValidation
             body.linearVelocity = new Vector2(0f, -3f);
             Call(movement, "UpdateMovement", Time.time);
             Physics2D.Simulate(dt);
-            Check(Mathf.Abs(body.linearVelocity.y - (-3f + gravityStep * 1.3f)) < 0.001f,
-                "Falling off a ledge applies exactly 1.3 times base gravity");
+            Check(Mathf.Abs(body.linearVelocity.y - (-3f + gravityStep * 1.3f * 1.3f)) < 0.001f,
+                "Falling off a ledge applies the gravity needed for 1.3x fall speed");
             Reset();
             body.linearVelocity = new Vector2(0f, 6f);
             Call(movement, "UpdateMovement", Time.time);
@@ -323,17 +327,21 @@ public static class CombatFeelValidation
             }
             Check(player.GetComponent<PlayerHitCameraShake>() != null, "Camera impact component is connected");
 
-            foreach (float step in new[] { 0.02f, 1f / 60f })
+            float moveSpeed = Get<float>(movement, "moveSpeed");
+            Check(Get<float>(movement, "basicAttackMoveSpeedMultiplier") == 0.7f,
+                "Basic attack movement defaults to 70% speed");
+            foreach (int comboStep in new[] { 1, 2 })
             {
                 Call(attack, "StopAttack");
-                Set(attack, "comboStep", 0);
+                Set(attack, "comboStep", comboStep - 1);
                 Call(attack, "StartAttack", 0f, 1f);
-                float distance = 0f;
-                for (int i = 0; i < 30; i++)
-                    distance += attack.GetAttackVelocity(Vector2.zero, true, i * step, step, body.gravityScale).x * step;
-                Check(Mathf.Abs(distance - 0.8f) < 0.0001f, "Lunge preserves 0.8 units at dt=" + step);
-                Check(attack.GetAttackVelocity(Vector2.zero, true, 0.14f, step, body.gravityScale).x > 0f,
-                    "Lunge continues into the swing at dt=" + step);
+                foreach (float input in new[] { 1f, -1f, 0f })
+                {
+                    Set(movement, "moveInput", input);
+                    Call(movement, "UpdateMovement", 0.14f);
+                    Check(Mathf.Abs(body.linearVelocity.x - input * moveSpeed * 0.7f) < 0.0001f,
+                        $"Attack {comboStep} uses 70% movement speed for input {input}");
+                }
             }
 
             Call(attack, "StopAttack");

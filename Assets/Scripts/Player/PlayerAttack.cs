@@ -21,8 +21,6 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField, Min(0.01f)] private float basicActiveTime = 0.125f;
     [Tooltip("1, 2타 공통 후딜레이. 이 구간부터 슬라이드로 취소 가능")]
     [SerializeField, Min(0f)] private float basicRecoveryTime = 0.125f;
-    [Tooltip("방향키와 함께 시작한 1, 2타의 준비 후반~휘두르기 초반 전진 거리")]
-    [SerializeField, Min(0f)] private float basicAdvanceDistance = 0.8f;
     [Tooltip("휘두르기 시작 후 실제 접촉 판정까지의 시간")]
     [SerializeField, Min(0f)] private float basicContactDelay = 0.025f;
 
@@ -125,6 +123,7 @@ public class PlayerAttack : MonoBehaviour
     private static readonly float[] SwingEnds = { 15f / 21f, 11f / 15f, 20f / 24f };
 
     public bool IsAttacking => isAttacking;
+    public bool IsBasicComboAttack => isAttacking && (comboStep == 1 || comboStep == 2);
     public float CurrentAttackSpeedMultiplier => attackSpeedMultiplier;
     public float CurrentAttackDamageMultiplier => attackDamageMultiplier;
     private bool IsSliding => movement != null && movement.IsSliding;
@@ -335,15 +334,15 @@ public class PlayerAttack : MonoBehaviour
     public Vector2 GetAttackVelocity(Vector2 velocity, bool isGrounded, float currentTime,
         float fixedDeltaTime, float gravityScale)
     {
-        if (!isAttacking || (comboStep != 3 && (attackStartedInAir || !isGrounded)))
+        if (!isAttacking || IsBasicComboAttack || (comboStep != 3 && (attackStartedInAir || !isGrounded)))
             return velocity;
 
         velocity.x = 0f;
         if (verticalAttackDirection != 0f)
             return velocity;
         float dt = Mathf.Max(0.0001f, fixedDeltaTime);
-        float advanceStart = comboStep == 3 ? attackStartTime : attackStartTime + windupDuration * 0.25f;
-        float advanceEnd = comboStep == 3 ? windupEndTime : windupEndTime + activeDuration * 0.45f;
+        float advanceStart = attackStartTime;
+        float advanceEnd = windupEndTime;
         if (attackDirection != 0f && currentTime + dt > advanceStart && currentTime < advanceEnd)
         {
             float t0 = Mathf.InverseLerp(advanceStart, advanceEnd, currentTime);
@@ -401,7 +400,7 @@ public class PlayerAttack : MonoBehaviour
         recoveryDuration = Mathf.Max(0f, directional ? directionalRecoveryTime : third ? thirdRecoveryTime : basicRecoveryTime) / attackSpeedMultiplier;
         landingActiveDuration = Mathf.Max(0f, thirdLandingActiveTime) / attackSpeedMultiplier;
         contactDelayDuration = Mathf.Max(0f, third ? thirdContactDelay : basicContactDelay) / attackSpeedMultiplier;
-        advanceDistance = Mathf.Max(0f, third ? thirdAdvanceDistance : basicAdvanceDistance);
+        advanceDistance = Mathf.Max(0f, thirdAdvanceDistance);
         hopHeight = Mathf.Max(0f, thirdHopHeight);
         attackStartTime = currentTime;
         windupEndTime = currentTime + windupDuration;

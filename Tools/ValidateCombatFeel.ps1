@@ -1,7 +1,7 @@
 # Run in a disposable project so the user's open editor and scenes stay intact.
 param(
     [switch]$PrepareOnly,
-    [ValidateSet('CombatFeel', 'RhythmGauge')][string]$Suite = 'CombatFeel'
+    [ValidateSet('CombatFeel', 'RhythmGauge', 'BossHitbox', 'BossCollision')][string]$Suite = 'CombatFeel'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -52,7 +52,7 @@ $launchArguments = @('-batchmode', '-nographics', '-projectPath', ('"' + $valida
 $validationProcess = Start-Process -FilePath $unityExe -ArgumentList $launchArguments -WindowStyle Hidden -PassThru
 Write-Output "Unity validation PID: $($validationProcess.Id)"
 Write-Output "Log: $logFile"
-$resultName = if ($Suite -eq 'RhythmGauge') { 'rhythm-gauge-results.txt' } else { 'combat-feel-results.txt' }
+$resultName = switch ($Suite) { 'RhythmGauge' { 'rhythm-gauge-results.txt' } 'BossHitbox' { 'boss-hitbox-results.txt' } 'BossCollision' { 'boss-collision-results.txt' } default { 'combat-feel-results.txt' } }
 Write-Output "Results: $(Join-Path $validationFolder $resultName)"
 $validationProcess.WaitForExit()
 if ($validationProcess.ExitCode -ne 0) {

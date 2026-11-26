@@ -326,6 +326,18 @@ public class Boss1PrototypeModel : MonoBehaviour
         waveRight.position = leap.WaveCenter(1);
         Vector3 size = new Vector3(leap.WaveWidth / Mathf.Abs(transform.lossyScale.x),
             leap.WaveHeight / Mathf.Abs(transform.lossyScale.y), 1);
+        var sprite = leap.WaveSprite;
+        if (sprite != null)
+        {
+            var left = waveLeft.GetComponent<SpriteRenderer>();
+            var right = waveRight.GetComponent<SpriteRenderer>();
+            left.sprite = right.sprite = sprite;
+            left.color = right.color = Color.white;
+            left.flipX = transform.lossyScale.x > 0f;
+            right.flipX = !left.flipX;
+            size.x /= sprite.bounds.size.x;
+            size.y /= sprite.bounds.size.y;
+        }
         waveLeft.localScale = waveRight.localScale = size;
     }
 
