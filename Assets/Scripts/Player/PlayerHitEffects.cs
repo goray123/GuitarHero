@@ -11,6 +11,9 @@ public class PlayerHitEffects : MonoBehaviour
     [Tooltip("플레이어보다 앞에 표시할 순서 차이")]
     [SerializeField] private int sortingOrderOffset = 8;
     [SerializeField, Min(0.01f)] private float landingScale = 0.65f;
+    [Header("Enemy Hit Flash")]
+    [SerializeField] private Material enemyFlashMaterial;
+    [SerializeField, Min(0f)] private float enemyFlashDuration = 0.045f;
 
     private PlayerAttack attack;
     private SpriteRenderer playerSprite;
@@ -24,13 +27,23 @@ public class PlayerHitEffects : MonoBehaviour
     private void OnEnable()
     {
         attack.HitConfirmed += OnHit;
+        attack.TargetHitConfirmed += OnTargetHit;
         attack.SlamLanded += OnSlamLanded;
     }
 
     private void OnDisable()
     {
         attack.HitConfirmed -= OnHit;
+        attack.TargetHitConfirmed -= OnTargetHit;
         attack.SlamLanded -= OnSlamLanded;
+    }
+
+    private void OnTargetHit(Damageable target)
+    {
+        if (enemyFlashMaterial == null || enemyFlashDuration <= 0f) return;
+        if (!target.TryGetComponent<EnemyHitFlash>(out var flash))
+            flash = target.gameObject.AddComponent<EnemyHitFlash>();
+        flash.Play(enemyFlashMaterial, enemyFlashDuration);
     }
 
     private void OnSlamLanded(Vector2 point)

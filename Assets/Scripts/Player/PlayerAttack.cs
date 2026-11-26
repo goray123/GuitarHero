@@ -9,6 +9,7 @@ public class PlayerAttack : MonoBehaviour
 {
     // 실제 피해가 적용된 순간에만 타격 연출 전달
     public event System.Action<Vector2, Vector2, int> HitConfirmed;
+    public event System.Action<Damageable> TargetHitConfirmed;
     public event System.Action<Vector2> SlamLanded;
     public event System.Action<int> SwingStarted;
 
@@ -126,6 +127,12 @@ public class PlayerAttack : MonoBehaviour
     public bool IsBasicComboAttack => isAttacking && (comboStep == 1 || comboStep == 2);
     public float CurrentAttackSpeedMultiplier => attackSpeedMultiplier;
     public float CurrentAttackDamageMultiplier => attackDamageMultiplier;
+    public BoxCollider2D CurrentAttackHitbox => !isAttacking ? null :
+        verticalAttackDirection > 0f ? upperAttackHitbox : verticalAttackDirection < 0f ? downAttackHitbox :
+        comboStep == 1 ? attack1Hitbox : comboStep == 2 ? attack2Hitbox : attack3Hitbox;
+    public Vector2 SwingDirection => verticalAttackDirection != 0f ? Vector2.up * verticalAttackDirection :
+        comboStep == 3 ? Vector2.down : Vector2.right;
+    public float SwingProgress => Mathf.Clamp01((Time.time - windupEndTime) / Mathf.Max(0.01f, activeDuration));
     private bool IsSliding => movement != null && movement.IsSliding;
     private bool IsUsingSkill => chordStrike != null && chordStrike.BlocksActions;
 
@@ -452,9 +459,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (!isActiveAndEnabled || !isDamageActive || !isAttacking)
             return;
-        Collider2D activeHitbox = verticalAttackDirection > 0f ? upperAttackHitbox :
-            verticalAttackDirection < 0f ? downAttackHitbox : comboStep == 1 ? attack1Hitbox :
-            comboStep == 2 ? attack2Hitbox : attack3Hitbox;
+        Collider2D activeHitbox = CurrentAttackHitbox;
         if (hitbox == null || hitbox != activeHitbox || !hitbox.enabled || other == null)
             return;
         Damageable target = other.GetComponentInParent<Damageable>();
@@ -486,6 +491,7 @@ public class PlayerAttack : MonoBehaviour
             // 정지에 들어가기 전에 접촉 순간의 스프라이트를 확정.
             UpdateAnimation(Time.time);
             animator.Update(0f);
+            TargetHitConfirmed?.Invoke(target);
             HitConfirmed?.Invoke(point, direction, comboStep);
         }
     }

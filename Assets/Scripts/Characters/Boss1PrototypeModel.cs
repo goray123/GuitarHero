@@ -8,6 +8,7 @@ public class Boss1PrototypeModel : MonoBehaviour
     private Transform root, torso, head, eye, leftArm, rightArm, leftFist, rightFist, zone;
     private SpriteRenderer zoneRenderer;
     private SpriteRenderer[] bodyRenderers;
+    public SpriteRenderer[] BodyRenderers => bodyRenderers;
     private Sprite square, circle;
     private Texture2D circleTexture;
     private Boss1ProximityAttack owner;

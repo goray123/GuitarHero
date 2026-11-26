@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 900100040}
   - component: {fileID: 900100041}
   - component: {fileID: 900100042}
+  - component: {fileID: 900100043}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -321,6 +322,26 @@ MonoBehaviour:
   thirdScale: 1.5
   sortingOrderOffset: 8
   landingScale: 0.65
+  enemyFlashMaterial: {fileID: 2100000, guid: a3d5f677b6ee4a38af9b278e761746d4, type: 2}
+  enemyFlashDuration: 0.045
+--- !u!114 &900100043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1533749fdb4b44a1965ac35822eed50a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackTrail
+  trailMaterial: {fileID: 2100000, guid: 79b2395e942268043b3f84483c49c138, type: 2}
+  basicColor: {r: 1, g: 0.66, b: 0.3, a: 0.75}
+  thirdColor: {r: 1, g: 0.42, b: 0.18, a: 0.85}
+  fadeDuration: 0.07
+  hitPulseDuration: 0.045
+  sortingOrderOffset: 4
 --- !u!114 &900100037
 MonoBehaviour:
   m_ObjectHideFlags: 0
