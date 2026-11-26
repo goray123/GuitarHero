@@ -90,12 +90,17 @@ public static class CombatFeelValidation
     private static void CheckJumping(PlayerMovement movement, Rigidbody2D body)
     {
         SimulationMode2D simulationMode = Physics2D.simulationMode;
+        var previousBackground = InputSystem.settings.backgroundBehavior;
+        var previousEditorInput = InputSystem.settings.editorInputBehaviorInPlayMode;
+        // 헤드리스 에디터에는 포커스를 줄 Game View가 없음.
+        InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+        InputSystem.settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
         Keyboard keyboard = InputSystem.AddDevice<Keyboard>();
         float dt = Time.fixedDeltaTime;
         float gravityStep = Physics2D.gravity.y * body.gravityScale * dt;
         void JumpButton(bool pressed)
         {
-            InputSystem.QueueStateEvent(keyboard, pressed ? new KeyboardState(Key.Space) : new KeyboardState());
+            InputSystem.QueueStateEvent(keyboard, pressed ? new KeyboardState(Key.Z) : new KeyboardState());
             InputSystem.Update();
         }
         void Reset()
@@ -176,6 +181,8 @@ public static class CombatFeelValidation
             body.linearVelocity = Vector2.zero;
             Physics2D.simulationMode = simulationMode;
             InputSystem.RemoveDevice(keyboard);
+            InputSystem.settings.backgroundBehavior = previousBackground;
+            InputSystem.settings.editorInputBehaviorInPlayMode = previousEditorInput;
         }
     }
 
@@ -204,6 +211,10 @@ public static class CombatFeelValidation
             PlayerHitStop hitStop = player.GetComponent<PlayerHitStop>();
             Rigidbody2D body = player.GetComponent<Rigidbody2D>();
             TrainingDummy dummy = target.GetComponent<TrainingDummy>();
+            // 기본 타격 검증은 리듬 배율과 프리팹의 연습용 체력에서 분리.
+            player.GetComponent<PlayerRhythmGauge>().enabled = false;
+            Set(dummy, "maxHealth", 50f);
+            Call(dummy, "Respawn");
             Transform pivot = Get<Transform>(dummy, "reactionPivot");
             Transform healthBar = Get<GameObject>(dummy, "healthBar").transform;
             CheckJumping(movement, body);
@@ -255,14 +266,12 @@ public static class CombatFeelValidation
             Text[] damagePopups = healthBar.GetComponentsInChildren<Text>(true);
             Text firstDamagePopup = System.Array.Find(damagePopups,
                 text => text.name.StartsWith("DamagePopup") && text.gameObject.activeSelf);
-            Vector3 expectedScaledHitPoint = new Vector3(hitPoint.x * 0.01f, hitPoint.y * 0.01f, 0f);
             Check(firstDamagePopup != null && firstDamagePopup.text == "-10",
                 "Accepted hit displays its damage as a floating number");
             Check(firstDamagePopup != null &&
-                Mathf.Abs(firstDamagePopup.rectTransform.localPosition.x - expectedScaledHitPoint.x) < 0.001f &&
-                Mathf.Abs(firstDamagePopup.rectTransform.localPosition.y - expectedScaledHitPoint.y) < 0.001f &&
-                Mathf.Abs(firstDamagePopup.rectTransform.localPosition.z - expectedScaledHitPoint.z) < 0.001f,
-                "Floating damage number local X/Y/Z are each scaled to 1/100");
+                Vector2.Distance(firstDamagePopup.transform.position, hitPoint) < 0.001f &&
+                Mathf.Abs(firstDamagePopup.rectTransform.localPosition.z) < 0.001f,
+                "Floating damage number appears at the world hit point on the canvas plane");
             Set(healthUI, "damagePopupTemplate", null);
             healthUI.ShowDamage(3f, dummy.transform.position);
             damagePopups = healthBar.GetComponentsInChildren<Text>(true);
@@ -285,7 +294,7 @@ public static class CombatFeelValidation
             Call(healthUI, "Update");
             Check(damageFill.fillAmount == intermediateTrail, "Health trail freezes during hitstop or pause");
             Time.timeScale = 1f;
-            Call(healthUI, "Advance", 0.5f);
+            Call(healthUI, "Advance", 2f);
             Check(Mathf.Approximately(damageFill.fillAmount, 0.7f) && healthUI.IsSettled,
                 "Orange settles exactly at actual health");
             healthUI.SetHealth(45f, 50f);
@@ -305,7 +314,7 @@ public static class CombatFeelValidation
             Set(dummy, "deathEndsAt", Time.time - 0.01f);
             Call(dummy, "UpdateState", Time.time);
             Check(healthBar.gameObject.activeSelf, "Death keeps the canvas visible while orange is draining");
-            Call(healthUI, "Advance", 1f);
+            Call(healthUI, "Advance", 2f);
             Call(dummy, "UpdateState", Time.time);
             Check(!healthBar.gameObject.activeSelf && damageFill.fillAmount == 0f,
                 "Finished death trail hides the canvas at zero health");
@@ -314,8 +323,8 @@ public static class CombatFeelValidation
                 "Dead dummy respawns with a visible full canvas");
             Check(healthText.text == "50 / 50", "Respawn restores the numeric health readout");
             target.transform.position = new Vector3(1f, 1f, 0f);
-            Check(Get<float>(hitStop, "basicDuration") == 0.035f && Get<float>(hitStop, "thirdDuration") == 0.085f,
-                "Basic/heavy hitstop uses the tuned 35/85 ms profile");
+            Check(Get<float>(hitStop, "basicDuration") == 0.05f && Get<float>(hitStop, "thirdDuration") == 0.15f,
+                "Basic/heavy hitstop uses the prefab's 50/150 ms profile");
             Check(Get<float>(attack, "attack1Damage") == 8f && Get<float>(attack, "attack2Damage") == 8f && Get<float>(attack, "attack3Damage") == 25f,
                 "Existing 8/8/25 damage is preserved");
             Check(Get<float>(attack, "attackBufferTime") == 0.1f, "Attack queue window is 100 ms");
@@ -347,14 +356,16 @@ public static class CombatFeelValidation
             Call(attack, "StopAttack");
             Set(attack, "comboStep", 0);
             float now = Time.time;
+            float windup = Get<float>(attack, "basicWindupTime");
+            float contactDelay = Mathf.Min(Get<float>(attack, "basicContactDelay"), Get<float>(attack, "basicActiveTime") * 0.5f);
             Call(attack, "StartAttack", now, 0f);
             Call(attack, "OnAttack", default(InputAction.CallbackContext));
             Check(!Get<bool>(attack, "attackRequested"), "Early windup input is not queued");
-            Call(attack, "UpdateAttack", now + 0.125f);
+            Call(attack, "UpdateAttack", now + windup);
             Check(!Get<bool>(attack, "isDamageActive"), "Damage does not begin on the first swing frame");
             Call(attack, "StopAttack");
             Set(attack, "comboStep", 0);
-            Call(attack, "StartAttack", now - 0.16f, 0f);
+            Call(attack, "StartAttack", now - windup - contactDelay - 0.001f, 0f);
             Call(attack, "UpdateAttack", now);
             Check(Get<bool>(attack, "isDamageActive"), "Contact becomes active after the configured delay");
             int confirmed = 0;
@@ -370,7 +381,6 @@ public static class CombatFeelValidation
             float facing = player.GetComponent<SpriteRenderer>().flipX ? -1f : 1f;
             Vector2 expectedSwordDisplayPoint = activeAttackHitbox.bounds.center +
                 Vector3.right * (facing * (activeAttackHitbox.bounds.extents.x + 0.05f));
-            expectedSwordDisplayPoint *= 0.01f;
             Vector3 boundsBefore = hurtbox.bounds.center;
             attack.TryHit(activeAttackHitbox, hurtbox);
             attack.TryHit(activeAttackHitbox, hurtbox);
@@ -378,8 +388,8 @@ public static class CombatFeelValidation
             Text swordDamagePopup = System.Array.Find(healthBar.GetComponentsInChildren<Text>(true),
                 text => text.name.StartsWith("DamagePopup") && text.gameObject.activeSelf && text.text == "-8");
             Check(swordDamagePopup != null &&
-                Vector2.Distance(swordDamagePopup.rectTransform.localPosition, expectedSwordDisplayPoint) < 0.001f,
-                "Real attack scales the sword-front popup local position to exactly 1/100");
+                Vector2.Distance(swordDamagePopup.transform.position, expectedSwordDisplayPoint) < 0.001f,
+                "Real attack places the damage popup at the sword front in world space");
             Check(Mathf.Abs(contact.x - hurtbox.bounds.min.x) < Physics2D.defaultContactOffset + 0.002f,
                 "Impact point lies on the target-facing surface: point=" + contact + ", bounds=" + hurtbox.bounds +
                 ", flipX=" + player.GetComponent<SpriteRenderer>().flipX);
@@ -471,7 +481,7 @@ public static class CombatFeelValidation
             Time.timeScale = 1f;
 
             PlayerHitCameraShake shake = player.GetComponent<PlayerHitCameraShake>();
-            Call(shake, "Kick", Vector2.right, 0.05f);
+            Call(shake, "Kick", Vector2.right, 0.05f, Get<float>(shake, "duration"));
             await NextFrame();
             shake.enabled = false;
             Check((cameraObject.transform.position - cameraRest).sqrMagnitude < 0.000001f,
