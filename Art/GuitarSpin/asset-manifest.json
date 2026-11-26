@@ -1,0 +1,19 @@
+{
+  "art_direction": "2D 사이드뷰 액션용 붉은 일렉기타. 검은 픽가드와 밝은 넥, 작은 화면에서도 읽히는 단순한 실루엣.",
+  "assets": [
+    {
+      "path": "Assets/Effects/GuitarSpin/SpinGuitar.png",
+      "role": "회전 스킬의 무기 스프라이트",
+      "source": "OpenAI image_gen, 2026-11-26, generation 01a21836-335a-7d21-82ed-aacdc0807cb2",
+      "license": "이 프로젝트를 위해 생성한 AI 이미지. 외부 게임 아트나 로고를 복사하지 않음.",
+      "source_dimensions": [2172, 724],
+      "alpha": true,
+      "pivot": [0.5, 0.5],
+      "collision_role": "시각 전용. 실제 공격은 몸체 중심의 월드 반경으로 판정.",
+      "import": { "max_texture_size": 256, "pixels_per_unit": 128, "filter": "Point", "mipmaps": false, "compression": "Uncompressed" },
+      "technical_checks_passed": true,
+      "checks": "asset_report.py 알파·파일 검증 통과, 체크무늬 배경 프리뷰 및 로비 Play 모드의 실제 회전 화면 확인",
+      "edit_history": "생성 원본 그대로 복사. 런타임 해상도는 Unity 임포터로 제한."
+    }
+  ]
+}

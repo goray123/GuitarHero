@@ -23,12 +23,14 @@ public class PlayerHealth : Damageable
     private RectTransform fill;
     private Collider2D bodyCollider;
     private SpriteRenderer characterSprite;
+    private PlayerGuitarSpin guitarSpin;
     private double invulnerableUntil;
 
     private void Awake()
     {
         bodyCollider = GetComponent<Collider2D>();
         characterSprite = GetComponent<SpriteRenderer>();
+        guitarSpin = GetComponent<PlayerGuitarSpin>();
     }
 
     private void OnEnable()
@@ -57,13 +59,14 @@ public class PlayerHealth : Damageable
         float damage = hit.Damage;
         if (!isActiveAndEnabled || IsDead || IsInvulnerable || damage <= 0f || float.IsNaN(damage) || float.IsInfinity(damage))
             return false;
+        if (guitarSpin != null) damage *= guitarSpin.DamageTakenMultiplier;
         float remainingHealth = Mathf.Max(0f, CurrentHealth - damage);
         if (remainingHealth == CurrentHealth) return false;
         CurrentHealth = remainingHealth;
         // Set protection before publishing the hit so simultaneous contacts cannot deal damage twice.
         invulnerableUntil = Time.unscaledTimeAsDouble + Mathf.Max(0f, invulnerabilityDuration);
         RefreshBar();
-        Damaged?.Invoke(hit);
+        Damaged?.Invoke(new AttackHit(damage, hit.Point, hit.DisplayPoint, hit.Direction, hit.ComboStep));
         return true;
     }
 

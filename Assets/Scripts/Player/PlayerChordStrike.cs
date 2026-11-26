@@ -47,6 +47,7 @@ public class PlayerChordStrike : MonoBehaviour
 
     private PlayerMovement movement;
     private PlayerAttack attack;
+    private PlayerGuitarSpin guitarSpin;
     private SpriteRenderer playerSprite;
     private Rigidbody2D body;
     private InputActionMap actions;
@@ -75,6 +76,7 @@ public class PlayerChordStrike : MonoBehaviour
     {
         movement = GetComponent<PlayerMovement>();
         attack = GetComponent<PlayerAttack>();
+        guitarSpin = GetComponent<PlayerGuitarSpin>();
         playerSprite = GetComponent<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
         if (inputActions == null || notePrefab == null || playerSprite == null)
@@ -122,7 +124,8 @@ public class PlayerChordStrike : MonoBehaviour
     private void RequestSkill(bool useDownward)
     {
         // 시전 중 누른 키는 저장하지 않음
-        if (BlocksActions || Time.time < (useDownward ? nextDownwardUseTime : nextUseTime) ||
+        if (BlocksActions || (guitarSpin != null && guitarSpin.BlocksActions) ||
+            Time.time < (useDownward ? nextDownwardUseTime : nextUseTime) ||
             Time.timeScale <= 0f || movement.IsSliding ||
             (attack != null && attack.IsAttacking)) return;
         facing = playerSprite.flipX ? -1f : 1f;
@@ -138,7 +141,8 @@ public class PlayerChordStrike : MonoBehaviour
         {
             requested = false;
             if (currentTime < (downward ? nextDownwardUseTime : nextUseTime) ||
-                movement.IsSliding || (attack != null && attack.IsAttacking)) return;
+                movement.IsSliding || (guitarSpin != null && guitarSpin.BlocksActions) ||
+                (attack != null && attack.IsAttacking)) return;
             active = true;
             startedAt = currentTime;
             if (downward)

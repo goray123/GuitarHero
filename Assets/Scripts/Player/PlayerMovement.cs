@@ -41,12 +41,14 @@ public class PlayerMovement : MonoBehaviour
     private InputAction crouchAction;
     private PlayerAttack attack;
     private PlayerChordStrike chordStrike;
+    private PlayerGuitarSpin guitarSpin;
 
     public bool IsSliding => isSliding;
     public bool IsCrouching => isCrouching;
     public bool IsOnGround => rb != null && IsGrounded() && rb.linearVelocity.y <= 0.1f;
     private bool IsAttacking => attack != null && attack.IsAttacking;
-    private bool IsUsingSkill => chordStrike != null && chordStrike.BlocksActions;
+    private bool IsUsingSkill => (chordStrike != null && chordStrike.BlocksActions) || IsSpinning;
+    private bool IsSpinning => guitarSpin != null && guitarSpin.BlocksActions;
 
     private Vector2 originalSize;
     private Vector2 originalOffset;
@@ -78,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
     {
         attack = GetComponent<PlayerAttack>();
         chordStrike = GetComponent<PlayerChordStrike>();
+        guitarSpin = GetComponent<PlayerGuitarSpin>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -231,12 +234,23 @@ public class PlayerMovement : MonoBehaviour
     private void UpdateMovement(float currentTime)
     {
         // 음표 스킬 중에는 입력 대신 스킬의 반동 또는 제자리 상승 적용
-        if (IsUsingSkill)
+        if (chordStrike != null && chordStrike.BlocksActions)
         {
             ClearActionRequests();
             UpdateCrouch(false);
             lastGroundedTime = float.NegativeInfinity;
             rb.linearVelocity = chordStrike.GetRecoilVelocity(currentTime, Time.fixedDeltaTime);
+            animator.SetBool("IsMoving", false);
+            animator.SetBool("IsGrounded", IsOnGround);
+            animator.SetBool("IsSliding", false);
+            return;
+        }
+        if (IsSpinning)
+        {
+            ClearActionRequests();
+            UpdateCrouch(false);
+            lastGroundedTime = float.NegativeInfinity;
+            rb.linearVelocity = new Vector2(moveInput * moveSpeed * guitarSpin.MoveSpeedMultiplier, rb.linearVelocity.y);
             animator.SetBool("IsMoving", false);
             animator.SetBool("IsGrounded", IsOnGround);
             animator.SetBool("IsSliding", false);
