@@ -333,7 +333,7 @@ public class PlayerMovement : MonoBehaviour
         jumpRequested = false;
         jumpCutRequested = false;
 
-        // 공격 준비 중 누르고 있는 슬라이드는 후딜레이까지 대기
+        // 타격 활성 중 누르고 있는 슬라이드는 후딜레이까지 대기
         if (isSliding || (isGrounded && (!IsAttacking || attack.CanCancelWithSlide(currentTime))))
             slideRequested = false;
 

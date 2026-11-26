@@ -19,7 +19,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField, Min(0.01f)] private float basicWindupTime = 0.125f;
     [Tooltip("1, 2타 공통 히트박스 활성 시간")]
     [SerializeField, Min(0.01f)] private float basicActiveTime = 0.125f;
-    [Tooltip("1, 2타 공통 후딜레이. 이 구간부터 슬라이드로 취소 가능")]
+    [Tooltip("1, 2타 공통 후딜레이. 선딜레이와 후딜레이 중 슬라이드로 취소 가능")]
     [SerializeField, Min(0f)] private float basicRecoveryTime = 0.125f;
     [Tooltip("휘두르기 시작 후 실제 접촉 판정까지의 시간")]
     [SerializeField, Min(0f)] private float basicContactDelay = 0.025f;
@@ -29,7 +29,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField, Min(0.01f)] private float thirdActiveTime = 0.125f;
     [Tooltip("공중 낙하 공격이 착지한 뒤 히트박스를 유지할 시간")]
     [SerializeField, Min(0f)] private float thirdLandingActiveTime = 0.125f;
-    [Tooltip("3타 후딜레이. 이 구간부터 슬라이드로 취소 가능")]
+    [Tooltip("3타 후딜레이. 선딜레이와 후딜레이 중 슬라이드로 취소 가능")]
     [SerializeField, Min(0f)] private float thirdRecoveryTime = 0.125f;
     [SerializeField, Min(0f)] private float thirdContactDelay = 0.02f;
 
@@ -296,7 +296,8 @@ public class PlayerAttack : MonoBehaviour
 
     public bool CanCancelWithSlide(float currentTime)
     {
-        return isAttacking && currentTime >= activeEndTime && currentTime < attackEndTime;
+        return isAttacking && currentTime < attackEndTime &&
+            (currentTime < windupEndTime || currentTime >= activeEndTime);
     }
 
     // 슬라이드 캔슬은 타격 순서를 유지하고 초기화 타이머만 정지

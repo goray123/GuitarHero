@@ -337,6 +337,22 @@ public static class RhythmGaugeValidation
         Near(gauge.CurrentGauge, 0f, "Air attack without damage awards nothing");
     }
 
+    private static void SlideCancelWindows(PlayerAttack attack)
+    {
+        float start = Get<float>(attack, "attackStartTime");
+        float windupEnd = Get<float>(attack, "windupEndTime");
+        float activeEnd = Get<float>(attack, "activeEndTime");
+        float end = Get<float>(attack, "attackEndTime");
+        string kind = Get<float>(attack, "verticalAttackDirection") != 0f ? "directional" : "combo " + Get<int>(attack, "comboStep");
+        Check(attack.CanCancelWithSlide(start) && attack.CanCancelWithSlide(windupEnd - 0.001f),
+            "Slide can cancel throughout windup: " + kind);
+        Check(!attack.CanCancelWithSlide(windupEnd) && !attack.CanCancelWithSlide(activeEnd - 0.001f),
+            "Slide cannot cancel during the active window: " + kind);
+        Check(attack.CanCancelWithSlide(activeEnd) && attack.CanCancelWithSlide(end - 0.001f),
+            "Slide can cancel throughout recovery: " + kind);
+        Check(!attack.CanCancelWithSlide(end), "Slide cancel window ends with the attack: " + kind);
+    }
+
     private static async Task DirectionalAttackRules(GameObject player, TrainingDummy dummy)
     {
         var attack = player.GetComponent<PlayerAttack>();
@@ -345,6 +361,11 @@ public static class RhythmGaugeValidation
         var animator = player.GetComponent<Animator>();
         var collider = player.GetComponent<BoxCollider2D>();
         player.GetComponent<PlayerHitStop>().enabled = false;
+        var previousBackground = InputSystem.settings.backgroundBehavior;
+        var previousEditorInput = InputSystem.settings.editorInputBehaviorInPlayMode;
+        // 헤드리스 에디터에는 포커스를 줄 Game View가 없음.
+        InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+        InputSystem.settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
         var keyboard = InputSystem.AddDevice<Keyboard>();
         void Keys(params Key[] keys)
         {
@@ -373,8 +394,10 @@ public static class RhythmGaugeValidation
             Set(attack, "comboStep", 0);
             Start();
             Check(Get<int>(attack, "comboStep") == 1, "Ground combo starts at one");
+            SlideCancelWindows(attack);
             Start();
             Check(Get<int>(attack, "comboStep") == 2, "Ground combo advances to two");
+            SlideCancelWindows(attack);
             Call(attack, "StopAttack");
             body.position = new Vector2(0f, 4f);
             body.linearVelocity = Vector2.zero;
@@ -385,17 +408,20 @@ public static class RhythmGaugeValidation
             {
                 Start();
                 Check(Get<int>(attack, "comboStep") == expected, "Air combo loops one/two: " + expected);
+                SlideCancelWindows(attack);
                 Check(attack.GetAttackVelocity(new Vector2(4f, -2f), false, Time.time, 0.02f, gravity) == new Vector2(4f, -2f),
                     "Air basic attack preserves horizontal and vertical velocity");
             }
+            float airAttackMoveSpeed = Get<float>(movement, "moveSpeed") * Get<float>(movement, "basicAttackMoveSpeedMultiplier");
             Keys(Key.LeftArrow);
             ResolveInput();
-            Near(body.linearVelocity.x, -Get<float>(movement, "moveSpeed"), "Air attack can move left");
+            Near(body.linearVelocity.x, -airAttackMoveSpeed, "Air attack can move left with the configured attack speed multiplier");
             Keys(Key.RightArrow);
             ResolveInput();
-            Near(body.linearVelocity.x, Get<float>(movement, "moveSpeed"), "Air attack can change movement direction");
+            Near(body.linearVelocity.x, airAttackMoveSpeed, "Air attack can change movement direction with the configured attack speed multiplier");
             Keys();
             Call(attack, "StopAttack");
+            Set(attack, "comboResetAt", Time.time + Get<float>(attack, "comboResetTime"));
             body.position = groundedPosition;
             body.linearVelocity = Vector2.zero;
             body.gravityScale = gravity;
@@ -403,7 +429,9 @@ public static class RhythmGaugeValidation
             await WaitUntil(() => movement.IsOnGround);
             Start();
             Check(Get<int>(attack, "comboStep") == 3, "Air second attack continues into grounded third attack");
+            SlideCancelWindows(attack);
             Start(1f);
+            SlideCancelWindows(attack);
             Check(Get<int>(attack, "comboStep") == 0 && Get<float>(attack, "verticalAttackDirection") == 1f,
                 "Ground upper attack resets the basic combo");
             Check(attack.GetAttackVelocity(new Vector2(4f, 2f), true, Time.time, 0.02f, gravity) == new Vector2(0f, 2f),
@@ -449,6 +477,7 @@ public static class RhythmGaugeValidation
             foreach (float vertical in new[] { 1f, -1f })
             {
                 Start(vertical);
+                SlideCancelWindows(attack);
                 Check(Get<int>(attack, "comboStep") == 0 && Get<float>(attack, "verticalAttackDirection") == vertical,
                     "Air directional attack resets combo: " + vertical);
                 Check(attack.GetAttackVelocity(new Vector2(-4f, -2f), false, Time.time, 0.02f, gravity) == new Vector2(-4f, -2f),
@@ -500,12 +529,81 @@ public static class RhythmGaugeValidation
             Keys();
             ResolveInput();
             Check(!movement.IsCrouching && collider.size == standingSize, "Releasing down restores the standing collider");
+
+            foreach (string phase in new[] { "windup", "active", "recovery" })
+            {
+                Set(attack, "comboStep", 0);
+                Start();
+                float elapsed = phase == "windup" ? 0f : Get<float>(attack, "windupDuration") +
+                    (phase == "active" ? 0.001f : Get<float>(attack, "activeDuration") + 0.001f);
+                Set(attack, "comboStep", 0);
+                Call(attack, "StartAttack", Time.time - elapsed, 0f);
+                Set(movement, "nextSlideTime", Time.time);
+                Keys(Key.C);
+                ResolveInput();
+                if (phase == "active")
+                {
+                    Check(attack.IsAttacking && !movement.IsSliding, "C cannot interrupt an active attack");
+                    float recoveryAt = Get<float>(attack, "activeEndTime");
+                    Call(attack, "UpdateAttack", recoveryAt);
+                    Call(movement, "UpdateMovement", recoveryAt);
+                }
+                Check(movement.IsSliding && !attack.IsAttacking && !Get<bool>(attack, "attackRequested"),
+                    "C cancels attack and clears queued input from " + phase);
+                Check(!Get<BoxCollider2D>(attack, "attack1Hitbox").enabled && !Get<BoxCollider2D>(attack, "attack2Hitbox").enabled,
+                    "Canceled attack leaves no basic hitbox active");
+                Keys();
+                Set(movement, "slideEndTime", Time.time - 0.01f);
+                ResolveInput();
+                await WaitUntil(() => movement.IsOnGround);
+            }
+
+            var skill = player.GetComponent<PlayerChordStrike>();
+            Near(Get<float>(skill, "cooldownTime"), 5f, "A skill defaults to a five-second cooldown");
+            Keys(Key.A);
+            Call(skill, "FixedUpdate");
+            Check(skill.BlocksActions, "A skill starts when ready");
+            float nextUse = Get<float>(skill, "nextUseTime");
+            Near(nextUse - Get<float>(skill, "startedAt"), 5f, "Cooldown begins at actual skill activation");
+            Keys();
+            Set(skill, "startedAt", Time.time - Get<float>(skill, "duration") - 0.01f);
+            Call(skill, "FixedUpdate");
+            Keys(Key.A);
+            Check(!skill.BlocksActions && !Get<bool>(skill, "requested"), "A pressed during cooldown is discarded");
+            Set(skill, "requested", true);
+            Call(skill, "FixedUpdate");
+            Check(!skill.BlocksActions && Get<float>(skill, "nextUseTime") == nextUse,
+                "Physics update rejects stale skill requests without extending cooldown");
+            Keys();
+            Set(skill, "nextUseTime", Time.time + 0.001f);
+            Keys(Key.A);
+            Check(!skill.BlocksActions, "A remains blocked immediately before cooldown expires");
+            Keys();
+            Set(skill, "nextUseTime", Time.time);
+            Keys(Key.A);
+            Call(skill, "FixedUpdate");
+            Check(skill.BlocksActions, "A can activate exactly when its cooldown expires");
+            Keys();
+            skill.enabled = false;
+            skill.enabled = true;
+            Keys(Key.A);
+            Check(!skill.BlocksActions, "Disabling and enabling the skill does not bypass cooldown");
+            Keys();
+            Call(attack, "StopAttack");
+            Set(attack, "comboStep", 0);
+            Keys(Key.X);
+            ResolveInput();
+            Check(attack.IsAttacking, "Skill cooldown leaves normal attacks available");
+            Keys();
+            Call(attack, "StopAttack");
+            Set(movement, "nextSlideTime", Time.time);
             Keys(Key.C);
             ResolveInput();
             Check(movement.IsSliding && !attack.IsAttacking, "C starts slide rather than crouch or attack");
             Keys();
             Set(movement, "slideEndTime", Time.time - 0.01f);
             ResolveInput();
+            await WaitUntil(() => movement.IsOnGround);
             Keys(Key.Z);
             ResolveInput();
             Check(body.linearVelocity.y > 0f && !attack.IsAttacking, "Z jumps rather than attacks");
@@ -514,6 +612,8 @@ public static class RhythmGaugeValidation
         finally
         {
             InputSystem.RemoveDevice(keyboard);
+            InputSystem.settings.backgroundBehavior = previousBackground;
+            InputSystem.settings.editorInputBehaviorInPlayMode = previousEditorInput;
         }
     }
 

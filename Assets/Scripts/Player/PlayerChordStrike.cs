@@ -10,6 +10,10 @@ public class PlayerChordStrike : MonoBehaviour
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private ChordNoteProjectile notePrefab;
 
+    [Header("Cooldown (Seconds)")]
+    [Tooltip("스킬 발동 순간부터 다시 사용할 수 있을 때까지의 시간")]
+    [SerializeField, Min(0f)] private float cooldownTime = 5f;
+
     [Header("Recoil")]
     [Tooltip("바라보는 방향 반대로 이동할 거리. 벽에 막히면 줄어듦")]
     [SerializeField, Min(0f)] private float recoilDistance = 2f;
@@ -46,6 +50,7 @@ public class PlayerChordStrike : MonoBehaviour
     private float duration;
     private float distance;
     private float height;
+    private float nextUseTime;
 
     public bool BlocksActions => isActiveAndEnabled && (requested || active);
 
@@ -90,7 +95,7 @@ public class PlayerChordStrike : MonoBehaviour
     private void OnSkill(InputAction.CallbackContext context)
     {
         // 시전 중 누른 키는 저장하지 않음
-        if (BlocksActions || Time.timeScale <= 0f || movement.IsSliding ||
+        if (BlocksActions || Time.time < nextUseTime || Time.timeScale <= 0f || movement.IsSliding ||
             (attack != null && attack.IsAttacking)) return;
         facing = playerSprite.flipX ? -1f : 1f;
         requested = true;
@@ -101,9 +106,10 @@ public class PlayerChordStrike : MonoBehaviour
         if (requested)
         {
             requested = false;
-            if (movement.IsSliding || (attack != null && attack.IsAttacking)) return;
+            if (Time.time < nextUseTime || movement.IsSliding || (attack != null && attack.IsAttacking)) return;
             active = true;
             startedAt = Time.time;
+            nextUseTime = startedAt + Mathf.Max(0f, cooldownTime);
             duration = Mathf.Max(0.02f, recoilDuration);
             distance = Mathf.Max(0f, recoilDistance);
             height = Mathf.Max(0f, recoilHeight);
