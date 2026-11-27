@@ -4,14 +4,23 @@ using UnityEngine.UI;
 internal sealed class CombatHealthBar
 {
     private readonly Image frame;
-    private readonly Image fill;
+    private readonly HealthBarUI feedback;
 
-    internal CombatHealthBar(Transform parent, Color color)
+    internal CombatHealthBar(Transform parent, Color color, HealthBarUI feedback,
+        Color damageColor, float damageDelay, float damageDuration)
     {
+        this.feedback = feedback;
         frame = CreateImage("Amp Frame", parent, "AmpFrame");
         frame.type = Image.Type.Sliced;
 
-        fill = CreateImage("Health Signal", frame.transform, "SignalFill");
+        Image damageFill = CreateFill("Damage Trail", damageColor);
+        Image fill = CreateFill("Health Signal", color);
+        feedback.ConfigureFills(fill, damageFill, damageDelay, damageDuration);
+    }
+
+    private Image CreateFill(string name, Color color)
+    {
+        Image fill = CreateImage(name, frame.transform, "SignalFill");
         fill.color = color;
         fill.type = Image.Type.Filled;
         fill.fillMethod = Image.FillMethod.Horizontal;
@@ -21,6 +30,7 @@ internal sealed class CombatHealthBar
         rect.anchorMax = Vector2.one;
         rect.offsetMin = new Vector2(16f, 6f);
         rect.offsetMax = new Vector2(-16f, -6f);
+        return fill;
     }
 
     internal void SetSize(Vector2 size)
@@ -31,7 +41,7 @@ internal sealed class CombatHealthBar
         frame.rectTransform.sizeDelta = new Vector2(Mathf.Max(34f, size.x / scale), 24f);
     }
 
-    internal void SetHealth(float ratio) => fill.fillAmount = Mathf.Clamp01(ratio);
+    internal void SetHealth(float ratio) => feedback.SetHealth(ratio, 1f);
 
     private static Image CreateImage(string name, Transform parent, string spriteName)
     {

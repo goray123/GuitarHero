@@ -133,9 +133,17 @@ public static class Boss1EncounterValidation
             Check(cinematic.Find("Top Letterbox").GetComponent<RectTransform>().anchorMin.y < 0.93f &&
                 cinematic.Find("Bottom Letterbox").GetComponent<RectTransform>().anchorMax.y > 0.07f,
                 "Top and bottom cinematic bars cover 7.5 percent each");
+            await Until(() => Mathf.Approximately(Time.timeScale, 0.6f));
+            double slowStarted = Time.realtimeSinceStartupAsDouble;
+            Check(boss.GetComponent<Rigidbody2D>().position.y > 0.1f && !player.enabled,
+                "First entrance slows to 0.6 speed just before landing with controls still locked");
+            await Until(() => !Mathf.Approximately(Time.timeScale, 0.6f));
+            Check(Time.realtimeSinceStartupAsDouble - slowStarted <= 0.45,
+                "Entrance slow motion lasts at most 0.35 seconds plus one frame");
             await Until(() => title.alpha > 0.9f);
             Check(Mathf.Abs(boss.GetComponent<Rigidbody2D>().position.y) < 0.1f && !boss.enabled,
                 "Large title is revealed on landing while combat remains suspended");
+            Check(Time.timeScale == 1f, "Landing hitstop restores normal speed after the entrance slow motion");
             ScreenCapture.CaptureScreenshot("Temp/BossEntrance_Title.png");
             await NextFrame();
             uint entranceLife = rhythm.LifeVersion;
@@ -151,12 +159,51 @@ public static class Boss1EncounterValidation
                 player.GetComponent<PlayerRhythmGaugeUI>().enabled && GameObject.Find("Player Guitar HUD") != null &&
                 !cinematic.gameObject.activeSelf && Mathf.Approximately(camera.ViewCamera.orthographicSize, 8f) && Time.timeScale == 1f,
                 "Combat restores controls, normal framing and time scale without leaving cinematic UI");
-            var healthFill = GameObject.Find("Boss1 Health HUD").transform.Find("Boss Health/Health Gauge/Amp Frame/Health Signal")
-                .GetComponent<Image>();
-            Check(healthFill.sprite != null && Mathf.Approximately(healthFill.fillAmount, 1f),
-                "Amp health bar finishes filling before combat starts");
-            Check(boss.TryTakeDamage(boss.MaxHealth * 0.25f) && Mathf.Approximately(healthFill.fillAmount, 0.75f),
-                "Amp health bar tracks accepted boss damage after the entrance");
+            var bossHud = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .Single(c => c.name == "Boss1 Health HUD");
+            var healthFrame = bossHud.transform.Find("Boss Health/Health Gauge/Amp Frame");
+            var healthFill = healthFrame.Find("Health Signal").GetComponent<Image>();
+            var damageFill = healthFrame.Find("Damage Trail").GetComponent<Image>();
+            Check(healthFill.sprite != null && healthFill.fillAmount < 0.15f,
+                "Boss health bar starts empty after controls and combat are restored");
+            Check(damageFill.transform.GetSiblingIndex() < healthFill.transform.GetSiblingIndex() &&
+                damageFill.sprite == healthFill.sprite && damageFill.color.g > healthFill.color.g &&
+                !damageFill.raycastTarget && !healthFill.raycastTarget,
+                "Bright damage trail shares the signal shape and renders behind orange actual health");
+            await Until(() => healthFill.fillAmount > 0.05f);
+            float reveal = healthFill.fillAmount;
+            Check(reveal < 0.95f && boss.TryTakeDamage(boss.MaxHealth * 0.1f) &&
+                Mathf.Approximately(healthFill.fillAmount, reveal * 0.9f) && Mathf.Approximately(damageFill.fillAmount, reveal),
+                "Damage during the fill immediately changes real health and leaves a separate trail");
+            await Until(() => Mathf.Approximately(healthFill.fillAmount, 0.9f));
+            var healthUI = bossHud.GetComponent<HealthBarUI>();
+            await Until(() => healthUI.IsSettled);
+            Check(Mathf.Approximately(boss.CurrentHealth, boss.MaxHealth * 0.9f) &&
+                Mathf.Approximately(damageFill.fillAmount, 0.9f),
+                "Finishing the entrance fill preserves damage taken during combat");
+            healthUI.enabled = false;
+            var advance = typeof(HealthBarUI).GetMethod("Advance", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            Check(boss.TryTakeDamage(boss.MaxHealth * 0.15f) && Mathf.Approximately(healthFill.fillAmount, 0.75f) &&
+                Mathf.Approximately(damageFill.fillAmount, 0.9f),
+                "Accepted boss damage immediately drains orange while bright damage remains");
+            advance.Invoke(healthUI, new object[] { 0.2f });
+            Check(Mathf.Approximately(damageFill.fillAmount, 0.9f), "Boss damage trail holds for 0.25 seconds");
+            advance.Invoke(healthUI, new object[] { 0.15f });
+            float trailBeforeHit = damageFill.fillAmount;
+            Check(trailBeforeHit > 0.75f && trailBeforeHit < 0.9f, "Boss damage trail eases down after the hold");
+            boss.TryTakeDamage(boss.MaxHealth * 0.05f);
+            Check(Mathf.Approximately(healthFill.fillAmount, 0.7f) && damageFill.fillAmount == trailBeforeHit,
+                "Repeated boss hits restart the delay without jumping the trail upward");
+            advance.Invoke(healthUI, new object[] { 0.2f });
+            Time.timeScale = 0f;
+            typeof(HealthBarUI).GetMethod("Update", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .Invoke(healthUI, null);
+            Check(damageFill.fillAmount == trailBeforeHit, "Boss damage trail holds on repeated hits and freezes during pause");
+            Time.timeScale = 1f;
+            advance.Invoke(healthUI, new object[] { 0.45f });
+            Check(Mathf.Approximately(damageFill.fillAmount, 0.7f) && healthUI.IsSettled,
+                "Boss damage trail settles exactly after its 0.4 second drain");
+            healthUI.enabled = true;
             var leftPanel = left.transform.Find("SteelShutterPanel");
             var rightPanel = right.transform.Find("SteelShutterPanel");
             Check(Mathf.Abs(leftPanel.position.y) < .02f && Mathf.Abs(rightPanel.position.y) < .02f,
@@ -221,11 +268,31 @@ public static class Boss1EncounterValidation
             body.position = new Vector2(6.1f, body.position.y);
             encounter.enabled = true;
             double replayStarted = Time.realtimeSinceStartupAsDouble;
-            await Until(() => encounter.CurrentPhase == Boss1Encounter.Phase.Combat);
+            bool replaySlowed = false;
+            await Until(() => {
+                replaySlowed |= Mathf.Approximately(Time.timeScale, 0.6f);
+                return encounter.CurrentPhase == Boss1Encounter.Phase.Combat;
+            });
             Check(Time.realtimeSinceStartupAsDouble - replayStarted < firstEntranceDuration - 0.3,
                 "Retry keeps the entrance impact with a shorter anticipation and title hold");
+            Check(!replaySlowed, "Retry skips the first entrance slow motion");
             Check(Time.timeScale == 1f && Mathf.Abs(music.volume - 0.8f) < 0.01f && player.enabled,
                 "Retry leaves music, time and controls restored");
+            encounter.enabled = false;
+            await NextFrame();
+            var replayFill = GameObject.Find("Boss1 Health HUD").transform
+                .Find("Boss Health/Health Gauge/Amp Frame/Health Signal").GetComponent<Image>();
+            Check(Mathf.Approximately(replayFill.fillAmount, 1f), "Interrupting the health fill leaves no partially filled HUD");
+            var hitStop = player.GetComponent<PlayerHitStop>();
+            hitStop.SlowFor(0.35f, 0.6f);
+            hitStop.StopFor(0.08f, true);
+            Check(hitStop.IsStopped && Time.timeScale == 0f, "Hitstop can interrupt slow motion immediately");
+            await Until(() => !hitStop.IsStopped);
+            Check(Time.timeScale == 1f, "Overlapping slow motion and hitstop restore the original speed");
+            hitStop.SlowFor(0.35f, 0.6f);
+            hitStop.enabled = false;
+            Check(Time.timeScale == 1f, "Disabling time feedback during slow motion restores the original speed");
+            hitStop.enabled = true;
             Object.Destroy(musicObject);
             Object.Destroy(clip);
             return string.Join("\n", results);

@@ -13,6 +13,13 @@ public class Boss1Health : Damageable
     [SerializeField, Range(48f, 1920f)] private float barLength = 1824f;
     [SerializeField, Min(1f)] private float barHeight = 24f;
     [SerializeField, Min(0f)] private float topMargin = 24f;
+    [Header("Damage Trail (Seconds)")]
+    [Tooltip("피해 잔상이 감소를 시작하기 전 대기 시간(초)")]
+    [SerializeField, Min(0f)] private float damageDelay = 0.25f;
+    [Tooltip("피해 잔상이 실제 체력까지 따라 줄어드는 시간(초)")]
+    [SerializeField, Min(0.01f)] private float damageDuration = 0.4f;
+    [Tooltip("실제 체력 뒤에 남기는 피해 잔상 색상")]
+    [SerializeField] private Color damageTrailColor = new Color32(255, 226, 165, 255);
 
     public float CurrentHealth { get; private set; }
     public float MaxHealth => Mathf.Max(1f, maxHealth);
@@ -87,9 +94,11 @@ public class Boss1Health : Damageable
         barSlot = Rect("Health Gauge", panel);
         barSlot.anchorMin = barSlot.anchorMax = new Vector2(0.5f, 0f);
         barSlot.pivot = new Vector2(0.5f, 0f);
-        healthBar = new CombatHealthBar(barSlot, new Color32(250, 158, 62, 255));
+        healthBar = new CombatHealthBar(barSlot, new Color32(250, 158, 62, 255),
+            damageNumbers, damageTrailColor, damageDelay, damageDuration);
         UpdateLayout();
         RefreshBar();
+        damageNumbers.SetRevealProgress(entranceProgress);
         hud.SetActive(entranceProgress > 0f);
     }
 
@@ -98,7 +107,7 @@ public class Boss1Health : Damageable
         entranceProgress = Mathf.Clamp01(progress);
         BuildHud();
         hud.SetActive(entranceProgress > 0f);
-        RefreshBar();
+        damageNumbers.SetRevealProgress(entranceProgress);
     }
 
     public override bool TryTakeDamage(float damage)
@@ -155,7 +164,7 @@ public class Boss1Health : Damageable
         healthBar.SetSize(size);
     }
 
-    private void RefreshBar() => healthBar?.SetHealth(entranceProgress * CurrentHealth / MaxHealth);
+    private void RefreshBar() => healthBar?.SetHealth(CurrentHealth / MaxHealth);
 
     private static RectTransform Rect(string name, Transform parent)
     {
@@ -164,7 +173,7 @@ public class Boss1Health : Damageable
         return rect;
     }
 
-    private void OnEnable() { if (hud != null) hud.SetActive(true); }
+    private void OnEnable() { if (hud != null) hud.SetActive(entranceProgress > 0f); }
     private void OnDisable() { if (hud != null) hud.SetActive(false); }
     private void OnDestroy() { if (hud != null) Destroy(hud); }
 }

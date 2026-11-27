@@ -46,4 +46,8 @@ TrainingDummy
 
 `HealthBarUI.SetHealth(current, maximum)`으로 다른 체력 시스템에도 연결할 수 있습니다. 즉시 초기화할 때는 세 번째 인자로 `true`를 전달합니다.
 
+보스의 앰프 체력바도 같은 `HealthBarUI` 피해 잔상을 재사용합니다. `CombatHealthBar`가 동일한 `SignalFill` 스프라이트를 **밝은색 잔상 → 주황색 실제 체력** 순서로 생성하며, `Boss1Health`에서 기본 **0.25초 대기 / 0.4초 감소**와 잔상 색을 조정합니다. 등장 충전은 `SetRevealProgress()`로 두 바의 표시량에만 적용하므로 충전 중 피해도 보존됩니다. 조작 해제 후 0.8초 충전 시간은 `Boss1Encounter`에서 조정합니다.
+
+2026-11-27: 감소 시간에 내부적으로 적용되던 최소 1초 제한을 인스펙터와 같은 최소 0.01초로 바로잡았습니다. 이제 `Damage Duration = 0.4`가 실제로 0.4초 동안 감소합니다.
+
 `Tools/ValidateCombatFeel.ps1`의 Play 모드 검증에 Canvas 연결, 실제 체력 반영, 피해 잔상 지연·감소, 연속 피격, 정지, 회복, 사망·재생성 확인을 포함했습니다.

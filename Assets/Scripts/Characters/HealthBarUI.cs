@@ -24,6 +24,7 @@ public class HealthBarUI : MonoBehaviour
     private float delayRemaining;
     private float tweenElapsed;
     private float tweenStart = 1f;
+    private float revealProgress = 1f;
 
     public bool IsSettled => Mathf.Approximately(damageRatio, currentRatio);
 
@@ -33,6 +34,21 @@ public class HealthBarUI : MonoBehaviour
         public Vector3 StartPosition;
         public Vector3 RiseVector;
         public float Elapsed;
+    }
+
+    public void ConfigureFills(Image current, Image damage, float delay, float duration)
+    {
+        currentFill = current;
+        damageFill = damage;
+        damageDelay = Mathf.Max(0f, delay);
+        damageDuration = Mathf.Max(0.01f, duration);
+        ApplyFills();
+    }
+
+    public void SetRevealProgress(float progress)
+    {
+        revealProgress = Mathf.Clamp01(progress);
+        ApplyFills();
     }
 
     public void SetHealth(float current, float maximum, bool immediate = false)
@@ -173,14 +189,15 @@ public class HealthBarUI : MonoBehaviour
         if (deltaTime <= 0f) return;
 
         tweenElapsed += deltaTime;
-        float t = Mathf.Clamp01(tweenElapsed / Mathf.Max(1f, damageDuration));
+        float t = Mathf.Clamp01(tweenElapsed / Mathf.Max(0.01f, damageDuration));
         damageRatio = Mathf.Lerp(tweenStart, currentRatio, Mathf.SmoothStep(0f, 1f, t));
         ApplyFills();
     }
 
     private void ApplyFills()
     {
-        if (currentFill != null) currentFill.fillAmount = currentRatio;
-        if (damageFill != null) damageFill.fillAmount = damageRatio;
+        // 등장 충전은 표시량에만 적용해 충전 중 피격도 실제 체력과 잔상에 남긴다.
+        if (currentFill != null) currentFill.fillAmount = currentRatio * revealProgress;
+        if (damageFill != null) damageFill.fillAmount = damageRatio * revealProgress;
     }
 }

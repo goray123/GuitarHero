@@ -60,14 +60,14 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Characters/Boss1Health.cs": {
-    "mtime": 1795691941.6886027,
-    "seen": 1795692939.187711,
-    "ast_hash": "65935bbd429d6e2d9f1817458e37c367",
+    "mtime": 1795740693.2665677,
+    "seen": 1795741045.0631285,
+    "ast_hash": "4da2c698ea521e9678220e489268f13e",
     "semantic_hash": ""
   },
   "Assets/Scripts/Characters/Boss1LeapSlam.cs": {
-    "mtime": 1795691766.1163528,
-    "seen": 1795692939.187711,
+    "mtime": 1795737677.7055469,
+    "seen": 1795741045.0631285,
     "ast_hash": "a46f052d2aa4196fa48e89d052f8b803",
     "semantic_hash": ""
   },
@@ -102,8 +102,8 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Characters/Boss1SlamSpriteVisual.cs": {
-    "mtime": 1795691942.0741901,
-    "seen": 1795692939.187711,
+    "mtime": 1795737792.755815,
+    "seen": 1795741045.0631285,
     "ast_hash": "754ed863c80f6cd9d9405fdac8b9b9ec",
     "semantic_hash": ""
   },
@@ -114,9 +114,9 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Characters/HealthBarUI.cs": {
-    "mtime": 1794918091.1557255,
-    "seen": 1795082554.4715788,
-    "ast_hash": "8954d774777493f8bff5f6bb2148ebc2",
+    "mtime": 1795740692.744565,
+    "seen": 1795741045.0631285,
+    "ast_hash": "e2ef345f68a00ed87ca68cb83a433e95",
     "semantic_hash": ""
   },
   "Assets/Scripts/Characters/TrainingDummy.cs": {
@@ -144,8 +144,8 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Combat/ChordNoteProjectile.cs": {
-    "mtime": 1794445905.5902753,
-    "seen": 1795082554.4715788,
+    "mtime": 1795737677.7706757,
+    "seen": 1795741045.0631285,
     "ast_hash": "2704a40f201645fe4ef37e665bb453f2",
     "semantic_hash": ""
   },
@@ -156,8 +156,8 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Environment/CityCameraFollow.cs": {
-    "mtime": 1795691940.3505597,
-    "seen": 1795692939.187711,
+    "mtime": 1795737792.7672863,
+    "seen": 1795741045.0631285,
     "ast_hash": "56496a1241188c0206d07c065447477a",
     "semantic_hash": ""
   },
@@ -174,8 +174,8 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerAttack.cs": {
-    "mtime": 1795697485.2490644,
-    "seen": 1795697910.6832108,
+    "mtime": 1795737677.780538,
+    "seen": 1795741045.0631285,
     "ast_hash": "0251896c42c1fc96dd2c69419a885ae1",
     "semantic_hash": ""
   },
@@ -186,15 +186,15 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerChordStrike.cs": {
-    "mtime": 1795691766.1443903,
-    "seen": 1795692939.187711,
+    "mtime": 1795737677.7834558,
+    "seen": 1795741045.0631285,
     "ast_hash": "458da892e8123149d58288fd5001f074",
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerHealth.cs": {
-    "mtime": 1795691766.1485872,
-    "seen": 1795692939.187711,
-    "ast_hash": "498f41bd5982dc45a05da3a6d1b09474",
+    "mtime": 1795737708.8096218,
+    "seen": 1795741045.0631285,
+    "ast_hash": "53aa63434f373bf522d4a46b2c44a190",
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerHitAudio.cs": {
@@ -204,8 +204,8 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerHitCameraShake.cs": {
-    "mtime": 1795691940.8595366,
-    "seen": 1795692939.187711,
+    "mtime": 1795737792.7711525,
+    "seen": 1795741045.0631285,
     "ast_hash": "605ea24f85f2983ab578e6924de8821f",
     "semantic_hash": ""
   },
@@ -216,27 +216,27 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerHitStop.cs": {
-    "mtime": 1795691941.249002,
-    "seen": 1795692939.187711,
-    "ast_hash": "1e854732d9269647fc06cab78c35bfc7",
+    "mtime": 1795740759.314705,
+    "seen": 1795741045.0631285,
+    "ast_hash": "a3ca910da36525bd7a11df196fcdb798",
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerMovement.cs": {
-    "mtime": 1795691766.1527846,
-    "seen": 1795692939.187711,
-    "ast_hash": "0bc5dc59a7d2dea5ca906ef86d663215",
+    "mtime": 1795737708.818519,
+    "seen": 1795741045.0631285,
+    "ast_hash": "72a9ff93dd6604c3420606ac8bc4464d",
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerRhythmGauge.cs": {
-    "mtime": 1795086018.587137,
-    "seen": 1795444692.280613,
+    "mtime": 1795737677.7914152,
+    "seen": 1795741045.0631285,
     "ast_hash": "a0c3c0ac4f74207ba8ff68f4fae511a6",
     "semantic_hash": ""
   },
   "Assets/Scripts/Player/PlayerRhythmGaugeUI.cs": {
-    "mtime": 1794445905.6010451,
-    "seen": 1795082554.4715788,
-    "ast_hash": "226dddcf889fb082dfcb19ccf74493a7",
+    "mtime": 1795737708.8213108,
+    "seen": 1795741045.0631285,
+    "ast_hash": "59eee0f1c8f7edaf835063ea88f59906",
     "semantic_hash": ""
   },
   "Docs/\uae30\ud68d\ubb38\uc11c/assets/\ub9ac\ub4ec\uac8c\uc774\uc9c0/\uacc4\uc0b0\uacb0\uacfc.json": {
@@ -294,14 +294,14 @@
     "semantic_hash": ""
   },
   "Tools/RhythmGaugeValidation.cs": {
-    "mtime": 1795691766.1806014,
-    "seen": 1795692939.187711,
-    "ast_hash": "3bd918568717b5460cd070b130a68090",
+    "mtime": 1795737875.2329953,
+    "seen": 1795741045.0646353,
+    "ast_hash": "02c89b9dfcb7337003040829fc18b9d3",
     "semantic_hash": ""
   },
   "Tools/ValidateCombatFeel.ps1": {
-    "mtime": 1795697552.7391694,
-    "seen": 1795697910.6832108,
+    "mtime": 1795737677.8088298,
+    "seen": 1795741045.0646353,
     "ast_hash": "c516db51525f8e30afecabd2f68b9251",
     "semantic_hash": ""
   },
@@ -354,9 +354,9 @@
     "semantic_hash": ""
   },
   "Docs/\uae30\ud68d\ubb38\uc11c/\ubcf4\uc2a4 1 \uae30\ud68d\uc11c.md": {
-    "mtime": 1794450117.857684,
-    "seen": 1795082554.4715788,
-    "ast_hash": "4bd5679f9ce3e5b68c74b5d2d8e80d91",
+    "mtime": 1795737677.7948167,
+    "seen": 1795741045.0646353,
+    "ast_hash": "bbe1ff2f3d99757404d2df06248ec3b6",
     "semantic_hash": ""
   },
   "Docs/\uc704\ud0a4/\ub9ac\ub4ec \uac8c\uc774\uc9c0 \uad6c\ud604.md": {
@@ -372,8 +372,8 @@
     "semantic_hash": ""
   },
   "Docs/\uc704\ud0a4/\ubcf4\uc2a4 1 \uad6c\ud604 \uc2a4\ud399.md": {
-    "mtime": 1795691766.1682112,
-    "seen": 1795692939.1881866,
+    "mtime": 1795737677.797159,
+    "seen": 1795741045.0646353,
     "ast_hash": "5a10c179233a865827fc690d72a35edd",
     "semantic_hash": ""
   },
@@ -384,14 +384,14 @@
     "semantic_hash": ""
   },
   "Docs/\uc704\ud0a4/\uccb4\ub825\ubc14 UI.md": {
-    "mtime": 1793095096.589199,
-    "seen": 1795082554.4715788,
-    "ast_hash": "a621b2892a8e9be0b9770676350b66d2",
+    "mtime": 1795740872.7551289,
+    "seen": 1795741045.0646353,
+    "ast_hash": "914372f4f5bf248aeaefdb6f37674a26",
     "semantic_hash": ""
   },
   "Docs/\uc704\ud0a4/\ud0c0\uaca9\uac10 \ud29c\ub2dd.md": {
-    "mtime": 1795691766.1682112,
-    "seen": 1795692939.1881866,
+    "mtime": 1795737677.8004746,
+    "seen": 1795741045.0646353,
     "ast_hash": "574c2f58e1678ee076f9ff7f6924c512",
     "semantic_hash": ""
   },
@@ -1074,8 +1074,8 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Editor/BossHitboxEditor.cs": {
-    "mtime": 1795691766.1291916,
-    "seen": 1795692939.187711,
+    "mtime": 1795737677.7747104,
+    "seen": 1795741045.0631285,
     "ast_hash": "f579b0414a94987dc4f086fe9b81f338",
     "semantic_hash": ""
   },
@@ -1146,21 +1146,21 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Environment/Boss1Encounter.cs": {
-    "mtime": 1795692766.1168206,
-    "seen": 1795692939.187711,
-    "ast_hash": "6fabf5e351ce9cdebaec4b48919df408",
+    "mtime": 1795740693.5689042,
+    "seen": 1795741045.0631285,
+    "ast_hash": "13c142a84f62f4185cd30c87c3209928",
     "semantic_hash": ""
   },
   "Tools/Boss1EncounterValidation.cs": {
-    "mtime": 1795692766.6442294,
-    "seen": 1795692939.187711,
-    "ast_hash": "639041637fce9f90b441737a1a08a90c",
+    "mtime": 1795740810.481891,
+    "seen": 1795741045.0631285,
+    "ast_hash": "f34c6a9022897e9440dea5c75ca72ece",
     "semantic_hash": ""
   },
   "Docs/\uc704\ud0a4/\ubcf4\uc2a4 1 \uc52c \uc9c4\uc785.md": {
-    "mtime": 1795692891.5303893,
-    "seen": 1795692939.1881866,
-    "ast_hash": "6243cd7139ecd7637c77803535b6cd50",
+    "mtime": 1795741090.097709,
+    "seen": 1795741102.4450758,
+    "ast_hash": "3352ada87127df4f39692b933f1f95d9",
     "semantic_hash": ""
   },
   "graphify-out/memory/query_20261123_165052_9106a9e3_\ubcf4\uc2a4\uc758_\ud328\ud134_\uc0ac\uc774\uc0ac\uc774_\uac04\uaca9\uc774_\ub298\uc5b4\ub0ac\uc73c\uba74_\uc88b\uaca0\uc5b4__\ub118_\uc9e7\ub2e4__\uc9c0\uae08.md": {
@@ -1194,8 +1194,8 @@
     "semantic_hash": ""
   },
   "Tools/BossCollisionValidation.cs": {
-    "mtime": 1795691766.1747236,
-    "seen": 1795692939.187711,
+    "mtime": 1795737677.8027961,
+    "seen": 1795741045.0631285,
     "ast_hash": "0598d9312b7c2328300ac8e2f6cbf6e0",
     "semantic_hash": ""
   },
@@ -1212,9 +1212,9 @@
     "semantic_hash": ""
   },
   "Assets/Scripts/Environment/Boss1EntrancePresentation.cs": {
-    "mtime": 1795692084.3688526,
-    "seen": 1795692939.187711,
-    "ast_hash": "ddcaac1f74337ea21cf2ca4dd54b79ef",
+    "mtime": 1795740759.637462,
+    "seen": 1795741045.0631285,
+    "ast_hash": "76873d2ecd2e2c6126066ce9e24a77e1",
     "semantic_hash": ""
   },
   "Assets/Fonts/Credits.txt": {
@@ -1257,6 +1257,36 @@
     "mtime": 1795697766.734342,
     "seen": 1795697910.6832108,
     "ast_hash": "fab5164538f6fc8fcbfacd1371146f5a",
+    "semantic_hash": ""
+  },
+  "Assets/Scripts/Characters/CombatHealthBar.cs": {
+    "mtime": 1795740692.3059905,
+    "seen": 1795741045.0631285,
+    "ast_hash": "46271f41c3ed0ffbbc5c1c96019cbc65",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/DashIcon.png": {
+    "mtime": 1795737708.7725377,
+    "seen": 1795741045.0646353,
+    "ast_hash": "b22c19bbfb0652f850c3935d3fec9db1",
+    "semantic_hash": ""
+  },
+  "Assets/Characters/Player/GuitarHUD.png": {
+    "mtime": 1795737708.7750487,
+    "seen": 1795741045.0646353,
+    "ast_hash": "520f29618fcbee853ae27f57eafb04af",
+    "semantic_hash": ""
+  },
+  "Assets/Resources/CombatHud/AmpFrame.png": {
+    "mtime": 1795737708.7839484,
+    "seen": 1795741045.0646353,
+    "ast_hash": "75713b46e3895100aaa61a40d6e9bbf1",
+    "semantic_hash": ""
+  },
+  "Assets/Resources/CombatHud/SignalFill.png": {
+    "mtime": 1795737708.7869806,
+    "seen": 1795741045.0646353,
+    "ast_hash": "d75f19a3a39ecd8e243968805334d27c",
     "semantic_hash": ""
   }
 }
