@@ -132,6 +132,8 @@ public static class BossCollisionValidation
                 if (!Physics2D.GetIgnoreCollision(box, bossBox)) throw new Exception($"Body collision resumed at physics step {i}.");
             }
             Check(crouches > 0, $"10000 physics steps of movement, attacks, slides and jumps finish without crouch lock ({crouches} crouches)");
+            CheckLeapTrajectory(boss, player);
+            CheckLeapBodyHitbox(boss, player);
         }
         catch (Exception exception)
         {
@@ -143,6 +145,149 @@ public static class BossCollisionValidation
         {
             File.WriteAllLines(Path.Combine(Application.dataPath, "../boss-collision-results.txt"), Results);
             EditorApplication.Exit(exitCode);
+        }
+    }
+
+    private static void CheckLeapTrajectory(GameObject boss, GameObject player)
+    {
+        var leap = boss.GetComponent<Boss1LeapSlam>();
+        var body = boss.GetComponent<Rigidbody2D>();
+        var playerBody = player.GetComponent<Rigidbody2D>();
+        var owner = boss.GetComponent<Boss1ProximityAttack>();
+        owner.BarrageActive = true;
+        owner.Timeline.Stop();
+        boss.GetComponent<Boss1BoostRush>().Cancel();
+        boss.GetComponent<Boss1Backstep>().Cancel();
+        const float dt = 0.01f;
+        foreach (float x in new[] { -6f, 6f })
+        {
+            leap.Cancel();
+            body.position = new Vector2(0f, 0.02f);
+            body.linearVelocity = Vector2.zero;
+            playerBody.position = new Vector2(x, 0.75f);
+            Physics2D.SyncTransforms();
+            float gravity = body.gravityScale;
+            Check(leap.TryBegin(player.transform, 1f, true), $"Leap toward {x}: starts");
+            leap.Tick(0.8f);
+            Vector2 landing = leap.LandingPoint;
+            float startY = body.position.y;
+            float previousY = startY;
+            bool rising = true, vertical = true, falling = true, noEarlyImpact = true;
+            // Moving the target after takeoff must not move the marker or redirect the dive.
+            playerBody.position = new Vector2(-x, 0.75f);
+            for (int step = 1; step <= 71; step++)
+            {
+                leap.Tick(dt);
+                Physics2D.Simulate(dt);
+                Vector2 position = body.position;
+                if (step <= 35) rising &= position.y >= previousY - 0.001f;
+                if (step == 35)
+                    Check(Mathf.Abs(position.x - landing.x) < 0.001f &&
+                        Mathf.Abs(position.y - startY - 2.5f * owner.Height * Mathf.Abs(boss.transform.lossyScale.y)) < 0.001f,
+                        $"Leap toward {x}: reaches the point above landing at half flight");
+                if (step > 35)
+                {
+                    vertical &= Mathf.Abs(position.x - landing.x) < 0.001f;
+                    falling &= position.y <= previousY + 0.001f;
+                }
+                if (step < 70)
+                    noEarlyImpact &= leap.CurrentPhase == Boss1LeapSlam.Phase.Airborne && !leap.WavesActive;
+                previousY = position.y;
+            }
+            Check(rising && vertical && falling, $"Leap toward {x}: rises then descends vertically");
+            Check(leap.LandingPoint == landing && noEarlyImpact,
+                $"Leap toward {x}: landing stays locked and no impact occurs in flight");
+            Check(leap.CurrentPhase == Boss1LeapSlam.Phase.Impact && leap.WavesActive &&
+                Mathf.Abs(body.gravityScale - gravity) < 0.001f,
+                $"Leap toward {x}: impact and waves begin at flight end (within one physics step) and gravity returns");
+        }
+        leap.Cancel();
+        Check(leap.TryBegin(player.transform, 1f, true), "Cancelled leap can restart");
+        leap.Tick(0.8f);
+        leap.Tick(0.1f);
+        leap.Cancel();
+        Check(!leap.IsBusy && !leap.WavesActive && !leap.Hitbox.enabled && body.gravityScale > 0f,
+            "Cancelling a rising leap clears the attack and restores gravity");
+    }
+
+    private static void CheckLeapBodyHitbox(GameObject boss, GameObject player)
+    {
+        var leap = boss.GetComponent<Boss1LeapSlam>();
+        var body = boss.GetComponent<Rigidbody2D>();
+        var bodyBox = boss.GetComponent<BoxCollider2D>();
+        var playerBody = player.GetComponent<Rigidbody2D>();
+        var playerBox = player.GetComponent<BoxCollider2D>();
+        var movement = player.GetComponent<PlayerMovement>();
+        var attacks = boss.GetComponent<Boss1AttackHitboxes>();
+        int hits = 0;
+        float totalDamage = 0f;
+        void Record(PlayerMovement target, AttackHit hit)
+        {
+            if (target != movement) return;
+            hits++;
+            totalDamage += hit.Damage;
+        }
+        void Place(Vector2 position)
+        {
+            playerBody.position = position;
+            playerBody.linearVelocity = Vector2.zero;
+            Physics2D.SyncTransforms();
+        }
+        playerBody.gravityScale = 0f;
+        playerBox.size = Vector2.one * 0.08f;
+        playerBox.offset = Vector2.zero;
+        attacks.PlayerHit += Record;
+        try
+        {
+            body.position = new Vector2(0f, 0.02f);
+            Place(new Vector2(6f, 0.75f));
+            Check(leap.TryBegin(player.transform, 1f, true), "Body hitbox test starts a leap");
+            leap.Tick(0.8f);
+            leap.Tick(0.2f);
+            Physics2D.Simulate(0.02f);
+            Place(bodyBox.bounds.center);
+            leap.Tick(0f);
+            Check(!leap.Hitbox.enabled && hits == 0, "Overlapping the boss during ascent deals no damage");
+            Place(new Vector2(50f, 20f));
+            leap.Tick(0.2f);
+            Physics2D.Simulate(0.02f);
+            Place(bodyBox.bounds.center);
+            leap.Tick(0f);
+            Check(leap.CurrentPhase == Boss1LeapSlam.Phase.Airborne && leap.Hitbox.enabled &&
+                leap.Hitbox.isTrigger && leap.Hitbox.size == bodyBox.size && leap.Hitbox.offset == bodyBox.offset &&
+                hits == 1 && Mathf.Abs(totalDamage - 10f) < 0.001f,
+                "Descending body trigger follows the boss body and delivers one 10% hit in midair");
+            leap.Tick(0f);
+            Place(leap.LandingPoint + Vector2.up * 0.05f);
+            leap.Tick(0.31f);
+            leap.Tick(0.01f);
+            Check(leap.CurrentPhase == Boss1LeapSlam.Phase.Impact && leap.Hitbox.enabled && hits == 1,
+                "Body stays active after landing without repeat body or wave damage");
+            Place(new Vector2(50f, 20f));
+            leap.Tick(0.15f);
+            Check(!leap.Hitbox.enabled, "Recovery disables the body hitbox");
+
+            leap.Cancel();
+            Place(new Vector2(-6f, 0.75f));
+            Check(leap.TryBegin(player.transform, 1f, true), "A new leap clears previous body hits");
+            leap.Tick(0.8f);
+            Place(new Vector2(50f, 20f));
+            leap.Tick(0.71f);
+            // Enlarging the warning must not create a damaging circle at the landing point.
+            Set(leap, "landingRadiusH", 10f);
+            Place((Vector2)bodyBox.bounds.center + Vector2.right * (bodyBox.bounds.extents.x + 0.5f));
+            leap.Tick(0f);
+            Check(hits == 1, "Standing outside the boss body inside the warning radius deals no body damage");
+            Place(bodyBox.bounds.center);
+            leap.Tick(0f);
+            Check(hits == 2 && Mathf.Abs(totalDamage - 20f) < 0.001f,
+                "Landing impact hits the upper torso even above the old ground-circle radius");
+            leap.Cancel();
+            Check(!leap.Hitbox.enabled && !leap.WavesActive, "Cancelling disables the body hitbox and waves");
+        }
+        finally
+        {
+            attacks.PlayerHit -= Record;
         }
     }
 }

@@ -81,6 +81,7 @@ public class PlayerAttack : MonoBehaviour
 
     private PlayerMovement movement;
     private PlayerChordStrike chordStrike;
+    private PlayerGuitarSpin guitarSpin;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private PlayerHitStop hitStop;
@@ -134,12 +135,14 @@ public class PlayerAttack : MonoBehaviour
         comboStep == 3 ? Vector2.down : Vector2.right;
     public float SwingProgress => Mathf.Clamp01((Time.time - windupEndTime) / Mathf.Max(0.01f, activeDuration));
     private bool IsSliding => movement != null && movement.IsSliding;
-    private bool IsUsingSkill => chordStrike != null && chordStrike.BlocksActions;
+    private bool IsUsingSkill => (chordStrike != null && chordStrike.BlocksActions) ||
+        (guitarSpin != null && guitarSpin.BlocksActions);
 
     private void Awake()
     {
         movement = GetComponent<PlayerMovement>();
         chordStrike = GetComponent<PlayerChordStrike>();
+        guitarSpin = GetComponent<PlayerGuitarSpin>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         hitStop = GetComponent<PlayerHitStop>();

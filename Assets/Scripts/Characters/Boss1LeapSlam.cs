@@ -20,6 +20,7 @@ public class Boss1LeapSlam : MonoBehaviour
     public float Progress => Mathf.Clamp01(elapsed / Mathf.Max(0.001f, duration));
     public Vector2 LandingPoint { get; private set; }
     [Header("Hitboxes (player height H)")]
+    [Tooltip("착지 경고 표시의 반경입니다. 도약 피해 판정은 보스 몸통을 따릅니다.")]
     [SerializeField, Min(0.01f)] private float landingRadiusH = 1f;
     [SerializeField, Min(0.01f)] private float waveHeightH = 0.75f;
     [SerializeField] private Sprite waveSprite;
@@ -32,6 +33,7 @@ public class Boss1LeapSlam : MonoBehaviour
     public float WaveWidth => waveWidthH * H;
     public float WaveDistance { get; private set; }
     public bool WavesActive { get; private set; }
+    public BoxCollider2D Hitbox => hitbox;
     public bool MarkerVisible => CurrentPhase == Phase.Airborne || CurrentPhase == Phase.Impact;
     public float RemainingDangerTime => CurrentPhase == Phase.Windup ? Mathf.Max(0f, duration - elapsed) + flightTime + 0.5f :
         CurrentPhase == Phase.Airborne ? Mathf.Max(0f, flightTime - elapsed) + 0.5f :
@@ -41,7 +43,7 @@ public class Boss1LeapSlam : MonoBehaviour
     private Boss1ProximityAttack owner;
     private Boss1AttackHitboxes damage;
     private Rigidbody2D body;
-    private BoxCollider2D bodyCollider;
+    private BoxCollider2D bodyCollider, hitbox;
     private Transform target;
     private Vector2 startPosition, landingBody;
     private float elapsed, duration, cooldown, savedGravity;
@@ -57,6 +59,12 @@ public class Boss1LeapSlam : MonoBehaviour
         damage = GetComponent<Boss1AttackHitboxes>();
         body = GetComponent<Rigidbody2D>();
         bodyCollider = GetComponent<BoxCollider2D>();
+        var child = new GameObject("Hitbox_LeapSlam");
+        child.layer = gameObject.layer;
+        child.transform.SetParent(transform, false);
+        hitbox = child.AddComponent<BoxCollider2D>();
+        hitbox.isTrigger = true;
+        hitbox.enabled = false;
     }
 
     public bool TryBegin(Transform player, float windupMultiplier, bool fromBackstep = false)
@@ -76,6 +84,7 @@ public class Boss1LeapSlam : MonoBehaviour
         CurrentPhase = phase;
         elapsed = 0f;
         duration = seconds;
+        hitbox.enabled = phase == Phase.Impact;
     }
 
     // Called by the boss's fixed-step controller, so melee and leap never run together.
@@ -92,9 +101,20 @@ public class Boss1LeapSlam : MonoBehaviour
         else if (CurrentPhase == Phase.Airborne)
         {
             float t = Mathf.Clamp01(elapsed / flightTime);
-            Vector2 position = Vector2.Lerp(startPosition, landingBody, t);
-            position.y += 4f * apexHeightH * H * t * (1f - t);
+            Vector2 apex = new Vector2(landingBody.x, Mathf.Max(startPosition.y, landingBody.y) + apexHeightH * H);
+            Vector2 position;
+            if (t < 0.5f)
+            {
+                float rise = t * 2f;
+                position = Vector2.Lerp(startPosition, apex, 1f - (1f - rise) * (1f - rise));
+            }
+            else
+            {
+                float fall = (t - 0.5f) * 2f;
+                position = Vector2.Lerp(apex, landingBody, fall * fall);
+            }
             body.MovePosition(position);
+            hitbox.enabled = t >= 0.5f;
             if (t >= 1f)
             {
                 body.position = landingBody;
@@ -102,13 +122,13 @@ public class Boss1LeapSlam : MonoBehaviour
                 Enter(Phase.Impact, impactTime);
                 WavesActive = true;
                 WaveDistance = 0f;
-                HitLanding();
             }
+            if (hitbox.enabled) HitBody();
         }
         else if (CurrentPhase == Phase.Impact)
         {
             if (elapsed + 0.00001f >= duration) Enter(Phase.Recovery, recoveryTime * 1.2f);
-            else HitLanding();
+            else HitBody();
         }
         else if (elapsed + 0.00001f >= duration)
         {
@@ -145,12 +165,14 @@ public class Boss1LeapSlam : MonoBehaviour
         Enter(Phase.Airborne, flightTime);
     }
 
-    private void HitLanding()
+    private void HitBody()
     {
+        hitbox.offset = bodyCollider.offset;
+        hitbox.size = bodyCollider.size;
         results.Clear();
         Physics2D.SyncTransforms();
-        Physics2D.OverlapCircle(LandingPoint, Radius, new ContactFilter2D { useTriggers = false }, results);
-        HitResults(0.10f, Vector2.down);
+        hitbox.Overlap(new ContactFilter2D { useTriggers = false }, results);
+        HitResults(0.10f, Vector2.down, hitbox.bounds.center);
     }
 
     public Vector2 WaveCenter(int direction) => LandingPoint + new Vector2(direction * WaveDistance, WaveHeight * 0.5f);
@@ -166,19 +188,19 @@ public class Boss1LeapSlam : MonoBehaviour
             results.Clear();
             Physics2D.OverlapBox(center, new Vector2(WaveWidth + WaveDistance - previous, WaveHeight), 0,
                 new ContactFilter2D { useTriggers = false }, results);
-            HitResults(0.06f, Vector2.right * direction);
+            HitResults(0.06f, Vector2.right * direction, LandingPoint);
         }
         if (WaveDistance >= waveRangeH * H) WavesActive = false;
     }
 
-    private void HitResults(float fraction, Vector2 direction)
+    private void HitResults(float fraction, Vector2 direction, Vector2 origin)
     {
         foreach (var collider in results)
         {
             var player = collider.GetComponentInParent<PlayerMovement>();
             if (player == null || !player.isActiveAndEnabled || !hitPlayers.Add(player)) continue;
-            // One hit per leap prevents simultaneous landing + two waves triple-hitting a player.
-            damage.DeliverHit(player, collider.ClosestPoint(LandingPoint), direction, fraction, 4);
+            // One hit per leap prevents the descending body and waves hitting a player repeatedly.
+            damage.DeliverHit(player, collider.ClosestPoint(origin), direction, fraction, 4);
         }
     }
 
@@ -195,6 +217,7 @@ public class Boss1LeapSlam : MonoBehaviour
         RestoreGravity();
         CurrentPhase = Phase.Idle;
         WavesActive = false;
+        if (hitbox != null) hitbox.enabled = false;
         hitPlayers.Clear();
         target = null;
     }
