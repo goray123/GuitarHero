@@ -1,5 +1,187 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &900200001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 900200002}
+  - component: {fileID: 900200003}
+  - component: {fileID: 900200004}
+  m_Layer: 0
+  m_Name: UpperAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &900200002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900200001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8390205329172563933}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &900200003
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900200001}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 1}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 0.86, y: 1.31}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.3, y: 1.1}
+  m_EdgeRadius: 0
+--- !u!114 &900200004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900200001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8c2339d6704310af92b65072d89505, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackHitbox
+--- !u!1 &900200011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 900200012}
+  - component: {fileID: 900200013}
+  - component: {fileID: 900200014}
+  m_Layer: 0
+  m_Name: DownAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &900200012
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900200011}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8390205329172563933}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &900200013
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900200011}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -1}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 0.86, y: 1.31}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.3, y: 1.1}
+  m_EdgeRadius: 0
+--- !u!114 &900200014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900200011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8c2339d6704310af92b65072d89505, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackHitbox
 --- !u!1 &1192302248440939473
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +335,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage:
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -214,7 +396,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08d5d8a8a6b5f2f478511fc015fd68ef, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   moveSpeed: 4.8
@@ -239,7 +421,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b44241a40c56409ba4e0fc7582de4610, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
   inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   basicWindupTime: 0.2
@@ -251,6 +433,9 @@ MonoBehaviour:
   thirdLandingActiveTime: 0.3
   thirdRecoveryTime: 0.2
   thirdContactDelay: 0.3
+  directionalWindupTime: 0.15
+  directionalActiveTime: 0.15
+  directionalRecoveryTime: 0.15
   thirdAdvanceDistance: 1.5
   thirdHopHeight: 0.7
   thirdAttackFallSpeed: 20
@@ -267,9 +452,6 @@ MonoBehaviour:
   attack3Damage: 25
   upperAttackDamage: 8
   downAttackDamage: 8
-  directionalWindupTime: 0.15
-  directionalActiveTime: 0.15
-  directionalRecoveryTime: 0.15
 --- !u!114 &900100035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,7 +462,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65c8bbae0b5d4c75a2affd416ccc17ce, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHitStop
   basicDuration: 0.05
   thirdDuration: 0.15
@@ -295,7 +477,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f678127a17874a7d91db11f5af61ae2a, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHitAudio
   basicHitClip: {fileID: 8300000, guid: 6a91518a69a74f2ea7256ebf2488aa83, type: 3}
   basicVolume: 1
@@ -317,7 +499,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49f415d7453743a794fdaaf168db3443, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHitEffects
   hitEffectPrefab: {fileID: 8982713638201100070, guid: f90ea5733602bb54eb63e768b924339d, type: 3}
   basicScale: 1
@@ -326,24 +508,6 @@ MonoBehaviour:
   landingScale: 0.65
   enemyFlashMaterial: {fileID: 2100000, guid: a3d5f677b6ee4a38af9b278e761746d4, type: 2}
   enemyFlashDuration: 0.045
---- !u!114 &900100043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1192302248440939473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1533749fdb4b44a1965ac35822eed50a, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackTrail
-  trailMaterial: {fileID: 2100000, guid: 79b2395e942268043b3f84483c49c138, type: 2}
-  basicColor: {r: 1, g: 0.66, b: 0.3, a: 0.75}
-  thirdColor: {r: 1, g: 0.42, b: 0.18, a: 0.85}
-  fadeDuration: 0.07
-  hitPulseDuration: 0.045
-  sortingOrderOffset: 4
 --- !u!114 &900100037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,7 +518,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4341f80f50749e487cc830fd3fa4b2e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHitCameraShake
   basicAmplitude: 0.025
   thirdAmplitude: 0.055
@@ -372,7 +536,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f99ac456d8df40e5a8f04ce5c046a177, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerChordStrike
   inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   notePrefab: {fileID: 400, guid: 78b61161d1bd4517b5049c9f56f465eb, type: 3}
@@ -380,8 +544,8 @@ MonoBehaviour:
   recoilDistance: 4
   recoilHeight: 1.25
   recoilDuration: 0.4
-  downwardJumpHeight: 1.6
-  downwardRiseTime: 0.26
+  downwardJumpHeight: 3.5
+  downwardRiseTime: 0.5
   downwardAimAngle: 60
   noteDamage: 5
   noteRange: 3
@@ -402,7 +566,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cdbf4e3a6a8b47ed9fdeaf6c3d9146e2, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRhythmGauge
   low:
     attackSpeed: 0.75
@@ -434,13 +598,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6535e924f8e43c4860c2fc345ede6d3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRhythmGaugeUI
-  screenOffset: {x: 24, y: 24}
   guitarArtwork: {fileID: 21300000, guid: 6c00cc7fb7ff4075970f9e205e96d53f, type: 3}
   dashIcon: {fileID: 21300000, guid: 4cb189b960d4488ab466b38e1d3a803b, type: 3}
   cooldownPixel: {fileID: 21300000, guid: 3b315a976558e044cbd5545880b88122, type: 3}
-  dashCooldownTransparency: 90
+  dashCooldownTransparency: 10
+  screenOffset: {x: 24, y: 24}
+  screenWidthDivisor: 3.36
+  screenHeightDivisor: 6.05
 --- !u!114 &900100041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,7 +617,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 875b43b9f4e44bc7bb27612ad2bcebc7, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   maxHealth: 100
   invulnerabilityDuration: 1
@@ -465,7 +631,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c02b87b596d413f86fae56fda1b1c20, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDamageEffects
   flashMaterial: {fileID: 2100000, guid: a3d5f677b6ee4a38af9b278e761746d4, type: 2}
   flashColor: {r: 1, g: 1, b: 1, a: 1}
@@ -477,6 +643,71 @@ MonoBehaviour:
   sparkColor: {r: 1, g: 0.18, b: 0.22, a: 1}
   sparkScale: 0.45
   sparkSortingOrderOffset: 8
+--- !u!114 &900100043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1533749fdb4b44a1965ac35822eed50a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackTrail
+  trailMaterial: {fileID: 2100000, guid: 79b2395e942268043b3f84483c49c138, type: 2}
+  basicColor: {r: 1, g: 0.66, b: 0.3, a: 0.75}
+  thirdColor: {r: 1, g: 0.42, b: 0.18, a: 0.85}
+  fadeDuration: 0.07
+  hitPulseDuration: 0.045
+  sortingOrderOffset: 4
+--- !u!114 &6699514772750210337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1ef5275f6141b4e921074745a684ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerGuitarSpin
+  inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  maximumDuration: 4
+  cooldownTime: 6
+  attackRadius: 1.6
+  hitInterval: 0.15
+  hitDamage: 3
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  damageReduction: 0.3
+  moveSpeedMultiplier: 0.4
+  showCooldown: 1
+--- !u!114 &3856986658317362937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192302248440939473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3e70fc3a0f9c94bbbd1531b402ef77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerGuitarSpinVisual
+  guitarSprite: {fileID: 21300000, guid: 517db7983081b3142822fad8f91ae9a0, type: 3}
+  noteSprite: {fileID: 21300000, guid: 68c518520b0b4e1ea3d3aa4050d340d5, type: 3}
+  spinFrames:
+  - {fileID: 4350282174675913376, guid: 91b3c484eabc3114985046a8696d25e7, type: 3}
+  - {fileID: 7763497632931964430, guid: 91b3c484eabc3114985046a8696d25e7, type: 3}
+  - {fileID: 8087636220184929646, guid: 91b3c484eabc3114985046a8696d25e7, type: 3}
+  - {fileID: 8975697326830325784, guid: 91b3c484eabc3114985046a8696d25e7, type: 3}
+  trailMaterial: {fileID: 2100000, guid: 79b2395e942268043b3f84483c49c138, type: 2}
+  hitEffect: {fileID: 8982713638201100070, guid: f90ea5733602bb54eb63e768b924339d, type: 3}
+  turnsPerSecond: 2.5
+  stormColor: {r: 0.55, g: 0.72, b: 1, a: 0.75}
 --- !u!1 &1421525041279666300
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,7 +833,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f8c2339d6704310af92b65072d89505, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackHitbox
 --- !u!1 &4447377009462356796
 GameObject:
@@ -693,7 +924,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f8c2339d6704310af92b65072d89505, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackHitbox
 --- !u!1 &7799010434576600248
 GameObject:
@@ -784,234 +1015,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f8c2339d6704310af92b65072d89505, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackHitbox
---- !u!1 &900200001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 900200002}
-  - component: {fileID: 900200003}
-  - component: {fileID: 900200004}
-  m_Layer: 0
-  m_Name: UpperAttack
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &900200002
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900200001}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8390205329172563933}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &900200003
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900200001}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.56, y: 2.56}
-    newSize: {x: 0.86, y: 1.31}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1.3, y: 1.1}
-  m_EdgeRadius: 0
---- !u!114 &900200004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900200001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f8c2339d6704310af92b65072d89505, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackHitbox
---- !u!1 &900200011
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 900200012}
-  - component: {fileID: 900200013}
-  - component: {fileID: 900200014}
-  m_Layer: 0
-  m_Name: DownAttack
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &900200012
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900200011}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8390205329172563933}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &900200013
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900200011}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -1}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.56, y: 2.56}
-    newSize: {x: 0.86, y: 1.31}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1.3, y: 1.1}
-  m_EdgeRadius: 0
---- !u!114 &900200014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900200011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f8c2339d6704310af92b65072d89505, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackHitbox
---- !u!114 &6699514772750210337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1192302248440939473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a1ef5275f6141b4e921074745a684ab, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerGuitarSpin
-  inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  maximumDuration: 4
-  cooldownTime: 6
-  attackRadius: 1.6
-  hitInterval: 0.15
-  hitDamage: 3
-  targetLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  damageReduction: 0.3
-  moveSpeedMultiplier: 0.4
-  showCooldown: 1
---- !u!114 &3856986658317362937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1192302248440939473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3e70fc3a0f9c94bbbd1531b402ef77, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerGuitarSpinVisual
-  guitarSprite: {fileID: 21300000, guid: 517db7983081b3142822fad8f91ae9a0, type: 3}
-  noteSprite: {fileID: 21300000, guid: 68c518520b0b4e1ea3d3aa4050d340d5, type: 3}
-  spinFrames:
-  - {fileID: 4350282174675913376, guid: 91b3c484eabc3114985046a8696d25e7, type: 3}
-  - {fileID: 7763497632931964430, guid: 91b3c484eabc3114985046a8696d25e7, type: 3}
-  - {fileID: 8087636220184929646, guid: 91b3c484eabc3114985046a8696d25e7, type: 3}
-  - {fileID: 8975697326830325784, guid: 91b3c484eabc3114985046a8696d25e7, type: 3}
-  trailMaterial: {fileID: 2100000, guid: 79b2395e942268043b3f84483c49c138, type: 2}
-  hitEffect: {fileID: 8982713638201100070, guid: f90ea5733602bb54eb63e768b924339d, type: 3}
-  turnsPerSecond: 2.5
-  stormColor: {r: 0.55, g: 0.72, b: 1, a: 0.75}

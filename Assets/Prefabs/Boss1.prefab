@@ -438,6 +438,9 @@ MonoBehaviour:
   barLength: 1824
   barHeight: 24
   topMargin: 24
+  damageDelay: 0.25
+  damageDuration: 0.4
+  damageTrailColor: {r: 1, g: 0.8862745, b: 0.64705884, a: 1}
 --- !u!114 &901004300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,8 +455,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   repeatInterval: 20
   preparationTime: 1
-  missileCount: 30
-  shotInterval: 0.2
+  missileCount: 25
+  shotInterval: 0.25
   explosionTime: 0.2
   recoveryTime: 0.6
   scatterH: 0.5
