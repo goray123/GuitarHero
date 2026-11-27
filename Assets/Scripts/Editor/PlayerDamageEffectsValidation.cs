@@ -82,6 +82,40 @@ public static class PlayerDamageEffectsValidation
 
     private static BluntHitBurst[] Sparks() => Object.FindObjectsByType<BluntHitBurst>(FindObjectsSortMode.None);
 
+    private static void CheckChordBlinkOverlap(GameObject player)
+    {
+        var skill = player.GetComponent<PlayerChordStrike>();
+        var health = player.GetComponent<PlayerHealth>();
+        var effects = player.GetComponent<PlayerDamageEffects>();
+        var source = player.GetComponent<SpriteRenderer>();
+        foreach (bool hitBeforeAim in new[] { false, true })
+        foreach (bool endAimFirst in new[] { false, true })
+        {
+            health.ResetHealth();
+            if (hitBeforeAim)
+            {
+                Check(health.TryTakeDamage(1f), "Damage is accepted before S aim");
+                Invoke(effects, "StopFlash");
+                Invoke(effects, "UpdateBlink", Get<float>(effects, "blinkInterval") * 1.5f);
+            }
+            Invoke(skill, "BeginAim");
+            if (!hitBeforeAim) Check(health.TryTakeDamage(1f), "Damage is accepted during S aim");
+            Invoke(effects, "StopFlash");
+            Invoke(effects, "UpdateBlink", Get<float>(effects, "blinkInterval") * 1.5f);
+            if (endAimFirst) Invoke(skill, "EndAim");
+            health.ResetHealth();
+            Invoke(effects, "LateUpdate");
+            if (!endAimFirst) Invoke(skill, "EndAim");
+            Check(source.enabled && !source.forceRenderingOff,
+                "S aim and damage blink restore visibility in either start/end order: " + hitBeforeAim + "/" + endAimFirst);
+        }
+        source.enabled = false;
+        Invoke(skill, "BeginAim");
+        Invoke(skill, "EndAim");
+        Check(!source.enabled, "S aim preserves an already disabled source renderer");
+        source.enabled = true;
+    }
+
     private static async void CheckInPlayMode()
     {
         GameObject player = null;
@@ -237,6 +271,9 @@ public static class PlayerDamageEffectsValidation
             Check(Time.timeScale == 0f && !health.IsInvulnerable && !source.forceRenderingOff && !flash.enabled && !overlay.enabled,
                 "Real-time feedback completes during a pause without unpausing the game");
             Time.timeScale = 1f;
+            hitStop.enabled = false;
+            CheckChordBlinkOverlap(player);
+            hitStop.enabled = true;
             health.ResetHealth();
             Check(health.TryTakeDamage(1000f) && health.IsDead && flash.enabled, "Lethal damage still plays feedback");
             int eventsBefore = events;

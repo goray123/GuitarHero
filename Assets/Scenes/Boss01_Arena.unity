@@ -255,10 +255,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 900100040, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
-      propertyPath: dashCooldownTransparency
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 900100038, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: downwardRiseTime
       value: 0.5
@@ -266,6 +262,10 @@ PrefabInstance:
     - target: {fileID: 900100038, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: downwardJumpHeight
       value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 900100040, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
+      propertyPath: dashCooldownTransparency
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1192302248440939473, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: m_Name
@@ -511,6 +511,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 901004300, guid: a4aeeb053d472394c882398f82b85686, type: 3}
+      propertyPath: missileCount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 901004300, guid: a4aeeb053d472394c882398f82b85686, type: 3}
+      propertyPath: shotInterval
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 864545141949841003, guid: a4aeeb053d472394c882398f82b85686, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12
@@ -4984,6 +4992,7 @@ MonoBehaviour:
   cameraFollow: {fileID: 1159056291}
   dropHeight: 16
   landingPause: 0.6
+  healthFillDuration: 0.8
 --- !u!4 &2044822801
 Transform:
   m_ObjectHideFlags: 0
@@ -5014,10 +5023,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3d794360f31400d9e8ae4f33ba874e1, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss1EntrancePresentation
   anticipation: 0.35
   titleHold: 1.05
+  slowMotionScale: 0.6
+  slowMotionDuration: 0.35
   barHeight: 0.075
   zoom: 0.1
   impactShake: 0.18

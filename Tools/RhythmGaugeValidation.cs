@@ -732,7 +732,7 @@ public static class RhythmGaugeValidation
                     Vector2 end = path[path.Length - 1];
                     Check(end.y < 0f && (test == 1 ? end.x < 0f : end.x > 0f), "S note aims down in the captured facing direction");
                     angles.Add(Mathf.Atan2(-end.y, Mathf.Abs(end.x)) * Mathf.Rad2Deg);
-                    Near(Get<float>(note, "range"), Get<float>(skill, "noteRange"), "S reuses A note range");
+                    Near(Get<float>(note, "range"), Get<float>(skill, "noteRange") * 2f, "S note range is twice A note range");
                     Near(Get<float>(note, "speed"), Get<float>(skill, "noteSpeed"), "S reuses A note speed");
                     Call(note, "TryContact", dummy.GetComponent<Collider2D>(), Vector2.zero, end.normalized);
                 }
@@ -749,7 +749,7 @@ public static class RhythmGaugeValidation
                 Keys(Key.S);
                 Check(!skill.BlocksActions, "S presses during cooldown are discarded");
                 skill.enabled = false;
-                Check(!sprite.forceRenderingOff && !Get<SpriteRenderer>(skill, "aimSprite").enabled && body.rotation == 0f,
+                Check(sprite.enabled && !sprite.forceRenderingOff && !Get<SpriteRenderer>(skill, "aimSprite").enabled && body.rotation == 0f,
                     "Cancel restores the original sprite without rotating the body collider");
                 skill.enabled = true;
                 Keys();

@@ -66,7 +66,7 @@ public class PlayerChordStrike : MonoBehaviour
     private SpriteRenderer aimSprite;
     private MaterialPropertyBlock aimProperties;
     private bool aiming;
-    private bool previousForceRenderingOff;
+    private bool previousSpriteEnabled;
     private float aimEndTime;
     private const float AimRecoveryTime = 0.1f;
 
@@ -186,7 +186,7 @@ public class PlayerChordStrike : MonoBehaviour
             ChordNoteProjectile note = Instantiate(notePrefab, origin, Quaternion.identity);
             note.Launch(transform, facing, downward ? 0f : lane, downward ? 0f : spreadAngle,
                 downward ? 0f : curveAmount,
-                noteRange, noteSpeed, noteDamage, collisionLayers,
+                downward ? noteRange * 2f : noteRange, noteSpeed, noteDamage, collisionLayers,
                 playerSprite.sortingLayerID, playerSprite.sortingOrder + 10,
                 downward ? downwardAimAngle + lane * spreadAngle * 0.5f : 0f);
         }
@@ -213,9 +213,10 @@ public class PlayerChordStrike : MonoBehaviour
             aimSprite = visual.GetComponent<SpriteRenderer>();
             aimProperties = new MaterialPropertyBlock();
         }
-        if (!aiming) previousForceRenderingOff = playerSprite.forceRenderingOff;
+        if (!aiming) previousSpriteEnabled = playerSprite.enabled;
         aiming = true;
-        playerSprite.forceRenderingOff = true;
+        // Keep aim visibility separate from the forceRenderingOff flag used by damage blinking.
+        playerSprite.enabled = false;
     }
 
     private void LateUpdate()
@@ -233,7 +234,7 @@ public class PlayerChordStrike : MonoBehaviour
         aimSprite.sharedMaterial = playerSprite.sharedMaterial;
         aimSprite.sortingLayerID = playerSprite.sortingLayerID;
         aimSprite.sortingOrder = playerSprite.sortingOrder;
-        aimSprite.enabled = playerSprite.enabled && !previousForceRenderingOff;
+        aimSprite.enabled = previousSpriteEnabled && !playerSprite.forceRenderingOff;
         playerSprite.GetPropertyBlock(aimProperties);
         aimSprite.SetPropertyBlock(aimProperties);
     }
@@ -242,7 +243,7 @@ public class PlayerChordStrike : MonoBehaviour
     {
         if (!aiming) return;
         aiming = false;
-        if (playerSprite != null) playerSprite.forceRenderingOff = previousForceRenderingOff;
+        if (playerSprite != null) playerSprite.enabled = previousSpriteEnabled;
         if (aimSprite != null) aimSprite.enabled = false;
     }
 }
