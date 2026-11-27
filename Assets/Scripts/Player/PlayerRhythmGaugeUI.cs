@@ -1,43 +1,58 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// 기능 확인용 HUD. 화면 좌측 하단에 현재 값·단계·다음 공격 배율을 표시.
 [DisallowMultipleComponent]
-[RequireComponent(typeof(PlayerRhythmGauge))]
+[RequireComponent(typeof(PlayerRhythmGauge), typeof(PlayerHealth))]
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerRhythmGaugeUI : MonoBehaviour
 {
+    [SerializeField] private Sprite guitarArtwork;
+    [SerializeField] private Sprite dashIcon;
+    [SerializeField] private Sprite cooldownPixel;
+    [Tooltip("대시 쿨타임의 검은 막 투명도 (%). 0이면 불투명, 100이면 완전히 투명합니다.")]
+    [SerializeField, Range(0f, 100f)] private float dashCooldownTransparency = 90f;
     [SerializeField] private Vector2 screenOffset = new Vector2(24f, 24f);
-    [SerializeField] private Vector2 panelSize = new Vector2(420f, 102f);
+    [SerializeField, Min(1f)] private float screenWidthDivisor = 3.36f;
+    [SerializeField, Min(1f)] private float screenHeightDivisor = 6.05f;
 
-    private PlayerRhythmGauge rhythm;
     private GameObject hudRoot;
-    private Text stageText;
-    private Text valueText;
-    private Text statsText;
-    private Image fill;
+    private PlayerRhythmGauge rhythm;
+    private PlayerHealth health;
+    private PlayerMovement movement;
+    private Image dashCooldown;
+    private RectTransform hpShade;
+    private readonly RectTransform[] rhythmShades = new RectTransform[4];
 
-    private static readonly string[] StageNames = { "LOW", "NORMAL", "HIGH", "FEVER" };
-    private static readonly Color[] StageColors =
+    private void Awake()
     {
-        new Color(0.68f, 0.65f, 1f),
-        new Color(0.82f, 0.84f, 0.89f),
-        new Color(1f, 0.68f, 0.38f),
-        new Color(1f, 0.34f, 0.47f)
-    };
-
-    private void Awake() => rhythm = GetComponent<PlayerRhythmGauge>();
+        rhythm = GetComponent<PlayerRhythmGauge>();
+        health = GetComponent<PlayerHealth>();
+        movement = GetComponent<PlayerMovement>();
+    }
 
     private void OnEnable()
     {
-        rhythm.Changed += Refresh;
         if (hudRoot == null) Build();
         hudRoot.SetActive(true);
-        Refresh();
+        rhythm.Changed += RefreshRhythm;
+        health.HealthChanged += RefreshHealth;
+        RefreshRhythm();
+        RefreshHealth();
+        RefreshDash();
+    }
+
+    private void LateUpdate() => RefreshDash();
+
+    private void RefreshDash()
+    {
+        dashCooldown.color = new Color(0f, 0f, 0f, 1f - dashCooldownTransparency / 100f);
+        dashCooldown.fillAmount = movement.SlideCooldownFraction;
     }
 
     private void OnDisable()
     {
-        if (rhythm != null) rhythm.Changed -= Refresh;
+        rhythm.Changed -= RefreshRhythm;
+        health.HealthChanged -= RefreshHealth;
         if (hudRoot != null) hudRoot.SetActive(false);
     }
 
@@ -48,87 +63,82 @@ public class PlayerRhythmGaugeUI : MonoBehaviour
 
     private void Build()
     {
-        hudRoot = new GameObject("RhythmHUD", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler));
-        Canvas canvas = hudRoot.GetComponent<Canvas>();
+        hudRoot = new GameObject("Player Guitar HUD", typeof(Canvas), typeof(CanvasScaler));
+        var canvas = hudRoot.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = 50;
-        CanvasScaler scaler = hudRoot.GetComponent<CanvasScaler>();
+        var scaler = hudRoot.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920f, 1080f);
         scaler.matchWidthOrHeight = 0.5f;
 
-        Image panel = CreateImage("Panel", hudRoot.transform, new Color(0.06f, 0.07f, 0.10f, 0.94f));
-        RectTransform panelRect = panel.rectTransform;
-        panelRect.anchorMin = panelRect.anchorMax = panelRect.pivot = Vector2.zero;
-        panelRect.anchoredPosition = screenOffset;
-        panelRect.sizeDelta = panelSize;
+        var guitar = CreateImage("Guitar", hudRoot.transform);
+        guitar.sprite = guitarArtwork;
+        var rect = guitar.rectTransform;
+        rect.anchorMin = rect.pivot = Vector2.zero;
+        rect.anchorMax = new Vector2(1f / screenWidthDivisor, 1f / screenHeightDivisor);
+        rect.offsetMin = rect.offsetMax = screenOffset;
 
-        Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        stageText = CreateText("Stage", panel.transform, font, 20, TextAnchor.MiddleLeft);
-        Place(stageText.rectTransform, new Vector2(14f, -8f), new Vector2(170f, 26f));
-        valueText = CreateText("Value", panel.transform, font, 18, TextAnchor.MiddleRight);
-        Place(valueText.rectTransform, new Vector2(panelSize.x - 184f, -8f), new Vector2(170f, 26f));
-        statsText = CreateText("Stats", panel.transform, font, 15, TextAnchor.MiddleLeft);
-        Place(statsText.rectTransform, new Vector2(14f, -68f), new Vector2(panelSize.x - 28f, 23f));
+        var icon = CreateImage("Dash", rect);
+        icon.sprite = dashIcon;
+        icon.preserveAspect = true;
+        PlaceOnArtwork(icon.rectTransform, new RectInt(245, 44, 46, 46));
 
-        Image track = CreateImage("Track", panel.transform, new Color(0.16f, 0.18f, 0.23f));
-        Place(track.rectTransform, new Vector2(14f, -41f), new Vector2(panelSize.x - 28f, 17f));
-        fill = CreateImage("Fill", track.transform, StageColors[0]);
-        fill.rectTransform.anchorMin = Vector2.zero;
-        fill.rectTransform.anchorMax = Vector2.one;
-        fill.rectTransform.offsetMin = fill.rectTransform.offsetMax = Vector2.zero;
-        for (int i = 1; i < 4; i++)
-        {
-            Image marker = CreateImage("Boundary" + i, track.transform, new Color(0.06f, 0.07f, 0.10f));
-            marker.rectTransform.anchorMin = new Vector2(i * 0.25f, 0f);
-            marker.rectTransform.anchorMax = new Vector2(i * 0.25f, 1f);
-            marker.rectTransform.offsetMin = new Vector2(-1f, 0f);
-            marker.rectTransform.offsetMax = new Vector2(1f, 0f);
-        }
+        dashCooldown = CreateImage("Dash Cooldown", rect);
+        dashCooldown.sprite = cooldownPixel;
+        dashCooldown.type = Image.Type.Filled;
+        dashCooldown.fillMethod = Image.FillMethod.Radial360;
+        dashCooldown.fillOrigin = (int)Image.Origin360.Top;
+        // As the counterclockwise remainder shrinks, the icon is revealed clockwise.
+        dashCooldown.fillClockwise = false;
+        PlaceOnArtwork(dashCooldown.rectTransform, new RectInt(241, 40, 54, 54));
+
+        // Bounds of the illuminated pixels, in upper-left artwork coordinates.
+        hpShade = CreateShade("HP", rect, new RectInt(193, 103, 300, 18));
+        for (int i = 0; i < rhythmShades.Length; i++)
+            rhythmShades[i] = CreateShade("Rhythm " + (i + 1), rect, new RectInt(58 + 30 * i, 60, 30, 29));
     }
 
-    private void Refresh()
+    private static Image CreateImage(string name, Transform parent)
     {
-        if (fill == null) return;
-        int stage = (int)rhythm.Stage;
-        fill.color = StageColors[stage];
-        fill.rectTransform.anchorMax = new Vector2(rhythm.NormalizedGauge, 1f);
-        stageText.text = "RHYTHM  " + StageNames[stage];
-        stageText.color = StageColors[stage];
-        valueText.text = Mathf.FloorToInt(rhythm.CurrentGauge) + " / 1000";
-        statsText.text = "NEXT ATTACK   SPD x" + rhythm.AttackSpeedMultiplier.ToString("0.00") +
-            "    DMG x" + rhythm.AttackDamageMultiplier.ToString("0.00");
-    }
-
-    private static Image CreateImage(string name, Transform parent, Color color)
-    {
-        GameObject item = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-        item.transform.SetParent(parent, false);
-        Image image = item.GetComponent<Image>();
-        image.color = color;
+        var image = new GameObject(name, typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+        image.transform.SetParent(parent, false);
         image.raycastTarget = false;
         return image;
     }
 
-    private static Text CreateText(string name, Transform parent, Font font, int size, TextAnchor alignment)
+    private static RectTransform CreateShade(string name, Transform parent, RectInt pixels)
     {
-        GameObject item = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
-        item.transform.SetParent(parent, false);
-        Text text = item.GetComponent<Text>();
-        text.font = font;
-        text.fontSize = size;
-        text.alignment = alignment;
-        text.color = Color.white;
-        text.raycastTarget = false;
-        text.horizontalOverflow = HorizontalWrapMode.Overflow;
-        text.verticalOverflow = VerticalWrapMode.Truncate;
-        return text;
+        var region = new GameObject(name, typeof(RectTransform)).GetComponent<RectTransform>();
+        region.SetParent(parent, false);
+        PlaceOnArtwork(region, pixels);
+
+        var shade = CreateImage("Unlit", region);
+        shade.color = new Color32(13, 10, 13, 246);
+        shade.rectTransform.anchorMin = Vector2.zero;
+        shade.rectTransform.anchorMax = Vector2.one;
+        shade.rectTransform.offsetMin = shade.rectTransform.offsetMax = Vector2.zero;
+        return shade.rectTransform;
     }
 
-    private static void Place(RectTransform rect, Vector2 position, Vector2 size)
+    private static void PlaceOnArtwork(RectTransform region, RectInt pixels)
     {
-        rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0f, 1f);
-        rect.anchoredPosition = position;
-        rect.sizeDelta = size;
+        region.anchorMin = new Vector2(pixels.xMin / 571f, 1f - pixels.yMax / 179f);
+        region.anchorMax = new Vector2(pixels.xMax / 571f, 1f - pixels.yMin / 179f);
+        region.offsetMin = region.offsetMax = Vector2.zero;
+    }
+
+    private void RefreshHealth() => ShowCharge(hpShade, health.CurrentHealth / health.MaxHealth);
+
+    private void RefreshRhythm()
+    {
+        float charge = rhythm.CurrentGauge / PlayerRhythmGauge.StageWidth;
+        for (int i = 0; i < rhythmShades.Length; i++)
+            ShowCharge(rhythmShades[i], charge - i);
+    }
+
+    private static void ShowCharge(RectTransform shade, float fraction)
+    {
+        shade.anchorMin = new Vector2(Mathf.Clamp01(fraction), 0f);
     }
 }

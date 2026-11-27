@@ -17,8 +17,10 @@ public class Boss1Encounter : MonoBehaviour
     [Header("Entrance")]
     [Tooltip("착지 지점에서 보스가 떨어질 높이")]
     [SerializeField, Min(1f)] private float dropHeight = 12f;
-    [Tooltip("이름 공개 후 체력바를 채우고 화면을 복구하는 시간(초)")]
+    [Tooltip("이름 공개 후 검은 띠와 카메라를 복구하는 시간(초)")]
     [SerializeField, Min(0f)] private float landingPause = 0.6f;
+    [Tooltip("조작 해제 후 보스 체력바가 차오르는 시간(초)")]
+    [SerializeField, Min(0.01f)] private float healthFillDuration = 0.8f;
 
     public enum Phase { Approach, Entrance, Combat, Cleared }
     public Phase CurrentPhase { get; private set; }
@@ -68,7 +70,8 @@ public class Boss1Encounter : MonoBehaviour
         combatEnabled = Suspend(combat);
         controls = new Behaviour[] {
             player, player.GetComponent<PlayerAttack>(), player.GetComponent<PlayerChordStrike>(),
-            player.GetComponent<PlayerRhythmGaugeUI>(), player.GetComponentInChildren<Canvas>()
+            player.GetComponent<PlayerGuitarSpin>(),
+            player.GetComponent<PlayerRhythmGaugeUI>()
         };
         controlsEnabled = Suspend(controls);
         var playerBody = player.GetComponent<Rigidbody2D>();
@@ -98,6 +101,7 @@ public class Boss1Encounter : MonoBehaviour
         controls = combat = null;
         seenEntrances.Add(boss.DisplayName);
         CurrentPhase = Phase.Combat;
+        yield return presentation.FillHealthBar(healthFillDuration);
     }
 
     private static bool[] Suspend(Behaviour[] components)
@@ -121,9 +125,9 @@ public class Boss1Encounter : MonoBehaviour
 
     private void OnDisable()
     {
-        if (CurrentPhase != Phase.Entrance) return;
         StopAllCoroutines();
         if (presentation != null) presentation.ResetPresentation();
+        if (CurrentPhase != Phase.Entrance) return;
         Restore(controls, controlsEnabled);
         Restore(combat, combatEnabled);
         controls = combat = null;

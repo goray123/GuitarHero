@@ -8,6 +8,11 @@ public class Boss1EntrancePresentation : MonoBehaviour
     [Header("Timing")]
     [SerializeField, Min(0.05f)] private float anticipation = 0.35f;
     [SerializeField, Min(0.1f)] private float titleHold = 1.05f;
+    [Header("First Entrance Slow Motion")]
+    [Tooltip("첫 등장 착지 직전의 게임 속도 배율. 1이면 슬로우 없음")]
+    [SerializeField, Range(0.1f, 1f)] private float slowMotionScale = 0.6f;
+    [Tooltip("첫 등장 착지 직전 슬로우의 실제 시간(초)")]
+    [SerializeField, Min(0f)] private float slowMotionDuration = 0.35f;
     [Header("Camera")]
     [SerializeField, Range(0f, 0.15f)] private float barHeight = 0.075f;
     [SerializeField, Range(0f, 0.25f)] private float zoom = 0.1f;
@@ -24,6 +29,7 @@ public class Boss1EntrancePresentation : MonoBehaviour
     private PlayerHitCameraShake shake;
     private PlayerHitStop hitStop;
     private Boss1SlamSpriteVisual art;
+    private Rigidbody2D bossBody;
     private AudioSource audioSource;
     private AudioSource[] music;
     private float[] musicVolumes;
@@ -34,6 +40,7 @@ public class Boss1EntrancePresentation : MonoBehaviour
     private SpriteRenderer shadow;
     private Texture2D shadowTexture;
     private bool presenting, falling, replay;
+    private bool slowMotionStarted, fillingHealth;
     private float dropY;
 
     public IEnumerator Anticipate(PlayerMovement player, Boss1Health target, Transform landing,
@@ -46,6 +53,7 @@ public class Boss1EntrancePresentation : MonoBehaviour
         shake = player.GetComponent<PlayerHitCameraShake>();
         hitStop = player.GetComponent<PlayerHitStop>();
         art = boss.GetComponent<Boss1SlamSpriteVisual>();
+        bossBody = boss.GetComponent<Rigidbody2D>();
         // Only looping music is ducked; footsteps and the entrance cues keep their own levels.
         music = System.Array.FindAll(FindObjectsByType<AudioSource>(FindObjectsSortMode.None),
             source => source.isPlaying && source.loop);
@@ -76,6 +84,7 @@ public class Boss1EntrancePresentation : MonoBehaviour
     public void BeginFall()
     {
         falling = true;
+        slowMotionStarted = false;
         dropY = boss.transform.position.y;
         if (fallClip != null)
         {
@@ -97,11 +106,24 @@ public class Boss1EntrancePresentation : MonoBehaviour
         float t = Mathf.InverseLerp(dropY, landingPoint.position.y, boss.transform.position.y);
         shadow.transform.localScale = new Vector3(Mathf.Lerp(2.5f, 5f, t), Mathf.Lerp(0.15f, 0.35f, t), 1f);
         shadow.color = new Color(0f, 0f, 0f, Mathf.Lerp(0.35f, 0.75f, t));
+        if (!replay && !slowMotionStarted && hitStop != null && slowMotionDuration > 0f && slowMotionScale < 1f)
+        {
+            float distance = Mathf.Max(0f, bossBody.position.y - landingPoint.position.y);
+            float speed = Mathf.Max(0f, -bossBody.linearVelocity.y);
+            float gravity = Mathf.Max(0.1f, -Physics2D.gravity.y * bossBody.gravityScale);
+            float remainingFallTime = (Mathf.Sqrt(speed * speed + 2f * gravity * distance) - speed) / gravity;
+            if (remainingFallTime <= slowMotionDuration * slowMotionScale)
+            {
+                slowMotionStarted = true;
+                hitStop.SlowFor(slowMotionDuration, slowMotionScale);
+            }
+        }
     }
 
     public IEnumerator Impact()
     {
         falling = false;
+        if (hitStop != null) hitStop.EndSlowMotion();
         shadow.gameObject.SetActive(false);
         audioSource.Stop();
         audioSource.loop = false;
@@ -140,13 +162,23 @@ public class Boss1EntrancePresentation : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
             titleGroup.alpha = 1f - Ease(t / 0.5f);
             SetFraming(1f - Ease(t));
-            boss.SetEntranceProgress(Ease(t));
             yield return null;
         }
-        boss.SetEntranceProgress(1f);
         ResetPresentation();
         audioSource.pitch = 0.9f;
         if (combatClip != null) audioSource.PlayOneShot(combatClip, 0.4f);
+    }
+
+    public IEnumerator FillHealthBar(float duration)
+    {
+        fillingHealth = true;
+        for (float elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
+        {
+            boss.SetEntranceProgress(Ease(elapsed / duration));
+            yield return null;
+        }
+        boss.SetEntranceProgress(1f);
+        fillingHealth = false;
     }
 
     private void SetFraming(float amount)
@@ -161,6 +193,9 @@ public class Boss1EntrancePresentation : MonoBehaviour
 
     public void ResetPresentation()
     {
+        if (hitStop != null) hitStop.EndSlowMotion();
+        if (fillingHealth && boss != null) boss.SetEntranceProgress(1f);
+        fillingHealth = false;
         if (!presenting) return;
         falling = false;
         SetFraming(0f);

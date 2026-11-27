@@ -4,7 +4,7 @@ using UnityEngine;
 [CustomEditor(typeof(Boss1AttackHitboxes))]
 public class BossHitboxEditor : Editor
 {
-    private static readonly string[] Modes = { "휘두르기", "펀치", "내려찍기", "돌진", "착지", "충격파", "후방 미사일", "조준 미사일 폭발", "미사일 난사", "조준 미사일 탄체" };
+    private static readonly string[] Modes = { "휘두르기", "펀치", "내려찍기", "돌진", "도약 몸통", "충격파", "후방 미사일", "조준 미사일 폭발", "미사일 난사", "조준 미사일 탄체" };
     private static readonly string[] Reach = { "sweepReachAndTopH", "punchReachAndTopH", "slamReachAndTopH" };
     private static readonly string[] Bottom = { "sweepBottomH", "punchSlideClearanceH", "slamBottomH" };
     private static readonly string[] BodyReach = { "sweepBodyReachH", "punchBodyReachH", "slamBodyReachH" };
@@ -25,7 +25,7 @@ public class BossHitboxEditor : Editor
         }
     }
 
-    private string RadiusField => mode == 4 ? "landingRadiusH" : mode == 6 ? "radiusH" :
+    private string RadiusField => mode == 6 ? "radiusH" :
         mode == 9 ? "projectileRadiusH" : "explosionRadiusH";
 
     public override void OnInspectorGUI()
@@ -46,6 +46,11 @@ public class BossHitboxEditor : Editor
                 Field(Bottom[mode], mode == 1 ? "슬라이드 위 여유 (H)" : "하단 높이 (H)");
             }
             else if (mode == 3) { Field("armReach", "팔 거리 (H)"); Field("bodyReachH", "몸 쪽으로 확장 (H)"); Field("crouchHeight", "웅크린 높이 (H)"); }
+            else if (mode == 4)
+            {
+                EditorGUILayout.HelpBox("수직 하강 시작부터 착지 직후까지 보스 BoxCollider2D의 크기와 위치를 따릅니다.", MessageType.Info);
+                Field("landingRadiusH", "착지 경고 반경 (H)");
+            }
             else if (mode == 5) { Field("waveWidthH", "폭 (H)"); Field("waveHeightH", "높이 (H)"); Field("waveRangeH", "이동 거리 (H)"); }
             else Field(RadiusField, "반경 (H)");
             if (settings.ApplyModifiedProperties()) SceneView.RepaintAll();
@@ -74,7 +79,7 @@ public class BossHitboxEditor : Editor
         Vector3 forward = Vector3.right * owner.Facing;
         Vector3 up = Vector3.up;
         var matrix = Boxes.transform.localToWorldMatrix;
-        if (mode >= 4)
+        if (mode >= 5)
             matrix = Matrix4x4.TRS(Boxes.transform.position, Quaternion.identity, Vector3.one * Mathf.Abs(Boxes.transform.lossyScale.y));
         using var drawing = new Handles.DrawingScope(Color.white, matrix);
         EditorGUI.BeginChangeCheck();
@@ -112,6 +117,10 @@ public class BossHitboxEditor : Editor
             bodyReach.floatValue = Mathf.Max(0f, bodyReach.floatValue + Drag(front - forward * width, -forward) / h);
             crouch.floatValue = Mathf.Clamp(crouch.floatValue + Drag(mid + up * height * 0.5f, up) / h, 0.2f, 1.2f);
         }
+        else if (mode == 4)
+        {
+            Handles.DrawWireCube(body.offset, body.size);
+        }
         else if (mode == 5)
         {
             var range = Prop("waveRangeH");
@@ -128,7 +137,7 @@ public class BossHitboxEditor : Editor
         else
         {
             var radius = Prop(RadiusField);
-            Vector3 preview = mode == 4 ? Vector3.zero : (mode == 6 ? -forward : forward) * 2f * h;
+            Vector3 preview = (mode == 6 ? -forward : forward) * 2f * h;
             Handles.DrawWireDisc(preview, Vector3.forward, radius.floatValue * h);
             radius.floatValue = Mathf.Max(0.01f, radius.floatValue + Drag(preview + up * radius.floatValue * h, up) / h);
         }

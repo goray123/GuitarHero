@@ -14,10 +14,11 @@ public class PlayerHitStop : MonoBehaviour
     private PlayerAttack attack;
     private PlayerHealth health;
     private bool isStopped;
+    private bool slowing;
     private float previousTimeScale;
     private double resumeAt;
 
-    public bool IsStopped => isStopped;
+    public bool IsStopped => isStopped && !slowing;
 
     private void Awake()
     {
@@ -51,6 +52,13 @@ public class PlayerHitStop : MonoBehaviour
 
         if (isStopped)
         {
+            if (slowing)
+            {
+                slowing = false;
+                resumeAt = Time.realtimeSinceStartupAsDouble + duration;
+                Time.timeScale = 0f;
+                return;
+            }
             // Damage can extend an attack's hitstop without taking a second time-scale lock.
             if (extend) resumeAt = System.Math.Max(resumeAt, Time.realtimeSinceStartupAsDouble + duration);
             return;
@@ -61,6 +69,21 @@ public class PlayerHitStop : MonoBehaviour
         resumeAt = Time.realtimeSinceStartupAsDouble + duration;
         isStopped = true;
         Time.timeScale = 0f;
+    }
+
+    public void SlowFor(float duration, float scale)
+    {
+        if (isStopped || Time.timeScale <= 0f || duration <= 0f || scale <= 0f || scale >= 1f ||
+            float.IsNaN(duration) || float.IsInfinity(duration) || float.IsNaN(scale)) return;
+        previousTimeScale = Time.timeScale;
+        resumeAt = Time.realtimeSinceStartupAsDouble + duration;
+        isStopped = slowing = true;
+        Time.timeScale = previousTimeScale * scale;
+    }
+
+    public void EndSlowMotion()
+    {
+        if (slowing) RestoreTime();
     }
 
     private void Update()
@@ -75,7 +98,8 @@ public class PlayerHitStop : MonoBehaviour
         if (!isStopped) return;
         isStopped = false;
         // 비활성화나 씬 전환 시 정지 상태가 남지 않도록 복구
-        if (Time.timeScale == 0f)
+        if (Time.timeScale == 0f || slowing)
             Time.timeScale = previousTimeScale;
+        slowing = false;
     }
 }

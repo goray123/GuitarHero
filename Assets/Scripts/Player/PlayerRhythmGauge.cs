@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 public enum RhythmStage { Low, Normal, High, Fever }
-public enum RhythmHitKind { Basic, Enhanced, Note }
+public enum RhythmHitKind { Basic, Enhanced, Note, Skill }
 
 // 공격 처리보다 먼저 게임 시간 기준 자연 감소를 적용.
 [DefaultExecutionOrder(-30)]
@@ -68,7 +68,8 @@ public class PlayerRhythmGauge : MonoBehaviour
         {
             case RhythmHitKind.Basic: multiplier = 1f; break;
             case RhythmHitKind.Enhanced: multiplier = enhancedHitMultiplier; break;
-            case RhythmHitKind.Note: multiplier = noteHitMultiplier; break;
+            case RhythmHitKind.Note:
+            case RhythmHitKind.Skill: multiplier = noteHitMultiplier; break;
             default: return;
         }
         float gain = basicHitGain * multiplier;

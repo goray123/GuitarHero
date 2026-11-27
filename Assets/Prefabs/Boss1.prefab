@@ -236,12 +236,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   referencePlayerMaxHealth: 100
-  sweepReachAndTopH: {x: 1.5, y: 1.2}
-  punchReachAndTopH: {x: 2, y: 1}
-  slamReachAndTopH: {x: 2, y: 3}
+  sweepReachAndTopH: {x: 1.5, y: 0.86861545}
+  punchReachAndTopH: {x: 2, y: 2.2229872}
+  slamReachAndTopH: {x: 2.9413292, y: 3.5336666}
+  sweepBodyReachH: 0.86720896
+  punchBodyReachH: 0.85979706
+  slamBodyReachH: 0.852385
   sweepBottomH: 0
   slamBottomH: 0
-  punchSlideClearanceH: 0.1
+  punchSlideClearanceH: 0.4113058
 --- !u!114 &901003006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,18 +257,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e98667f34f4afc973b2c06bb06cc61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arenaMinX: -40
-  arenaMaxX: 40
+  arenaMinX: -4
+  arenaMaxX: 24
   windup: 0.8
   flightTime: 0.7
+  apexHoldTime: 0.25
   apexHeightH: 2.5
   impactTime: 0.15
   recoveryTime: 0.55
   reuseTime: 6
-  landingRadiusH: 1
-  waveHeightH: 0.75
+  landingRadiusH: 1.1408288
+  waveHeightH: 1.2540189
   waveSprite: {fileID: 21300000, guid: 1d98c5eff3d84f9b9423fad46866e502, type: 3}
-  waveWidthH: 0.35
+  waveWidthH: 0.7947231
   waveRangeH: 4
 --- !u!114 &901003005
 MonoBehaviour:
@@ -291,7 +295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b0df5bbc3e48fb8d03fe338bce1853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  closeDistanceH: 1.2
   closeDuration: 1.5
   windup: 0.35
   distanceH: 3
@@ -313,7 +316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc244f83fb74b24a486ef83a933f911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rearDistanceH: 2
   dwellTime: 0.8
   windup: 0.8
   flightTime: 0.6
@@ -350,7 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e9cb0fafadf4e8eb35f0ae226ed4f92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phaseTwoEnabled: 0
+  phaseTwoEnabled: 1
   suspendNewVolleys: 0
   aimTime: 2
   lockTime: 0.5
@@ -376,15 +378,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04283e3a231946f5a351be1943968316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  windup: 0.85
+  windup: 1.2
   travelTime: 0.55
   braking: 0.6
   reuseDelay: 5
   patternInterval: 1
-  selectionDistance: 2.5
-  travelDistance: 12
-  crouchHeight: 0.9
+  travelDistance: 8
+  crouchHeight: 0.9041209
   armReach: 0.25
+  bodyReachH: 2.0901961
   terrainLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -431,11 +433,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 600
-  bossName: 메가 메카트론 JT8-3
+  bossName: "\uBA54\uAC00 \uBA54\uCE74\uD2B8\uB860 JT8-3"
   nameFont: {fileID: 12800000, guid: e78d403f88844550b7dc36a3a58fca60, type: 3}
-  sideMargin: 48
+  barLength: 1824
   barHeight: 24
   topMargin: 24
+  damageDelay: 0.25
+  damageDuration: 0.4
+  damageTrailColor: {r: 1, g: 0.8862745, b: 0.64705884, a: 1}
 --- !u!114 &901004300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,15 +455,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   repeatInterval: 20
   preparationTime: 1
-  missileCount: 30
-  shotInterval: 0.2
+  missileCount: 25
+  shotInterval: 0.25
   explosionTime: 0.2
   recoveryTime: 0.6
   scatterH: 0.5
   explosionRadiusH: 0.4
   flightSpeedH: 10
   muzzleH: {x: 0.6, y: 3.3}
-  projectileRadiusH: 0.09
   preparationSprite: {fileID: 21300000, guid: cf423ec578ad46e4acb5c9c031ab5576, type: 3}
   bodyReferenceHeight: 7.85625
 --- !u!114 &3443687934297679863

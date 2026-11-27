@@ -28,7 +28,8 @@ public class ChordNoteProjectile : MonoBehaviour
     private int segment;
 
     public void Launch(Transform shooter, float direction, float lane, float spread, float curve,
-        float maxRange, float travelSpeed, float hitDamage, LayerMask layers, int sortingLayer, int sortingOrder)
+        float maxRange, float travelSpeed, float hitDamage, LayerMask layers, int sortingLayer, int sortingOrder,
+        float downwardAngle = 0f)
     {
         owner = shooter;
         rhythm = shooter != null ? shooter.GetComponentInParent<PlayerRhythmGauge>() : null;
@@ -48,12 +49,15 @@ public class ChordNoteProjectile : MonoBehaviour
         filter.SetLayerMask(layers);
         float slope = Mathf.Tan(lane * Mathf.Clamp(spread, 0f, 90f) * 0.5f * Mathf.Deg2Rad);
         float bend = (Mathf.Abs(lane) < 0.01f ? 0.35f : lane) * Mathf.Max(0f, curve);
+        float angle = -downwardAngle * Mathf.Deg2Rad;
+        Vector2 forward = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        Vector2 up = new Vector2(-forward.y, forward.x);
         float total = 0f;
         for (int i = 0; i <= PathSegments; i++)
         {
             float t = i / (float)PathSegments;
             // 퍼짐도 점차 커지고 각 음표가 별도 곡선을 따라 휘어짐
-            path[i] = new Vector2(range * t, range * slope * t * t + Mathf.Sin(t * Mathf.PI) * bend);
+            path[i] = forward * (range * t) + up * (range * slope * t * t + Mathf.Sin(t * Mathf.PI) * bend);
             if (i > 0) total += Vector2.Distance(path[i - 1], path[i]);
         }
         // 직선 거리가 아닌 실제 곡선 길이를 사거리로 맞춤
@@ -112,7 +116,7 @@ public class ChordNoteProjectile : MonoBehaviour
         if (target != null)
         {
             if (!target.isActiveAndEnabled) return false;
-            // 음표 하나는 첫 대상에게 한 번만 피해. 다섯 개 전부 맞으면 25
+            // 음표 하나는 첫 대상에게 한 번만 피해.
             if (target.TryTakeDamage(new AttackHit(damage, point, direction, 0)) &&
                 rhythm != null && rhythm.LifeVersion == ownerLifeVersion)
                 rhythm.RecordConfirmedDamage(RhythmHitKind.Note, damage);
