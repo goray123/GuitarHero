@@ -68,7 +68,7 @@ public class Boss1Encounter : MonoBehaviour
         combatEnabled = Suspend(combat);
         controls = new Behaviour[] {
             player, player.GetComponent<PlayerAttack>(), player.GetComponent<PlayerChordStrike>(),
-            player.GetComponent<PlayerRhythmGaugeUI>(), player.GetComponentInChildren<Canvas>()
+            player.GetComponent<PlayerRhythmGaugeUI>()
         };
         controlsEnabled = Suspend(controls);
         var playerBody = player.GetComponent<Rigidbody2D>();

@@ -9,8 +9,8 @@ public class Boss1Health : Damageable
     [Header("Screen Health Bar")]
     [SerializeField] private string bossName = "메가 메카트론 JT8-3";
     [SerializeField] private Font nameFont;
-    [Tooltip("1920 기준 좌우 여백. 화면 너비에 비례해 조절됨")]
-    [SerializeField, Range(0f, 400f)] private float sideMargin = 48f;
+    [Tooltip("1920 기준 체력바 길이")]
+    [SerializeField, Range(48f, 1920f)] private float barLength = 1824f;
     [SerializeField, Min(1f)] private float barHeight = 24f;
     [SerializeField, Min(0f)] private float topMargin = 24f;
 
@@ -40,7 +40,10 @@ public class Boss1Health : Damageable
     }
 
     private GameObject hud;
-    private RectTransform greenBar;
+    private RectTransform panel;
+    private RectTransform barSlot;
+    private CombatHealthBar healthBar;
+    private Vector2 appliedSize;
     private HealthBarUI damageNumbers;
     private float entranceProgress = 1f;
 
@@ -63,13 +66,10 @@ public class Boss1Health : Damageable
         // 기존 허수아비/좀비의 숫자 연출을 화면 HUD에서도 재사용한다.
         damageNumbers = hud.AddComponent<HealthBarUI>();
 
-        RectTransform panel = Rect("Boss Health", hud.transform);
-        // 고정 폭 대신 좌우로 늘려 화면 너비를 채움.
-        panel.anchorMin = new Vector2(0f, 1f);
-        panel.anchorMax = Vector2.one;
+        panel = Rect("Boss Health", hud.transform);
+        panel.anchorMin = panel.anchorMax = new Vector2(0.5f, 1f);
         panel.pivot = new Vector2(0.5f, 1f);
         panel.anchoredPosition = new Vector2(0f, -topMargin);
-        panel.sizeDelta = new Vector2(-2f * sideMargin, 44f + barHeight);
 
         RectTransform title = Rect("Boss Name", panel);
         title.anchorMin = new Vector2(0f, 1f);
@@ -84,17 +84,11 @@ public class Boss1Health : Damageable
         label.color = Color.white;
         label.raycastTarget = false;
 
-        RectTransform redBar = Rect("Lost Health (Red)", panel);
-        redBar.anchorMin = Vector2.zero;
-        redBar.anchorMax = new Vector2(1f, 0f);
-        redBar.pivot = new Vector2(0.5f, 0f);
-        redBar.sizeDelta = new Vector2(0f, barHeight);
-        Paint(redBar, new Color(0.85f, 0.08f, 0.08f));
-        greenBar = Rect("Remaining Health (Green)", redBar);
-        greenBar.anchorMin = Vector2.zero;
-        greenBar.anchorMax = Vector2.one;
-        greenBar.offsetMin = greenBar.offsetMax = Vector2.zero;
-        Paint(greenBar, new Color(0.1f, 0.85f, 0.18f));
+        barSlot = Rect("Health Gauge", panel);
+        barSlot.anchorMin = barSlot.anchorMax = new Vector2(0.5f, 0f);
+        barSlot.pivot = new Vector2(0.5f, 0f);
+        healthBar = new CombatHealthBar(barSlot, new Color32(250, 158, 62, 255));
+        UpdateLayout();
         RefreshBar();
         hud.SetActive(entranceProgress > 0f);
     }
@@ -149,25 +143,25 @@ public class Boss1Health : Damageable
         return true;
     }
 
-    private void RefreshBar()
+    private void LateUpdate() => UpdateLayout();
+
+    private void UpdateLayout()
     {
-        if (greenBar == null) return;
-        // 왼쪽 끝을 고정하고 오른쪽부터 초록색이 줄어 빨간 바가 드러남.
-        greenBar.anchorMax = new Vector2(Mathf.Clamp01(CurrentHealth / MaxHealth) * entranceProgress, 1f);
+        Vector2 size = new Vector2(barLength, barHeight);
+        if (size == appliedSize) return;
+        appliedSize = size;
+        panel.sizeDelta = new Vector2(size.x, 44f + size.y);
+        barSlot.sizeDelta = size;
+        healthBar.SetSize(size);
     }
+
+    private void RefreshBar() => healthBar?.SetHealth(entranceProgress * CurrentHealth / MaxHealth);
 
     private static RectTransform Rect(string name, Transform parent)
     {
         var rect = new GameObject(name, typeof(RectTransform)).GetComponent<RectTransform>();
         rect.SetParent(parent, false);
         return rect;
-    }
-
-    private static void Paint(RectTransform rect, Color color)
-    {
-        var image = rect.gameObject.AddComponent<Image>();
-        image.color = color;
-        image.raycastTarget = false;
     }
 
     private void OnEnable() { if (hud != null) hud.SetActive(true); }

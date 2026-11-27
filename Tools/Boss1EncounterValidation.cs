@@ -108,7 +108,7 @@ public static class Boss1EncounterValidation
             double entranceStarted = Time.realtimeSinceStartupAsDouble;
             Check(!player.enabled && !player.GetComponent<PlayerAttack>().enabled && !player.GetComponent<PlayerChordStrike>().enabled,
                 "Cinematic suspends movement, attacks and skills before the drop");
-            Check(!player.GetComponent<PlayerRhythmGaugeUI>().enabled && !player.GetComponentInChildren<Canvas>().enabled,
+            Check(!player.GetComponent<PlayerRhythmGaugeUI>().enabled && GameObject.Find("Player Guitar HUD") == null,
                 "Cinematic hides player HUD without resetting player health");
             Check(!boss.TryTakeDamage(1f), "Boss cannot take damage during its entrance");
             await Until(() => boss.gameObject.activeSelf);
@@ -148,12 +148,15 @@ public static class Boss1EncounterValidation
                 "Combat start clears rhythm earned during the entrance again");
             double firstEntranceDuration = Time.realtimeSinceStartupAsDouble - entranceStarted;
             Check(player.enabled && player.GetComponent<PlayerAttack>().enabled && player.GetComponent<PlayerChordStrike>().enabled &&
-                player.GetComponent<PlayerRhythmGaugeUI>().enabled && player.GetComponentInChildren<Canvas>().enabled &&
+                player.GetComponent<PlayerRhythmGaugeUI>().enabled && GameObject.Find("Player Guitar HUD") != null &&
                 !cinematic.gameObject.activeSelf && Mathf.Approximately(camera.ViewCamera.orthographicSize, 8f) && Time.timeScale == 1f,
                 "Combat restores controls, normal framing and time scale without leaving cinematic UI");
-            var healthFill = GameObject.Find("Boss1 Health HUD").transform.Find("Boss Health/Lost Health (Red)/Remaining Health (Green)")
-                .GetComponent<RectTransform>();
-            Check(Mathf.Approximately(healthFill.anchorMax.x, 1f), "Boss health bar finishes filling before combat starts");
+            var healthFill = GameObject.Find("Boss1 Health HUD").transform.Find("Boss Health/Health Gauge/Amp Frame/Health Signal")
+                .GetComponent<Image>();
+            Check(healthFill.sprite != null && Mathf.Approximately(healthFill.fillAmount, 1f),
+                "Amp health bar finishes filling before combat starts");
+            Check(boss.TryTakeDamage(boss.MaxHealth * 0.25f) && Mathf.Approximately(healthFill.fillAmount, 0.75f),
+                "Amp health bar tracks accepted boss damage after the entrance");
             var leftPanel = left.transform.Find("SteelShutterPanel");
             var rightPanel = right.transform.Find("SteelShutterPanel");
             Check(Mathf.Abs(leftPanel.position.y) < .02f && Mathf.Abs(rightPanel.position.y) < .02f,
@@ -166,6 +169,11 @@ public static class Boss1EncounterValidation
             Check(box.bounds.min.x >= left.bounds.max.x - 0.06f, "Left gate blocks walking escape");
             await Hold(keyboard, 0.55f, Key.LeftArrow, Key.C);
             Check(box.bounds.min.x >= left.bounds.max.x - 0.06f, "Closed steel shutter also blocks sliding escape");
+            var dashCooldown = GameObject.Find("Player Guitar HUD").transform.Find("Guitar/Dash Cooldown").GetComponent<Image>();
+            Check(dashCooldown.sprite != null && dashCooldown.fillAmount > 0f &&
+                Mathf.Abs(dashCooldown.fillAmount - player.SlideCooldownFraction) < 0.05f &&
+                Mathf.Abs(dashCooldown.color.a - 0.9f) < 0.01f,
+                "Guitar HUD shows the slide cooldown with the arena opacity setting");
             body.position = new Vector2(23.3f, body.position.y);
             body.linearVelocity = Vector2.zero;
             await Hold(keyboard, 0.35f, Key.RightArrow);

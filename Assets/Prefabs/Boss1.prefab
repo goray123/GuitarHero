@@ -433,7 +433,7 @@ MonoBehaviour:
   maxHealth: 600
   bossName: 메가 메카트론 JT8-3
   nameFont: {fileID: 12800000, guid: e78d403f88844550b7dc36a3a58fca60, type: 3}
-  sideMargin: 48
+  barLength: 1824
   barHeight: 24
   topMargin: 24
 --- !u!114 &901004300

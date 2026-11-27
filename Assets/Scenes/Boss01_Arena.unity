@@ -255,6 +255,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 900100040, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
+      propertyPath: dashCooldownTransparency
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1192302248440939473, guid: c19dae47dbb250c49a48034338ff45fa, type: 3}
       propertyPath: m_Name
       value: Player
