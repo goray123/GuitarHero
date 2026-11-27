@@ -9,6 +9,8 @@ public class Boss1LeapSlam : MonoBehaviour
     [SerializeField] private float arenaMaxX = 40f;
     [SerializeField, Min(0.01f)] private float windup = 0.8f;
     [SerializeField, Min(0.01f)] private float flightTime = 0.7f;
+    [Tooltip("최고점에서 멈추는 시간. 이동 체공 시간에 추가됩니다.")]
+    [SerializeField, Min(0f)] private float apexHoldTime = 0.25f;
     [SerializeField, Min(0f)] private float apexHeightH = 2.5f;
     [SerializeField, Min(0.01f)] private float impactTime = 0.15f;
     [Tooltip("후딜은 이 값에 1.2배를 적용합니다.")]
@@ -17,7 +19,11 @@ public class Boss1LeapSlam : MonoBehaviour
     public Phase CurrentPhase { get; private set; }
     public bool IsBusy => CurrentPhase != Phase.Idle;
     public bool Ready => !IsBusy && cooldown <= 0f;
-    public float Progress => Mathf.Clamp01(elapsed / Mathf.Max(0.001f, duration));
+    public float Progress => CurrentPhase == Phase.Airborne ? FlightProgress :
+        Mathf.Clamp01(elapsed / Mathf.Max(0.001f, duration));
+    // Freeze both movement and the sampled animation while holding at the apex.
+    private float FlightProgress => Mathf.Clamp01((elapsed -
+        Mathf.Clamp(elapsed - flightTime * 0.5f, 0f, apexHoldTime)) / flightTime);
     public Vector2 LandingPoint { get; private set; }
     [Header("Hitboxes (player height H)")]
     [Tooltip("착지 경고 표시의 반경입니다. 도약 피해 판정은 보스 몸통을 따릅니다.")]
@@ -35,8 +41,8 @@ public class Boss1LeapSlam : MonoBehaviour
     public bool WavesActive { get; private set; }
     public BoxCollider2D Hitbox => hitbox;
     public bool MarkerVisible => CurrentPhase == Phase.Airborne || CurrentPhase == Phase.Impact;
-    public float RemainingDangerTime => CurrentPhase == Phase.Windup ? Mathf.Max(0f, duration - elapsed) + flightTime + 0.5f :
-        CurrentPhase == Phase.Airborne ? Mathf.Max(0f, flightTime - elapsed) + 0.5f :
+    public float RemainingDangerTime => CurrentPhase == Phase.Windup ? Mathf.Max(0f, duration - elapsed) + flightTime + apexHoldTime + 0.5f :
+        CurrentPhase == Phase.Airborne ? Mathf.Max(0f, duration - elapsed) + 0.5f :
         Mathf.Max(CurrentPhase == Phase.Impact ? Mathf.Max(0f, impactTime - elapsed) : 0f,
             WavesActive ? Mathf.Max(0f, (waveRangeH * H - WaveDistance) / (8f * H)) : 0f);
     private float H => owner.Height * Mathf.Abs(transform.lossyScale.y);
@@ -100,7 +106,7 @@ public class Boss1LeapSlam : MonoBehaviour
         }
         else if (CurrentPhase == Phase.Airborne)
         {
-            float t = Mathf.Clamp01(elapsed / flightTime);
+            float t = FlightProgress;
             Vector2 apex = new Vector2(landingBody.x, Mathf.Max(startPosition.y, landingBody.y) + apexHeightH * H);
             Vector2 position;
             if (t < 0.5f)
@@ -114,7 +120,7 @@ public class Boss1LeapSlam : MonoBehaviour
                 position = Vector2.Lerp(apex, landingBody, fall * fall);
             }
             body.MovePosition(position);
-            hitbox.enabled = t >= 0.5f;
+            hitbox.enabled = elapsed >= flightTime * 0.5f + apexHoldTime;
             if (t >= 1f)
             {
                 body.position = landingBody;
@@ -162,7 +168,7 @@ public class Boss1LeapSlam : MonoBehaviour
         gravityOverridden = true;
         body.gravityScale = 0f;
         body.linearVelocity = Vector2.zero;
-        Enter(Phase.Airborne, flightTime);
+        Enter(Phase.Airborne, flightTime + apexHoldTime);
     }
 
     private void HitBody()

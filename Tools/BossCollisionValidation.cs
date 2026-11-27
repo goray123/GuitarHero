@@ -172,10 +172,10 @@ public static class BossCollisionValidation
             Vector2 landing = leap.LandingPoint;
             float startY = body.position.y;
             float previousY = startY;
-            bool rising = true, vertical = true, falling = true, noEarlyImpact = true;
+            bool rising = true, holding = true, vertical = true, falling = true, noEarlyImpact = true;
             // Moving the target after takeoff must not move the marker or redirect the dive.
             playerBody.position = new Vector2(-x, 0.75f);
-            for (int step = 1; step <= 71; step++)
+            for (int step = 1; step <= 96; step++)
             {
                 leap.Tick(dt);
                 Physics2D.Simulate(dt);
@@ -184,17 +184,21 @@ public static class BossCollisionValidation
                 if (step == 35)
                     Check(Mathf.Abs(position.x - landing.x) < 0.001f &&
                         Mathf.Abs(position.y - startY - 2.5f * owner.Height * Mathf.Abs(boss.transform.lossyScale.y)) < 0.001f,
-                        $"Leap toward {x}: reaches the point above landing at half flight");
+                        $"Leap toward {x}: finishes ascent directly above landing");
+                if (step > 35 && step < 60)
+                    holding &= Mathf.Abs(position.y - previousY) < 0.001f &&
+                        Mathf.Abs(leap.Progress - 0.5f) < 0.001f && !leap.Hitbox.enabled && leap.MarkerVisible;
                 if (step > 35)
                 {
                     vertical &= Mathf.Abs(position.x - landing.x) < 0.001f;
                     falling &= position.y <= previousY + 0.001f;
                 }
-                if (step < 70)
+                if (step < 95)
                     noEarlyImpact &= leap.CurrentPhase == Boss1LeapSlam.Phase.Airborne && !leap.WavesActive;
                 previousY = position.y;
             }
             Check(rising && vertical && falling, $"Leap toward {x}: rises then descends vertically");
+            Check(holding, $"Leap toward {x}: holds position and animation at the apex for 0.25 seconds without body damage");
             Check(leap.LandingPoint == landing && noEarlyImpact,
                 $"Leap toward {x}: landing stays locked and no impact occurs in flight");
             Check(leap.CurrentPhase == Boss1LeapSlam.Phase.Impact && leap.WavesActive &&
@@ -253,6 +257,12 @@ public static class BossCollisionValidation
             Physics2D.Simulate(0.02f);
             Place(bodyBox.bounds.center);
             leap.Tick(0f);
+            Check(!leap.Hitbox.enabled && hits == 0, "Overlapping the boss during the apex hold deals no damage");
+            Place(new Vector2(50f, 20f));
+            leap.Tick(0.25f);
+            Physics2D.Simulate(0.02f);
+            Place(bodyBox.bounds.center);
+            leap.Tick(0f);
             Check(leap.CurrentPhase == Boss1LeapSlam.Phase.Airborne && leap.Hitbox.enabled &&
                 leap.Hitbox.isTrigger && leap.Hitbox.size == bodyBox.size && leap.Hitbox.offset == bodyBox.offset &&
                 hits == 1 && Mathf.Abs(totalDamage - 10f) < 0.001f,
@@ -272,7 +282,7 @@ public static class BossCollisionValidation
             Check(leap.TryBegin(player.transform, 1f, true), "A new leap clears previous body hits");
             leap.Tick(0.8f);
             Place(new Vector2(50f, 20f));
-            leap.Tick(0.71f);
+            leap.Tick(0.96f);
             // Enlarging the warning must not create a damaging circle at the landing point.
             Set(leap, "landingRadiusH", 10f);
             Place((Vector2)bodyBox.bounds.center + Vector2.right * (bodyBox.bounds.extents.x + 0.5f));

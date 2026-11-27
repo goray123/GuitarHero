@@ -261,6 +261,7 @@ MonoBehaviour:
   arenaMaxX: 24
   windup: 0.8
   flightTime: 0.7
+  apexHoldTime: 0.25
   apexHeightH: 2.5
   impactTime: 0.15
   recoveryTime: 0.55
